@@ -161,7 +161,7 @@ void game1(){
 }
 
 void game2(){
-	int i, posSnake, posButton, box[7], ln, cl, jgd;
+	int i, posSnake, posButton, box[7], ln, cl, jgd, bnd[7];
 	posSnake = 0;
 	posButton = 0;
 	
@@ -192,44 +192,175 @@ void game2(){
 		if ( (i%3==0) && (i!=6) ) printf("\n%d. ", (i/3)+2);
 	}
 	printf("\n");
-	posSnake = ( rand() % (6 - 0 + 1) ) + 0;
-	posButton = ( rand() % (6 - 0 + 1 ) ) + 0;
+	for (i=0; i<3; i++){
+		posSnake = ( rand() % (6 - 0 + 1) ) + 0;
+		posButton = ( rand() % (6 - 0 + 1 ) ) + 0;	
+	}
 	while ( posSnake == posButton ) posButton = ( rand() % (6 - 0 + 1 ) ) + 0;	
 	
 	box[posSnake] = 2;
 	box[posButton] = 1;
 
 	printf("\n\n");
-	for (i = 0; i < 7; i++) printf("%d", box[i]);
+	for (i = 0; i < 7; i++) printf("%d -> %d\n", i, box[i]);
 	printf("\n\n");
 
-	printf(">> Selecione uma caixa digitando sua linha e depois sua coluna, respectivamente.\n\n");
-	printf(">>> Linha: ");
-	scanf("%d", &ln);
 	
-	while (true){
-		if (box[ln] == 2){
-			if (jgd == 1) printf(">> Jogador 1 Perdeu!");
-			else printf(">> Jogador 2 Perdeu!");
-		} else if (box)
+	while (1){
 		
-	}
-
-	if (ln == 1){
-		if (box[0] == 2) printf("Snake!!");
-		else if (box[0] == 1) printf("Botao!!");
-		else printf("Caixa Vazia.");
-	} 
-	else{
-		printf(">>> Coluna: ");
-		scanf("%d", &cl);
-	}
-	
-	
-	scanf("%d");
+		printf(">> Selecione uma caixa digitando sua linha e depois sua coluna, respectivamente.\n\n");
+		printf(">>> Linha: ");
+		scanf("%d", &ln);
+		if (ln == 1){
+			if (box[0] == 2){
+				if (jgd == 1) printf(">> Jogador 1 Perdeu!");
+				else printf(">> Jogador 2 Perdeu!");
+				break;
+			} else if (box[0] == 1){
+				if (jgd == 1) printf(">> Jogador 1 Ganhou!");
+				else printf(">> Jogador 2 Ganhou!");
+				break;
+			} else{
+				if (jgd == 1) printf(">> Jogador 1 achou uma caixa Vazia!");
+				else printf(">> Jogador 2  achou uma caixa Vazia!");
+				bnd[0] = 1;
+			}
+		} else {
+			printf(">>> Coluna: ");
+			scanf("%d", &cl);
+			if (ln == 2){
+				if (cl == 1){
+					if (box[1] == 2){
+						if (jgd == 1) printf(">> Jogador 1 Perdeu!");
+						else printf(">> Jogador 2 Perdeu!");
+						break;
+					} else if (box[1] == 1){
+						if (jgd == 1) printf(">> Jogador 1 Ganhou!");
+						else printf(">> Jogador 2 Ganhou!");
+						break;
+					} else{
+						if (jgd == 1) printf(">> Jogador 1 achou uma caixa Vazia!");
+						else printf(">> Jogador 2  achou uma caixa Vazia!");
+						bnd[1] = 1;
+					}
+				} else if (cl == 2){
+					if (box[2] == 2){
+						if (jgd == 1) printf(">> Jogador 1 Perdeu!");
+						else printf(">> Jogador 2 Perdeu!");
+						break;
+					} else if (box[2] == 1){
+						if (jgd == 1) printf(">> Jogador 1 Ganhou!");
+						else printf(">> Jogador 2 Ganhou!");
+						break;
+					} else{
+						if (jgd == 1) printf(">> Jogador 1 achou uma caixa Vazia!");
+						else printf(">> Jogador 2  achou uma caixa Vazia!");
+						bnd[2] = 1;
+					}
+				} else if (cl == 3){
+					if (box[3] == 2){
+						if (jgd == 1) printf(">> Jogador 1 Perdeu!");
+						else printf(">> Jogador 2 Perdeu!");
+						break;
+					} else if (box[3] == 1){
+						if (jgd == 1) printf(">> Jogador 1 Ganhou!");
+						else printf(">> Jogador 2 Ganhou!");
+						break;
+					} else{
+						if (jgd == 1) printf(">> Jogador 1 achou uma caixa Vazia!");
+						else printf(">> Jogador 2  achou uma caixa Vazia!");
+						bnd[3] = 1;
+					}
+				}
+			} else if (ln == 3){
+				if (cl == 1){
+					if (box[4] == 2){
+						if (jgd == 1) printf(">> Jogador 1 Perdeu!");
+						else printf(">> Jogador 2 Perdeu!");
+						break;
+					} else if (box[4] == 1){
+						if (jgd == 1) printf(">> Jogador 1 Ganhou!");
+						else printf(">> Jogador 2 Ganhou!");
+						break;
+					} else{
+						if (jgd == 1) printf(">> Jogador 1 achou uma caixa Vazia!");
+						else printf(">> Jogador 2  achou uma caixa Vazia!");
+						bnd[4] = 1;
+					}
+				} else if (cl == 2){
+					if (box[5] == 2){
+						if (jgd == 1) printf(">> Jogador 1 Perdeu!");
+						else printf(">> Jogador 2 Perdeu!");
+						break;
+					} else if (box[5] == 1){
+						if (jgd == 1) printf(">> Jogador 1 Ganhou!");
+						else printf(">> Jogador 2 Ganhou!");
+						break;
+					} else{
+						if (jgd == 1) printf(">> Jogador 1 achou uma caixa Vazia!");
+						else printf(">> Jogador 2  achou uma caixa Vazia!");
+						bnd[5] = 1;
+					}
+				} else if (cl == 3){
+					if (box[6] == 2){
+					   	if (jgd == 1) printf(">> Jogador 1 Perdeu!");
+						else printf(">> Jogador 2 Perdeu!");
+						break;
+					} else if (box[6] == 1){
+						if (jgd == 1) printf(">> Jogador 1 Ganhou!");
+						else printf(">> Jogador 2 Ganhou!");
+						break;
+					} else{
+						if (jgd == 1) printf(">> Jogador 1 achou uma caixa Vazia!");
+						else printf(">> Jogador 2  achou uma caixa Vazia!");
+						bnd[6] = 1;
+					}
+				}
+			}
+		}
+		printf("\n\n");
+		if ( jgd == 1){
+			jgd = 2;
+			printf(">> Vez do Jogador 2!");
+		}
+		else{
+			jgd = 1;
+			printf(">> Vez do Jogador 1!");
+		}
+		pontosBonitoskkkj(3);
+		printf("\n\n");
 		
+		printf("    1    2    3\n1.\t");
+		for (i=0; i<7; i++){
+			box[i] = 0;
+			if (bnd[i] == 1){
+				printf("[X]  ");
+				box[i] = 3;
+			}
+			else printf("[ ]  ");
+			if ( (i%3==0) && (i!=6) ) printf("\n%d. ", (i/3)+2);
+		}
+		printf("\n");
+		while (1){
+			posSnake = ( rand() % (6 - 0 + 1) ) + 0;
+			posButton = ( rand() % (6 - 0 + 1 ) ) + 0;
+			while ( posSnake == posButton ) posButton = ( rand() % (6 - 0 + 1 ) ) + 0;
+			if ( (box[posSnake] == 3) || (box[posButton] == 3) ) continue;
+			break;
+		}
+		
+		box[posSnake] = 2;
+		box[posButton] = 1;
 	
-
+		printf("\n\n");
+		// for (i = 0; i < 7; i++) printf("%d", bnd[i]);
+		
+		// for (i = 0; i < 7; i++) printf("\n%d -> %d", i, box[i]); Gabarito
+		printf("\n\n");
+	
+	}
+	printf("\n\n");
+	
 	again();
 	if (resp == 1) resp = 2;	
 
