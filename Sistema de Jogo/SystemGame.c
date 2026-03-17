@@ -20,7 +20,7 @@ void exitGame(){
 	system("cls");
 	printf("\n>> SISTEMA ENCERRADO.");
 	Sleep(250);
-	printf("\n>> Sua Pontuacao Total Foi %d Pontos.\n >> Ate Mais!! <<", points);
+	printf("\n >> Ate Mais!! <<");
 	
 }
 
@@ -366,6 +366,28 @@ void game2(){
 
 }
 
+void game3(){
+	int i;
+	
+	system("cls");
+	printf(">> Iniciando 'Gousmas War'");
+	pontosBonitoskkkj(5);
+	system("cls");
+	
+	for (i=0;i<pts;i++) printf("-");
+	printf("> Gousmas War <");
+	for (i=0;i<pts;i++) printf("-");
+	printf("\n");
+	printf(">> Neste jogo, o computador apresenta uma pergunta com quatro alternativas e\nsolicita que o usuario escolha a resposta correta. Apos a selecao, o sistema\nindicara se a resposta esta correta ou incorreta. Caso seja incorreta, sera\nexibida a resposta correta.\n");
+	for (i=0;i<45;i++) printf("-");
+	printf("\n");
+
+	printf("\n\n Jogo \n\n");
+
+	again();
+	if (resp == 1) resp = 3;	
+}
+
 int main (void){
 	pts = 10;
 	
@@ -390,7 +412,7 @@ int main (void){
 		case 2:
 			game2(); break;
 		case 3:
-			exitGame(); break;
+			game3(); break;
 		case 4:
 			exitGame(); break;
 		default:
