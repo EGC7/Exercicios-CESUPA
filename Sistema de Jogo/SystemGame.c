@@ -417,7 +417,7 @@ int main (void){
 			exitGame(); break;
 		default:
 			system("cls");
-			printf(">> Perdao, nao encontramos esta opcao. Tente digitar um dos valores do menu.\n\n");
+			printf(">> Perdao, nao encontramos esta opcao. Tente digitar um dos valores do menu. <<\n\n");
 			showMenu();
 			break;
 		}
