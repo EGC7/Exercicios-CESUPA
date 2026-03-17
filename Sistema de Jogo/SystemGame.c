@@ -139,7 +139,7 @@ void game1(){
 
 	printf("\n>> Q05: Quantos continentes existem?");
 	printf("\n 1. A - 10 Continentes\t|  2. B - 06 Continentes");
-	printf("\n 3. C - 4 Continentes\t|  4. D - 08 Continentes");
+	printf("\n 3. C - 04 Continentes\t|  4. D - 08 Continentes");
 	printf("\n >>> Resposta: ");
 	scanf("%d", &esco);
 	switch(esco){
@@ -202,7 +202,7 @@ void game2(){
 	box[posButton] = 1;
 
 	printf("\n\n");
-	for (i = 0; i < 7; i++) printf("%d -> %d\n", i, box[i]);
+	// for (i = 0; i < 7; i++) printf("%d -> %d\n", i, box[i]); Gabarito
 	printf("\n\n");
 
 	
@@ -211,7 +211,11 @@ void game2(){
 		printf(">> Selecione uma caixa digitando sua linha e depois sua coluna, respectivamente.\n\n");
 		printf(">>> Linha: ");
 		scanf("%d", &ln);
+		printf("\n\n");
 		if (ln == 1){
+			printf("\n>> Abrindo a caixa");
+			pontosBonitoskkkj(5);
+			printf("\n\n");
 			if (box[0] == 2){
 				if (jgd == 1) printf(">> Jogador 1 Perdeu!");
 				else printf(">> Jogador 2 Perdeu!");
@@ -318,7 +322,10 @@ void game2(){
 				}
 			}
 		}
+		printf("\n>> Carregando Proxima Partida"); pontosBonitoskkkj(5);
 		printf("\n\n");
+		system("cls");
+		
 		if ( jgd == 1){
 			jgd = 2;
 			printf(">> Vez do Jogador 2!");
@@ -357,7 +364,6 @@ void game2(){
 		
 		// for (i = 0; i < 7; i++) printf("\n%d -> %d", i, box[i]); Gabarito
 		printf("\n\n");
-	
 	}
 	printf("\n\n");
 	
@@ -367,23 +373,114 @@ void game2(){
 }
 
 void game3(){
-	int i;
+	int i, fr1, fr2, fr3, fr4, jgd, gse1, gse2;
+	
+	jgd = 1;
+	
+	fr1=1;fr2=1; fr3=1;fr4=1;
 	
 	system("cls");
 	printf(">> Iniciando 'Gousmas War'");
 	pontosBonitoskkkj(5);
 	system("cls");
 	
-	for (i=0;i<pts;i++) printf("-");
+	for (i=0;i<pts+3;i++) printf("-");
 	printf("> Gousmas War <");
-	for (i=0;i<pts;i++) printf("-");
+	for (i=0;i<pts+3;i++) printf("-");
 	printf("\n");
-	printf(">> Neste jogo, o computador apresenta uma pergunta com quatro alternativas e\nsolicita que o usuario escolha a resposta correta. Apos a selecao, o sistema\nindicara se a resposta esta correta ou incorreta. Caso seja incorreta, sera\nexibida a resposta correta.\n");
-	for (i=0;i<45;i++) printf("-");
+	printf(">> Neste jogo de estrategia, os jogadores controlam criaturas chamadas Gousmas,\n que podem se dividir e acumular furia ao serem atacadas.\n");
+	for (i=0;i<41;i++) printf("-");
 	printf("\n");
+	
+	for(i=0;i<41;i++) printf("#"); printf("\n");
+	
+	printf("~  Gousmas 1   ~");
+	printf("\t");
+	printf("~  Gousmas 2   ~\n");
+	printf(" ~ Furia - 0%d ~", fr1);
+	printf("\t\t");
+	printf(" ~ Furia - 0%d ~", fr2);
+	
+	printf("\n");
+	for(i=0;i<11;i++) printf("="); printf(" Zona Jogador 1 "); for(i=0;i<11;i++) printf("=");
+	
+	printf("\n");
+	printf("\n");
+	
+	for(i=0;i<11;i++) printf("="); printf(" Zona Jogador 2 "); for(i=0;i<11;i++) printf("=");
+	printf("\n");
+	
+	printf("~  Gousmas 3   ~");
+	printf("\t");
+	printf("~  Gousmas 4   ~\n");
+	printf(" ~ Furia  0%d ~", fr3);
+	printf("\t\t");
+	printf(" ~ Furia  0%d ~", fr4);
+	
+	printf("\n");
+	
+	for(i=0;i<41;i++) printf("#");
 
-	printf("\n\n Jogo \n\n");
+	printf("\n\n");
 
+	if (jgd == 1) printf(">> Vez do Jogador 1");
+	else printf(">> Vez do Jogador 2");
+	
+	while (1){
+		printf("\n>> Jogador %d, escolha o Gousmas que executara a transferencia", jgd);
+		
+		if (jgd == 1){
+			printf("\n1 - Goumas 1\t");
+			printf("2 - Goumas 2\n");	
+		} else{
+			printf("\n1 - Goumas 3\t");
+			printf("2 - Goumas 4\n");	
+		}
+		
+		printf(">>> Escolha: ");
+		
+		scanf("%d", &gse1);
+		
+		
+		printf("\n>> Jogador %d, escolha o Gousmas que recebera a transferencia", jgd);
+		
+		if (jgd == 1){
+			printf("\n1 - Goumas 3\t");
+			printf("2 - Goumas 4\t");
+			if (gse1 == 1) printf("3 - Goumas 2\n");	
+			else 		   printf("3 - Goumas 1\n");
+		} else{
+			printf("\n1 - Goumas 1\t");
+			printf("2 - Goumas 2\t");
+			if (gse1 == 1) printf("3 - Goumas 4\n");	
+			else 		   printf("3 - Goumas 3\n");
+		}
+		scanf("%d", &gse2);
+		
+		switch (gse1){
+			case 1:
+				if (gse2 == 1){
+					fr3 += fr1;
+				} else {
+					fr4 += fr1
+				}
+				fr1 = 1;
+				break;
+			
+		}
+		
+		
+		if (jgd == 1){
+			jgd = 2;
+			printf(">> Vez do Jogador 2");
+		}
+		else{
+			jgd = 1;
+			printf(">> Vez do Jogador 1");
+		}
+		
+	}
+	
 	again();
 	if (resp == 1) resp = 3;	
 }
