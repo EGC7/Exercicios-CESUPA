@@ -1,38 +1,48 @@
 #include <stdio.h>
+// Code by EGC
 
 int main (void){
+	int h, i, j;
 	
+	printf(">> Tamanho do Diamante: ");
+	scanf("%d", &h);
+	printf("\n\n");
 	
-	int i;
-	int j;
-	int t;
-	int margem = 0;
-	
-	printf("Digite: ");
-	scanf("%d",&t);
-	
-	for(i = 0;i < t ;i++){
+	if (h%2==0){
 		
-		if(i < (t/2)){
-			printf("sum");
-			margem++;
-		}else{
-			margem--;
-		 
+		for (i=0;i<h/2;i++){
+			for(j=0;j<(h-i);j++) printf(" ");
+			for(j=0;j<(i*2)+1;j++) printf("*");
+			printf("\n");
 		}
 		
-		printf(" i %d m %d t/2 %d", i, margem, t/2);
-		
-		for(j = 0; j < t;j++){
-			if( (j <= (t/2) + margem ) && ( j >= (t/2) - margem) ){
-			  printf("*");	   	
-			}else{
-			  printf(" ");	
-			}	
+		for (i=(h/2)-1;i>0;i--){
+			for(j=0;j<(h-i);j++) printf(" ");
+			for(j=(i*2)+1;j>0;j--) printf("*");
+			printf("\n");
 		}
-		printf("|");
-		printf("\n");
+		for(j=0;j<(h-i);j++) printf(" ");
+		printf("*");
+		
+	} else{
+		
+		for (i=0;i<(h/2)+1;i++){
+			for(j=0;j<(h-i);j++) printf(" ");
+			for(j=0;j<(i*2)+1;j++) printf("*");
+			printf("\n");
+		}
+		
+		for (i=(h/2)-1;i>0;i--){
+			for(j=0;j<(h-i);j++) printf(" ");
+			for(j=(i*2)+1;j>0;j--) printf("*");
+			printf("\n");
+		}
+		for(j=0;j<(h-i);j++) printf(" ");
+		printf("*");
+		
 	}
 	
+	printf("\n\n");
 	
+	return 0;
 }
