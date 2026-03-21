@@ -462,7 +462,7 @@ void game3(){
 				if (gse2 == 1){
 					fr3 += fr1;
 				} else {
-					fr4 += fr1
+					fr4 += fr1;
 				}
 				fr1 = 1;
 				break;
