@@ -382,91 +382,168 @@ void game3(){
 	system("cls");
 	printf(">> Iniciando 'Gousmas War'");
 	pontosBonitoskkkj(5);
-	system("cls");
 	
-	for (i=0;i<pts+3;i++) printf("-");
-	printf("> Gousmas War <");
-	for (i=0;i<pts+3;i++) printf("-");
-	printf("\n");
-	printf(">> Neste jogo de estrategia, os jogadores controlam criaturas chamadas Gousmas,\n que podem se dividir e acumular furia ao serem atacadas.\n");
-	for (i=0;i<41;i++) printf("-");
-	printf("\n");
-	
-	for(i=0;i<41;i++) printf("#"); printf("\n");
-	
-	printf("~  Gousmas 1   ~");
-	printf("\t");
-	printf("~  Gousmas 2   ~\n");
-	printf(" ~ Furia - 0%d ~", fr1);
-	printf("\t\t");
-	printf(" ~ Furia - 0%d ~", fr2);
-	
-	printf("\n");
-	for(i=0;i<11;i++) printf("="); printf(" Zona Jogador 1 "); for(i=0;i<11;i++) printf("=");
-	
-	printf("\n");
-	printf("\n");
-	
-	for(i=0;i<11;i++) printf("="); printf(" Zona Jogador 2 "); for(i=0;i<11;i++) printf("=");
-	printf("\n");
-	
-	printf("~  Gousmas 3   ~");
-	printf("\t");
-	printf("~  Gousmas 4   ~\n");
-	printf(" ~ Furia  0%d ~", fr3);
-	printf("\t\t");
-	printf(" ~ Furia  0%d ~", fr4);
-	
-	printf("\n");
-	
-	for(i=0;i<41;i++) printf("#");
-
-	printf("\n\n");
-
-	if (jgd == 1) printf(">> Vez do Jogador 1");
-	else printf(">> Vez do Jogador 2");
 	
 	while (1){
+		system("cls");
+		
+		for (i=0;i<pts+3;i++) printf("-");
+		printf("> Gousmas War <");
+		for (i=0;i<pts+3;i++) printf("-");
+		printf("\n");
+		printf(">> Neste jogo de estrategia, os jogadores controlam criaturas chamadas Gousmas,\n que podem se dividir e acumular furia ao serem atacadas.\n");
+		for (i=0;i<41;i++) printf("-");
+		printf("\n");
+		
+		for(i=0;i<41;i++) printf("#"); printf("\n");
+		
+		printf("~  Gousmas 1   ~");
+		printf("\t");
+		printf("~  Gousmas 2   ~\n");
+		printf(" ~ Furia - 0%d ~", fr1);
+		printf("\t\t");
+		printf(" ~ Furia - 0%d ~", fr2);
+		
+		printf("\n");
+		for(i=0;i<11;i++) printf("="); printf(" Zona Jogador 1 "); for(i=0;i<11;i++) printf("=");
+		
+		printf("\n");
+		printf("\n");
+		
+		for(i=0;i<11;i++) printf("="); printf(" Zona Jogador 2 "); for(i=0;i<11;i++) printf("=");
+		printf("\n");
+		
+		printf("~  Gousmas 3   ~");
+		printf("\t");
+		printf("~  Gousmas 4   ~\n");
+		printf(" ~ Furia  0%d ~", fr3);
+		printf("\t\t");
+		printf(" ~ Furia  0%d ~", fr4);
+		
+		printf("\n");
+		
+		for(i=0;i<41;i++) printf("#");
+	
+		printf("\n\n");
+	
+		if (jgd == 1) printf(">> Vez do Jogador 1");
+		else printf(">> Vez do Jogador 2");
+		pontosBonitoskkkj(3);
+		printf("\n");
 		printf("\n>> Jogador %d, escolha o Gousmas que executara a transferencia", jgd);
-		
+		printf("\n>>\t");
 		if (jgd == 1){
-			printf("\n1 - Goumas 1\t");
-			printf("2 - Goumas 2\n");	
+			printf("1 - Goumas 1\t");
+			printf("2 - Goumas 2");	
 		} else{
-			printf("\n1 - Goumas 3\t");
-			printf("2 - Goumas 4\n");	
+			printf("1 - Goumas 3\t");
+			printf("2 - Goumas 4");	
 		}
+		printf("\t<<\n");
+		do {
+			printf(">>> Escolha: ");
+			scanf("%d", &gse1);
+			if (  !( (gse1 > 0) && (gse1 < 4) ) ) printf("\n>> Voce digitou errado, tente com um valor valido!\n");
+		} while ( !( (gse1 > 0) && (gse1 < 4) ) );
 		
-		printf(">>> Escolha: ");
-		
-		scanf("%d", &gse1);
 		
 		
 		printf("\n>> Jogador %d, escolha o Gousmas que recebera a transferencia", jgd);
 		
+		printf("\n>>\t");
 		if (jgd == 1){
-			printf("\n1 - Goumas 3\t");
+			printf("1 - Goumas 3\t");
 			printf("2 - Goumas 4\t");
-			if (gse1 == 1) printf("3 - Goumas 2\n");	
-			else 		   printf("3 - Goumas 1\n");
+			if (gse1 == 1) printf("3 - Goumas 2");	
+			else 		   printf("3 - Goumas 1");
 		} else{
-			printf("\n1 - Goumas 1\t");
+			printf("1 - Goumas 1\t");
 			printf("2 - Goumas 2\t");
-			if (gse1 == 1) printf("3 - Goumas 4\n");	
-			else 		   printf("3 - Goumas 3\n");
+			if (gse1 == 1) printf("3 - Goumas 4");	
+			else 		   printf("3 - Goumas 3");
 		}
-		scanf("%d", &gse2);
+		printf("\t<<\n");
+		do {
+			printf(">> Escolha: ");
+			scanf("%d", &gse2);
+			if (  !( (gse2 > 0) && (gse2 < 4) ) ) printf("\n>> Voce digitou errado, tente com um valor valido!\n");
+		} while ( !( (gse2 > 0) && (gse2 < 4) ) );
 		
-		switch (gse1){
-			case 1:
-				if (gse2 == 1){
-					fr3 += fr1;
-				} else {
-					fr4 += fr1;
-				}
-				fr1 = 1;
-				break;
-			
+		if (jgd == 1){
+			switch (gse1){
+				case 1:
+					if (gse2 == 1){
+						fr3 += fr1;
+					} else if (gse2 == 2) {
+						fr4 += fr1;
+					} else {
+						
+						if (fr1 % 2 == 0){
+							fr1 /= 2;
+							fr2 += fr1;	
+						} else {
+							fr1 /= 2;
+							fr2 += fr1;
+							fr1++;
+						}
+					}
+					break;
+				case 2:
+					if (gse2 == 1){
+						fr3 += fr2;
+					} else if (gse2 == 2){
+						fr4 += fr2;
+					} else {
+						if (fr2 % 2 == 0){
+							fr2 /= 2;
+							fr1 += fr2;
+						} else {
+							fr2 /= 2;
+							fr1 += fr2;
+							fr2++;
+						}
+					}
+					break;
+				default:
+					break;
+			}
+		} else{
+			switch (gse1){
+				case 1:
+					if (gse2 == 1){
+						fr1 += fr3;
+					} else if (gse2 == 2) {
+						fr2 += fr3;
+					} else {
+						if (fr3 % 2 == 0){
+							fr3 /= 2;
+							fr4 += fr3;
+						} else {
+							fr3 /= 2;
+							fr4 += fr3;
+							fr3++;
+						}
+					}
+					break;
+				case 2:
+					if (gse2 == 1){
+						fr1 += fr4;
+					} else if (gse2 == 2) {
+						fr2 += fr4;
+					} else {
+						if (fr4 % 2 == 0){
+							fr4 /= 2;
+							fr3 += fr4;
+						} else {
+							fr4 /= 2;
+							fr3 += fr4;
+							fr4++;
+						}
+					}
+					break;
+				default:
+					break;
+			}
 		}
 		
 		
@@ -479,10 +556,22 @@ void game3(){
 			printf(">> Vez do Jogador 1");
 		}
 		
+		if ( (fr1 > 5) || (fr2 > 5)){
+			printf("\n\n>> Jogador 1 Perdeu!! <<");
+			pontosBonitoskkkj(3);
+			break;
+		}
+		else if ((fr3 > 5) || (fr4 > 5)){
+			printf("\n\n>> Jogador 2 Perdeu!! <<");
+			pontosBonitoskkkj(3);
+			break;
+		}
 	}
 	
+	printf("\n\n");
 	again();
-	if (resp == 1) resp = 3;	
+	if (resp == 1) resp = 3;
+	
 }
 
 int main (void){
@@ -505,7 +594,7 @@ int main (void){
 			showMenu();
 			break;
 		case 1:
-			game1(pts); break;
+			game1(); break;
 		case 2:
 			game2(); break;
 		case 3:
