@@ -29,6 +29,24 @@ void exitGame()
 
 }
 
+int verificarInt(char msg[]){
+	int d;
+	while (1) {
+		printf("%s", msg);
+		
+		if ( scanf("%d", &d) != 1){
+			
+			printf(">> Tente digitar um inteiro valido\n");
+			
+			while (getchar() != '\n');
+			
+			continue;
+		}
+		
+		return d;
+	}
+}
+
 void showMenu()
 {
 	int i;
@@ -42,8 +60,7 @@ void showMenu()
 	printf("\n 3 - Gousmas War");
 	printf("\n 4 - Sair");
 
-	printf("\n >>> Escolha: ");
-	scanf("%d", &resp);
+	resp = verificarInt("\n >>> Escolha: ");
 
 }
 
@@ -56,8 +73,7 @@ void again()
 	for (i = 0; i < pts; i++) printf("-");
 	printf("\n");
 
-	printf(">>> Escolha: ");
-	scanf("%d", &resp);
+	resp = verificarInt(">>> Escolha: ");
 }
 
 void game1()
@@ -80,8 +96,8 @@ void game1()
 	printf("\n>> Q01: Qual o planeta mais proximo do Sol?");
 	printf("\n 1. A - Netuno\t|  2. B - Terra");
 	printf("\n 3. C - Jupiter\t|  4. D - Mercurio");
-	printf("\n >>> Resposta: ");
-	scanf("%d", &esco);
+	esco = verificarInt("\n >>> Resposta: ");
+	
 	switch(esco)
 	{
 	case 4:
@@ -100,8 +116,8 @@ void game1()
 	printf("\n>> Q02: A que temperatura a agua ferve?");
 	printf("\n 1. A - -10 Graus Celsius\t|  2. B - 0 Graus Celsius");
 	printf("\n 3. C - 100 Graus Celsius\t|  4. D - 67 Graus Celsius");
-	printf("\n >>> Resposta: ");
-	scanf("%d", &esco);
+	esco = verificarInt("\n >>> Resposta: ");
+	
 	switch(esco)
 	{
 	case 3:
@@ -140,8 +156,8 @@ void game1()
 	printf("\n>> Q04: Um anel tem 3 pedras preciosas. Quantas pedras preciosas tem 11 aneis?");
 	printf("\n 1. A - 30 Pedras\t|  2. B - 11 Pedras");
 	printf("\n 3. C - 90 Pedras\t|  4. D - 33 Pedras");
-	printf("\n >>> Resposta: ");
-	scanf("%d", &esco);
+	esco = verificarInt("\n >>> Resposta: ");
+	
 	switch(esco)
 	{
 	case 4:
@@ -160,8 +176,8 @@ void game1()
 	printf("\n>> Q05: Quantos continentes existem?");
 	printf("\n 1. A - 10 Continentes\t|  2. B - 06 Continentes");
 	printf("\n 3. C - 04 Continentes\t|  4. D - 08 Continentes");
-	printf("\n >>> Resposta: ");
-	scanf("%d", &esco);
+	esco = verificarInt("\n >>> Resposta: ");
+	
 	switch(esco)
 	{
 	case 2:
@@ -217,8 +233,7 @@ void game2()
 		Sleep(300);
 		printf(" 7. Priscila\n\n");
 		Sleep(400);
-		printf(">>> Jogador 1, escolha: ");
-		scanf("\n%d", &esc);
+		esc = verificarInt(">>> Jogador 1, escolha: ");
 
 		switch(esc)
 		{
@@ -272,9 +287,8 @@ void game2()
 		{
 			printf("\n>> Parece que voce escolheu o mesmo nome outro jogador!\n>>Escolha um nome diferente!");
 		}
-		printf("\n>>> Jogador 2, escolha: ");
-		scanf("\n%d", &esc2);
-
+		esc2 = verificarInt("\n>>> Jogador 2, escolha: ");
+		
 		switch(esc2)
 		{
 		case 1:
@@ -630,8 +644,8 @@ void game3()
 		printf("\t<<\n");
 		do
 		{
-			printf(">>> Escolha: ");
-			scanf("%d", &gse1);
+			gse1 = verificarInt(">>> Escolha: ");
+			
 			if (  !( (gse1 > 0) && (gse1 < 4) ) ) printf("\n>> Voce digitou errado, tente com um valor valido!\n");
 		}
 		while ( !( (gse1 > 0) && (gse1 < 4) ) );
@@ -658,8 +672,8 @@ void game3()
 		printf("\t<<\n");
 		do
 		{
-			printf(">> Escolha: ");
-			scanf("%d", &gse2);
+			gse2 = verificarInt(">> Escolha: ");
+			
 			if (  !( (gse2 > 0) && (gse2 < 4) ) ) printf("\n>> Voce digitou errado, tente com um valor valido!\n");
 		}
 		while ( !( (gse2 > 0) && (gse2 < 4) ) );
@@ -790,13 +804,13 @@ void game3()
 			printf(">> Vez do Jogador 1");
 		}
 
-		if ( (fr1 > 5) || (fr2 > 5))
+		if ( (fr1 > 5) && (fr2 > 5))
 		{
 			printf("\n\n>> Jogador 1 Perdeu!! <<");
 			pontosBonitoskkkj(3);
 			break;
 		}
-		else if ((fr3 > 5) || (fr4 > 5))
+		else if ((fr3 > 5) && (fr4 > 5))
 		{
 			printf("\n\n>> Jogador 2 Perdeu!! <<");
 			pontosBonitoskkkj(3);
