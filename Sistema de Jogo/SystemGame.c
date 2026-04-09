@@ -136,8 +136,7 @@ void game1() {
 	printf("\n>> Q03: Qual o maior planeta do sistema solar?");
 	printf("\n 1. A - Jupiter\t|  2. B - Saturno");
 	printf("\n 3. C - Plutao\t|  4. D - Venus");
-	printf("\n >>> Resposta: ");
-	scanf("%d", & esco);
+	esco = verificarInt("\n >>> Resposta: ");
 	switch(esco) {
 	case 1:
 		printf(">> PARABENS, VOCE ACERTOU!!");
