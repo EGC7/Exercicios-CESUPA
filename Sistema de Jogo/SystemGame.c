@@ -722,14 +722,10 @@ void game3() {
 			}
 		}
 
-		if (fr1 > 5) onGame[0] = 0;
-		else onGame[0] = 1;
-		if (fr2 > 5) onGame[1] = 0;
-		else onGame[1] = 1;
-		if (fr3 > 5) onGame[2] = 0;
-		else  onGame[2] = 1;
-		if (fr4 > 5) onGame[3] = 0;
-		else onGame[3] = 1;
+    onGame[0] = (fr1 <= 5) ? 1 : 0;
+    onGame[1] = (fr2 <= 5) ? 1 : 0;
+    onGame[2] = (fr3 <= 5) ? 1 : 0;
+    onGame[3] = (fr4 <= 5) ? 1 : 0;
 
 
 		if ( (fr1 > 5) && (fr2 > 5)) {
