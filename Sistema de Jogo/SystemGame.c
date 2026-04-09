@@ -526,7 +526,8 @@ void game3() {
 
 		for(i = 0; i < 41; i++) printf("#");
 		printf("\n");
-		for (i = 0; i < 4; i++) printf("Gous %d -> Vivo: %d\n", i + 1, onGame[i]);
+
+		// for (i = 0; i < 4; i++) printf("Gous %d -> Vivo: %d\n", i + 1, onGame[i]);
 
 
 		printf("~  Gousmas 1   ~");
