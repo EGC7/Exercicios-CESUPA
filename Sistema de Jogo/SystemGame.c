@@ -433,7 +433,7 @@ void game2()
 		int idx;
 
 		// for (i = 0; i < 5; i++) printf("%d", bnd[i]); // Caixas Abertas
-		for (i = 0; i < 5; i++) printf("%d -> %d\n", i, box[i]); // Gabarito
+		// for (i = 0; i < 5; i++) printf("%d -> %d\n", i, box[i]); // Gabarito
 		
 		printf(">> Selecione uma caixa digitando seu numero inscrito\n\n");				
 		do {
@@ -646,7 +646,7 @@ void game3()
 		while (1)
 		{
 			
-			for (i = 0; i < 4; i++) printf("-> -> %d\n", onGame[i]);
+			// for (i = 0; i < 4; i++) printf("-> -> %d\n", onGame[i]); 
 			
 			gse2 = verificarInt(">> Escolha: ");
 			
@@ -866,7 +866,6 @@ int main (void)
 	showMenu();
 	while (gaming)
 	{
-
 		switch(resp) {
 		case 0:
 			printf("\nVoltando para o Menu");
