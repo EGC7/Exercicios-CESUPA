@@ -560,7 +560,6 @@ void game3()
 
 		// for (i = 0; i < 4; i++) printf("Gous %d -> Vivo: %d\n", i + 1, onGame[i]);
 
-
 		printf("~  Gousmas 1   ~");
 		printf("\t");
 		printf("~  Gousmas 2   ~\n");
@@ -621,8 +620,9 @@ void game3()
 			gse1 = verificarInt(">>> Escolha: ");
 
 			if (  !( (gse1 > 0) && (gse1 < 3) ) ) printf("\n>> Voce digitou errado, tente com um valor valido!\n");
+			else if ( !(onGame[(gse1 - 1) + minSec]) ) printf("\n>> Voce selecionou um Gousmas desintegrado!\n");
 		}
-		while ( !( (gse1 > 0) && (gse1 < 3) ) );
+		while ( !( (gse1 > 0) && (gse1 < 3) ) || !(onGame[(gse1 - 1) + minSec]) );
 
 		printf("\n>> Jogador %d, escolha o Gousmas que recebera a transferencia", jgd);
 
@@ -650,10 +650,10 @@ void game3()
 			
 			gse2 = verificarInt(">> Escolha: ");
 			
-			if ( (onGame[ (gse1 - 1) + minSec] == 0 ) && (gse2 != 3) ) {
-				printf("\n>> Seu Gousmas selecionado se desintegrou e nao pode efetuar ataques!\n>> Tente dividir com seu companheiro.\n");
-				continue;
-			}
+			// if ( (onGame[ (gse1 - 1) + minSec] == 0 ) && (gse2 != 3) ) {
+			// 	printf("\n>> Seu Gousmas selecionado se desintegrou e nao pode efetuar ataques!");
+			// 	continue;
+			// }
 			
 			minSec = jgd == 1 ? 2 : 0;
 			
@@ -663,39 +663,60 @@ void game3()
 				continue;
 			}
 			
-			if ( onGame[(gse2 + minSec) - 1] == 0 ) {
-				printf("\n>> O Gousmas ja se desintegrou! Escolha outro para executar 'atacar'.\n");
-				continue;
-			}
-			
 			if (gse2 == 3)
 			{
+				
 				if (gse1 == 1)
 				{
+					if ((jgd == 1) && (fr1 == 1))
+					{
+						printf("\n>> Voce nao pode dividir apenas com uma furia!\n");
+						continue;
+					}
+					if ((jgd == 2) && (fr3 == 1))
+					{
+						printf("\n>> Voce nao pode dividir apenas com uma furia\n");
+						continue;
+					}
 					if ((jgd == 1) && (onGame[1] == 0))
 					{
-						printf("\n>> Voce nao pode dividir com um Gousmas desintegrado!\n");
-						continue;
+						printf("\n>> Parabens, voce reviveu um companheiro!\n");
 					}
 					else if (jgd == 2 && (onGame[3] == 0))
 					{
-						printf("\n>> Voce nao pode dividir com um Gousmas desintegrado!\n");
-						continue;
+						printf("\n>> Parabens, voce reviveu um companheiro!\n");
 					}
 				}
 				else if (gse1 == 2)
 				{
+					if ((jgd == 1) && (fr2 == 1))
+					{
+						printf("\n>> Voce nao pode dividir apenas com uma furia!\n");
+						continue;
+					}
+					if ((jgd == 2) && (fr4 == 1))
+					{
+						printf("\n>> Voce nao pode dividir apenas com uma furia\n");
+						continue;
+					}
 					if ( (jgd == 1) && (onGame[0] == 0) )
 					{
-						printf("\n>> Voce nao pode dividir com um Gousmas desintegrado!\n");
-						continue;
+						printf("\n>> Parabens, voce reviveu um companheiro!\n");
+						// continue;
 					}
 					else if ( (jgd == 2) && (onGame[2] == 0))
 					{
-						printf("\n>> Voce nao pode dividir com um Gousmas desintegrado!\n");
-						continue;
+						printf("\n>> Parabens, voce reviveu um companheiro!\n");
+						// continue;
 					}
 				}
+				pontosBonitoskkkj(3);
+				break;
+			}
+			
+			if ( onGame[(gse2 + minSec) - 1] == 0 ) {
+				printf("\n>> O Gousmas ja se desintegrou! Escolha outro para executar 'atacar'.\n");
+				continue;
 			}
 			break;
 		}
@@ -814,20 +835,24 @@ void game3()
 			}
 		}
 
-		onGame[0] = (fr1 <= 5) ? 1 : 0;
-		onGame[1] = (fr2 <= 5) ? 1 : 0;
-		onGame[2] = (fr3 <= 5) ? 1 : 0;
-		onGame[3] = (fr4 <= 5) ? 1 : 0;
+		onGame[0] = (1 <= fr1) && (fr1 <= 5) ? 1 : 0;
+		onGame[1] = (1 <= fr2) && (fr2 <= 5) ? 1 : 0;
+		onGame[2] = (1 <= fr3) && (fr3 <= 5) ? 1 : 0;
+		onGame[3] = (1 <= fr4) && (fr4 <= 5) ? 1 : 0;
+		
+		fr1 = onGame[0] ? fr1 : 0;
+		fr2 = onGame[1] ? fr2 : 0;
+		fr3 = onGame[2] ? fr3 : 0;
+		fr4 = onGame[3] ? fr4 : 0;
 
-
-		if ( (fr1 > 5) && (fr2 > 5))
+		if ( !(onGame[0]) && !(onGame[1]) )
 		{
 			printf("\n\n      >> Jogador 1 Perdeu!! <<");
 			printf("\n>> Todos Seus Gousmas Desintegraram <<\n   ");
 			pontosBonitoskkkj(5);
 			break;
 		}
-		else if ((fr3 > 5) && (fr4 > 5))
+		else if ( !(onGame[2]) && !(onGame[3]))
 		{
 			printf("\n\n      >> Jogador 2 Perdeu!! <<");
 			printf("\n>> Todos Seus Gousmas Desintegraram <<\n   ");
