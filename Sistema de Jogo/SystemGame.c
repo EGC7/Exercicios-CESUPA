@@ -1,3 +1,5 @@
+// Code by EGC && Vini;
+
 #include <stdio.h>
 #include <windows.h>
 #include <string.h>
@@ -53,7 +55,7 @@ void showMenu()
 {
 	int i;
 	for (i = 0; i < pts; i++) printf("-");
-	printf("> EGC System <");
+	printf("> Gamer System <");
 	for (i = 0; i < pts; i++) printf("-");
 	printf("\n");
 
