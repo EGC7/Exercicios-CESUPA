@@ -72,7 +72,7 @@ gcc main.c -o gamer_system.exe
 Executar
 ./gamer_system.exe
 
-⚠️ O código **não é compatível com Linux/macOS** por depender de `windows.h`. Para portar, substitua `Sleep(ms)` por `usleep(ms * 1000)` e `system("cls")` por `system("clear")`, além de remover o `#include <windows.h>, usamos o Cloud IA para fazer uma versão para os demais dispositivos.
+⚠️ O código **não é compatível com Linux/macOS** por depender de `windows.h`.
 
 📌 Observações
 
