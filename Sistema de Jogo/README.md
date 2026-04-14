@@ -1,12 +1,13 @@
-# 🎮 Gamer System
+# <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Bomb.png" alt="Bomb" width="25" height="25" /> Gamer System <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Bomb.png" alt="Bomb" width="25" height="25" />
+<!-- <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Alien%20Monster.png" alt="Alien Monster" width="25" height="25" /> -->
 
 Sistema de jogos em console desenvolvido em **linguagem C**, com três minigames jogáveis diretamente pelo terminal.
 
-## 📋 Descrição
+## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Dizzy.png" alt="Dizzy" width="25" height="25" /> Descrição
 
 O Gamer System é um menu interativo de jogos para terminal que oferece três experiências distintas: um quiz de perguntas e respostas, um jogo de sorte com caixas misteriosas e um jogo de estratégia com criaturas chamadas Gousmas.
 
-## 🕹️ Jogos Disponíveis
+## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png" alt="Robot" width="25" height="25" /> Jogos Disponíveis
 
 ### 1. Perguntas e Respostas
 Quiz com **5 perguntas de múltipla escolha** (4 alternativas cada) sobre temas gerais como astronomia, ciências e geografia. Ao final, o jogador recebe sua pontuação.
@@ -18,15 +19,17 @@ Perguntas incluídas:
 - Quantas pedras preciosas têm 11 anéis com 3 pedras cada?
 - Quantos continentes existem?
 
-2. Cobra na Caixa!
+### 2. Cobra na Caixa!
 Jogo de sorte para **2 jogadores** ambientado em uma tumba egípcia. Há 5 caixas: uma contém o botão para escapar e outra esconde uma cobra mortal. Os jogadores se revezam escolhendo caixas até que alguém encontre o botão (vitória) ou a cobra (derrota). A posição da cobra e do botão muda aleatoriamente a cada rodada.
+<!-- <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Thinking%20Face.png" alt="Thinking Face" align="right" width="10%" /> -->
+<img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Alien%20Monster.png" alt="Alien Monster" align="right" width="10%" />
 
 Funcionalidades:
 - Seleção de personagens a partir de uma lista de 7 nomes
 - Turnos alternados entre os dois jogadores
 - Caixas já abertas ficam marcadas com `[X]`
 
-3. Gousmas War
+### 3. Gousmas War
 Jogo de estratégia para 2 jogadores, onde cada um controla 2 criaturas chamadas Gousmas, cada uma com um nível de Fúria (1 a 5). A cada turno, o jogador escolhe um Gousma para atacar um inimigo (somando sua Fúria) ou dividir sua Fúria com o aliado. Um Gousma é desintegrado se sua Fúria sair do intervalo de 1 a 5. Vence quem desintegrar todos os Gousmas do adversário.
 
 Mecânicas:
@@ -34,7 +37,7 @@ Mecânicas:
 - Divisão: reparte a Fúria igualmente entre os dois aliados (Gousma morto pode ser revivido)
 - Gousma com Fúria = 0 ou > 5 é desintegrado
 
-## 🗂️ Estrutura do Código
+## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Face%20with%20Spiral%20Eyes.png" alt="Face with Spiral Eyes" width="25" height="25" /> Estrutura do Código
 
 main.c
 ├── main()              — Inicialização, srand e loop principal do menu
