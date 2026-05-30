@@ -2,19 +2,11 @@
 
 <img src="https://user-images.githubusercontent.com/74038190/225813708-98b745f2-7d22-48cf-9150-083f1b00d6c9.gif" width="500">
 
-Breve descrição do jogo em 2 ou 3 linhas.
-
-## Desenvolvedores  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Face%20with%20Spiral%20Eyes.png" alt="Face with Spiral Eyes" width="25" height="25" />
-
-- Eduardo Cajueiro
+Breve descrição do jogo em 2 ou 3 linhas. (irei fazer ainda)
 
 ## História
 
-Explica o contexto do jogo.
-
-Exemplo:
-
-O reino de Eldoria foi tomado por criaturas que surgiram das profundezas de uma antiga masmorra. O jogador assume o papel de um aventureiro que deve atravessar três andares repletos de desafios para derrotar o grande chefe e restaurar a paz.
+Contexto do jogo.
 
 ## Objetivo
 
@@ -93,8 +85,8 @@ Descrição dos desafios e do boss.
 ## Como Executar
 
 ```bash
-gcc main.c -o jogo
-./jogo
+gcc main.c -o dgCrawler
+./dgCrawler
 ```
 
 ## Capturas de Tela
@@ -104,6 +96,72 @@ gcc main.c -o jogo
 <img src="./Assets/gameMenu.png" width="500px">
 
 (Imagens do menu, vila e masmorra)
+
+
+## Status
+
+O projeto está atualmente em versão:
+
+```txt
+Beta 1.0
+```
+
+Esta versão apresenta apenas um mapa genérico com algumas interações limitadas e moviemntação do Player.
+
+---
+
+## Roadmap
+
+### Versão 1.0
+
+* [x] Movimentação do Player
+* [x] Atualização de Mapa em Tempo Real
+* [x] Tutorial com Funcionalidades Básicas 
+* [x] Inventário do Player funcional 
+* [x] Menu Inicial com Todas as Opções Funcionando
+* [ ] Tela de Game Over
+* [ ] Vila com NPC(s) e Casas
+* [ ] Niveis da Masmorra
+* [ ] Regeneração de Vida do Player
+* [ ] Inimigos nivel 1 
+* [ ] Inimigos nivel 2 (Nivel de Perseguição médio)
+* [ ] Algoritmo de Perseguição do Boss Final
+
+### Versão 2.0
+
+* [ ] Itens Deixados por Inimigos
+* [ ] Trilhas Sonoras entre Mapas
+* [ ] Equipamentos
+  * [ ] Armaduras
+  * [ ] Poções 
+* [ ] Habilidades de Dash e Corrida
+* [ ] Ataques Especiais com Armas
+* [ ] Pets (Player se sente Sozinho)
+---
+
+## Objetivo
+
+O **Dungeon Crawler** é mais do que uma atividade de Universidade.
+
+Ele foi criado para ajudar estudantes a treinarem racicínio lógico, resolver problemas, lidar com desafios e desenvolver autonomia.
+
+## Autor
+
+Desenvolvido por **Eduardo Cajueiro**. <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Face%20with%20Spiral%20Eyes.png" alt="Face with Spiral Eyes" width="25" height="25" />
+
+Projeto criado com o objetivo de praticar e fixar conteúdos de programação em C. Além de construir um algoritmo divertido para compartilhar com amigos.
+
+---
+
+<div align="center">
+  <p>
+    <strong>Dungeon Crawler</strong>
+  </p>
+
+  <p>
+
+  </p>
+</div>
 
 ## Licença
 
