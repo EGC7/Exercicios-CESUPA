@@ -106,7 +106,7 @@ O projeto está atualmente em versão:
 Beta 1.0
 ```
 
-Esta versão apresenta apenas um mapa genérico com algumas interações limitadas e moviemntação do Player.
+Esta versão apresenta apenas um mapa genérico com algumas interações limitadas e movimentação do Player.
 
 ---
 
