@@ -4,11 +4,9 @@
 #include <windows.h>
 #include <conio.h>
 #include <stdbool.h>
+#include <string.h>
 
-
-int x = 7, y = 7; 
-
-int oldX = 7, oldY = 7;
+int resp, x = 7, y = 7, oldX = 7, oldY = 7;
 
 int canInteract[3][3], nexItem[2], inventoryQnt[5][1];
 char inventoryItem[5][1];
@@ -23,6 +21,102 @@ void gotoxy(int x, int y) {
     coord.X = x;
     coord.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+int menu(int mX, int mY){
+	int oX = mX+10, oY = mY+7;
+	resp = 0;
+	
+	gotoxy(mX, mY);    printf("+----------------------------+");
+	gotoxy(mX, mY+1);  printf("¦                            ¦");
+	gotoxy(mX, mY+2);  printf("¦      DUNGEON CRAWLER       ¦");
+	gotoxy(mX, mY+3);  printf("¦                            ¦");
+	gotoxy(mX, mY+4);  printf("+----------------------------+");
+		
+	gotoxy(mX+10, mY+7); printf("> Jogar");
+	gotoxy(mX+12, mY+9); printf("Tutorial");
+	gotoxy(mX+12, mY+11); printf("Creditos");
+	gotoxy(mX+12, mY+13); printf("Sair");
+		
+	gotoxy(mX+5, mY+17); printf("Use W/S para navegar");
+	gotoxy(mX+4, mY+18); printf("ENTER para selecionar");
+	
+	while (1){
+        if (_kbhit()) {
+        	
+            switch(_getch()) {
+				case 's':
+				case 'S':
+					if (oY + 2 > mY+13) break;
+					gotoxy(oX, oY);
+					printf(" ");
+					gotoxy(oX, oY+2);
+					printf("> ");
+					oY+=2;
+					resp++;
+					break;
+				
+				case 'w':
+				case 'W':
+					if (oY - 2 < mY+7) break;
+					gotoxy(oX, oY);
+					printf(" ");
+					gotoxy(oX, oY-2);
+					printf("> ");
+					oY-=2;
+					resp--;
+					break;
+				case 13:
+					return resp;
+					
+				default:
+					break;
+			}
+			gotoxy(15, 22);
+			// printf(">> %d", resp);
+		}
+	}
+}
+
+void pontosBonitoskkkj(int chs){
+	int i;
+	for (i = 0; i < chs; i++)
+	{
+		printf(".");
+		Sleep(500);
+	}
+	printf("\n");
+}
+
+void stringBonitakkkj(char txt[], int tm, int nextLine){
+	int i;
+	size_t strLen = strlen(txt);
+	for (i=0; i<strLen; i++){
+		printf("%c", txt[i]);
+		fflush(stdout);
+		Sleep(tm);
+	}
+	
+	if (nextLine != -1) return;
+	
+	printf("\n");
+	
+}
+
+void exitGame() {
+	resp = -1;
+	gotoxy(10, 25);
+	stringBonitakkkj("\n>> ENCERRANDO A AVENTURA.", 250, 0);
+	pontosBonitoskkkj(3);
+	system("cls");
+	stringBonitakkkj("\n>> VEJAMOS-NOS NOVAMENTE NA SUA JORNADA.", 150, -1);
+	Sleep(250);
+	stringBonitakkkj("\n >> LEMBRE-SE: ", 230, 0);
+	Sleep(1300);
+	stringBonitakkkj("A VILA ", 350, 0);
+	Sleep(400);
+	stringBonitakkkj("PRECISA DA SUA AJUDA!! <<", 250, -1);
+
 }
 
 void init() {
@@ -194,21 +288,40 @@ void movePlayer(char key) {
 
 int main(void) {
     init();
-    buildMap();
-    drawFullMap();
-
-    while (1) {
-        if (_kbhit()) {
-            char key = _getch();
-            if (key == 27) break;
-            
-            movePlayer(key);
-            updateScreen();
-            
-            gotoxy(0, 22);
-            printf("You pressed: %c  ", key);
-        }
-    }
+    
+    
+    while(resp != -1) {
+    	system("cls");
+		switch(menu(20, 3)) {
+		
+		case 0: break;
+		
+		case 1:
+		    buildMap();
+		    drawFullMap();
+		    while (1) {
+		        if (_kbhit()) {
+		            char key = _getch();
+		            if (key == 27) break;
+		            
+		            movePlayer(key);
+		            updateScreen();
+		            
+		            gotoxy(0, 22);
+		            printf("You pressed: %c  ", key);
+		        }
+		    }
+		    
+		    break;
+		
+		case 3:
+			exitGame();
+			break;
+		default:
+			break;
+		
+		}
+	}
     
     return 0;
 }
