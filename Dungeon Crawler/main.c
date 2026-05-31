@@ -35,11 +35,10 @@ int menu(int mX, int mY){
 		
 	gotoxy(mX+10, mY+7); printf("> Jogar");
 	gotoxy(mX+12, mY+9); printf("Tutorial");
-	gotoxy(mX+12, mY+11); printf("Creditos");
-	gotoxy(mX+12, mY+13); printf("Sair");
+	gotoxy(mX+12, mY+11); printf("Sair");
 		
-	gotoxy(mX+5, mY+17); printf("Use W/S para navegar");
-	gotoxy(mX+4, mY+18); printf("ENTER para selecionar");
+	gotoxy(mX+5, mY+15); printf("Use W/S para navegar");
+	gotoxy(mX+4, mY+16); printf("ENTER para selecionar");
 	
 	while (1){
         if (_kbhit()) {
@@ -47,7 +46,7 @@ int menu(int mX, int mY){
             switch(_getch()) {
 				case 's':
 				case 'S':
-					if (oY + 2 > mY+13) break;
+					if (oY + 2 > mY+11) break;
 					gotoxy(oX, oY);
 					printf(" ");
 					gotoxy(oX, oY+2);
@@ -103,20 +102,46 @@ void stringBonitakkkj(char txt[], int tm, int nextLine){
 	
 }
 
-void exitGame() {
-	resp = -1;
-	gotoxy(10, 25);
-	stringBonitakkkj("\n>> ENCERRANDO A AVENTURA.", 250, 0);
-	pontosBonitoskkkj(3);
-	system("cls");
-	stringBonitakkkj("\n>> VEJAMOS-NOS NOVAMENTE NA SUA JORNADA.", 150, -1);
+void showCredits(){
+	
+	gotoxy(35, 1);
+	stringBonitakkkj(">> Desenvolvido Por: ", 100, 0);
+	stringBonitakkkj("Eduardo Cajueiro", 100, -1);
+	
+	gotoxy(40, 2);
+	stringBonitakkkj(">> Pensado Por: ", 100, 0);
+	stringBonitakkkj("Eduardo Cajueiro", 100, -1);
+	
+	gotoxy(38, 3);
+	stringBonitakkkj(">> Desenhado Por: ", 100, 0);
+	stringBonitakkkj("Vini", 350, 0);
 	Sleep(250);
-	stringBonitakkkj("\n >> LEMBRE-SE: ", 230, 0);
-	Sleep(1300);
-	stringBonitakkkj("A VILA ", 350, 0);
-	Sleep(400);
-	stringBonitakkkj("PRECISA DA SUA AJUDA!! <<", 250, -1);
+	stringBonitakkkj("cius", 350, 0);
+	Sleep(250);
+	
+	int s;
+	for (s=66; s>54; s--){
+		gotoxy(s, 3);
+		printf(" ");
+		Sleep(100);
+	}
+	
+	Sleep(1000);
+	
+	stringBonitakkkj("Eduardo Cajueiro", 250, 0);
+}
 
+void exitGame() {
+	system("cls");
+	resp = -1;
+	
+	showCredits();
+	
+	gotoxy(40, 6);
+	stringBonitakkkj(">> Obrigado Por Jogar <<", 150, -1);
+	gotoxy(35, 7);
+	stringBonitakkkj(">> Espero Que Tenha se Divertido <<\n\n", 150, -1);
+	
 }
 
 void init() {
@@ -159,7 +184,7 @@ void itemListener() {
         int _;
         for (_ = 0; _ < interacts_len; _++) {
             if (act == interacts[_]) {
-                printf("Press 'E' to interact\n");
+                printf("Pressione 'E' para interagir\n");
                 canInteract[_][0] = ny;
                 canInteract[_][1] = nx;
                 canInteract[_][2] = TRUE;
@@ -311,12 +336,11 @@ int main(void) {
 		            printf("You pressed: %c  ", key);
 		        }
 		    }
-		    
 		    break;
 		
-		case 3:
-			exitGame();
-			break;
+		case 2:
+			exitGame(); break;
+		
 		default:
 			break;
 		
