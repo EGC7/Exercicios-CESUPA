@@ -10,14 +10,19 @@ char SWORD[] = "\U0001F5E1";
 char ARROW[] = "\U0001F3F9";
 char MAGIC[] = "\U0001FA84";
 
-int resp, x = 7, y = 7, oldX = 7, oldY = 7, inventoryOp = FALSE, toggleInventory = FALSE, invY = 20, oInvY = 20, selectedWeapon = -1;
+int resp, gaming, x = 7, y = 7, oldX = 7, oldY = 7, inventoryOp = FALSE, toggleInventory = FALSE, invY = 20, oInvY = 20, selectedWeapon = -1;
 char playerState = '&';
 
-int canInteract[3][3], nexItem[2], inventoryQnt[5][1];
-char inventoryItem[5][1];
+int wpDialogue = FALSE, boxDialogue = FALSE;
 
-char interacts[] = {'@', 'D', 'O'};
-int interacts_len = sizeof(interacts) / sizeof(interacts[0]);
+char inventoryItem[5][1];
+int inventoryQnt[5][1];
+
+
+char interacts[] = {'@', 'D', 'O', 'S', 'A', 'C', 'k'};
+const int interacts_len = sizeof(interacts) / sizeof(interacts[0]);
+
+int canInteract[7][3], nexItem[2];
 
 int mapLimitX = 15, mapLimitY = 15;
 
@@ -159,17 +164,13 @@ void init() {
             inventoryQnt[i][j] = 0;
         }
     }
-	
-	inventoryItem[1][0] = 'S';
-	inventoryQnt[1][0] = 1;
-	
-	inventoryItem[2][0] = 'A';
-	inventoryQnt[2][0] = 1;
-	
-	inventoryItem[3][0] = 'C';
-	inventoryQnt[3][0] = 1;
-    
-    
+}
+
+char randomBoxItem(){
+	char itensDrop[] = {'@', ' ', 'P'};
+	int itensDrop_len = sizeof(itensDrop) / sizeof(itensDrop[0]);
+	if (gaming == 1) return itensDrop[0];
+	return itensDrop[ (rand() % itensDrop_len)];
 }
 
 void swordAttack(){
@@ -184,6 +185,15 @@ void swordAttack(){
 					int targetY = y+1 - l;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
+					if ( w1[targetY][targetX] == 'k') {
+						char dropItem = randomBoxItem();
+						
+						w1[targetY][targetX] = dropItem;
+		            		            	
+						gotoxy(targetX, targetY);
+						printf("%c", dropItem);
+						continue;
+					}
 					if ( w1[targetY][targetX] != ' ') continue;
 					
 		            w1[targetY][targetX] = 'x';
@@ -200,6 +210,15 @@ void swordAttack(){
 					int targetY = y+1 - l;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
+					if ( w1[targetY][targetX] == 'k') {
+						char dropItem = randomBoxItem();
+						
+						w1[targetY][targetX] = dropItem;
+		            		            	
+						gotoxy(targetX, targetY);
+						printf("%c", dropItem);
+						continue;
+					}
 					if ( w1[targetY][targetX] != 'x') continue;
 					
 		            w1[targetY][targetX] = ' ';
@@ -221,6 +240,15 @@ void swordAttack(){
 					int targetY = y+1 - l;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
+					if ( w1[targetY][targetX] == 'k') {
+						char dropItem = randomBoxItem();
+						
+						w1[targetY][targetX] = dropItem;
+		            		            	
+						gotoxy(targetX, targetY);
+						printf("%c", dropItem);
+						continue;
+					}
 					if (w1[targetY][targetX] != ' ') continue;
 					
 		            w1[targetY][targetX] = 'x';
@@ -237,6 +265,15 @@ void swordAttack(){
 					int targetY = y+1 - l;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
+					if ( w1[targetY][targetX] == 'k') {
+						char dropItem = randomBoxItem();
+						
+						w1[targetY][targetX] = dropItem;
+		            		            	
+						gotoxy(targetX, targetY);
+						printf("%c", dropItem);
+						continue;
+					}
 					if (w1[targetY][targetX] != 'x') continue;
 					
 		            w1[targetY][targetX] = ' ';
@@ -257,6 +294,15 @@ void swordAttack(){
 					int targetY = y + f;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
+					if ( w1[targetY][targetX] == 'k') {
+						char dropItem = randomBoxItem();
+						
+						w1[targetY][targetX] = dropItem;
+		            		            	
+						gotoxy(targetX, targetY);
+						printf("%c", dropItem);
+						continue;
+					}
 					if (w1[targetY][targetX] != ' ') continue;
 					
 		            w1[targetY][targetX] = 'x';
@@ -273,6 +319,15 @@ void swordAttack(){
 					int targetY = y + f;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
+					if ( w1[targetY][targetX] == 'k') {
+						char dropItem = randomBoxItem();
+						
+						w1[targetY][targetX] = dropItem;
+		            		            	
+						gotoxy(targetX, targetY);
+						printf("%c", dropItem);
+						continue;
+					}
 					if (w1[targetY][targetX] != 'x') continue;
 					
 		            w1[targetY][targetX] = ' ';
@@ -293,6 +348,15 @@ void swordAttack(){
 					int targetY = y - f;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
+					if ( w1[targetY][targetX] == 'k') {
+						char dropItem = randomBoxItem();
+						
+						w1[targetY][targetX] = dropItem;
+		            		            	
+						gotoxy(targetX, targetY);
+						printf("%c", dropItem);
+						continue;
+					}
 					if (w1[targetY][targetX] != ' ') continue;
 					
 		            w1[targetY][targetX] = 'x';
@@ -309,6 +373,15 @@ void swordAttack(){
 					int targetY = y - f;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
+					if ( w1[targetY][targetX] == 'k') {
+						char dropItem = randomBoxItem();
+						
+						w1[targetY][targetX] = dropItem;
+		            		            	
+						gotoxy(targetX, targetY);
+						printf("%c", dropItem);
+						continue;
+					}
 					if (w1[targetY][targetX] != 'x') continue;
 					
 		            w1[targetY][targetX] = ' ';
@@ -338,6 +411,14 @@ void arrowAttack(){
 				int targetY = y;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
+				if ( w1[targetY][targetX] == 'k') {
+					char dropItem = randomBoxItem();
+					w1[targetY][targetX] = dropItem;
+					
+					gotoxy(targetX, targetY);
+					printf("%c", dropItem);
+					continue;
+				}
 				if ( w1[targetY][targetX] != ' ') continue;
 						
 				w1[targetY][targetX] = 'x';
@@ -370,6 +451,14 @@ void arrowAttack(){
 				int targetY = y;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
+				if ( w1[targetY][targetX] == 'k') {
+					char dropItem = randomBoxItem();
+					w1[targetY][targetX] = dropItem;
+					
+					gotoxy(targetX, targetY);
+					printf("%c", dropItem);
+					continue;
+				}
 				if ( w1[targetY][targetX] != ' ') continue;
 						
 				w1[targetY][targetX] = 'x';
@@ -402,6 +491,14 @@ void arrowAttack(){
 				int targetY = y+f;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
+				if ( w1[targetY][targetX] == 'k') {
+					char dropItem = randomBoxItem();
+					w1[targetY][targetX] = dropItem;
+					
+					gotoxy(targetX, targetY);
+					printf("%c", dropItem);
+					continue;
+				}
 				if ( w1[targetY][targetX] != ' ') continue;
 						
 				w1[targetY][targetX] = 'x';
@@ -435,6 +532,14 @@ void arrowAttack(){
 				int targetY = y-f;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
+				if ( w1[targetY][targetX] == 'k') {
+					char dropItem = randomBoxItem();
+					w1[targetY][targetX] = dropItem;
+					
+					gotoxy(targetX, targetY);
+					printf("%c", dropItem);
+					continue;
+				}
 				if ( w1[targetY][targetX] != ' ') continue;
 						
 				w1[targetY][targetX] = 'x';
@@ -475,6 +580,15 @@ void magicAttack(){
 			int targetY = y - 1 + f;
 			
 			if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
+			if ( w1[targetY][targetX] == 'k') {
+				char dropItem = randomBoxItem();
+				
+				w1[targetY][targetX] = dropItem;
+				
+				gotoxy(targetX, targetY);
+				printf("%c", dropItem);
+				continue;
+			}
 			if (w1[targetY][targetX] != ' ') continue;
 			if ( (targetX == x) && (targetY == y) ) continue;
 			 
@@ -492,6 +606,15 @@ void magicAttack(){
 			int targetY = y - 1 + f;
 			
 			if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
+			if ( w1[targetY][targetX] == 'k') {
+				char dropItem = randomBoxItem();
+				
+				w1[targetY][targetX] = dropItem;
+				
+				gotoxy(targetX, targetY);
+				printf("%c", dropItem);
+				continue;
+			}
 			if (w1[targetY][targetX] != 'x') continue;
 			if ( (targetX == x) && (targetY == y) ) continue;
 			 
@@ -516,7 +639,7 @@ void itemListener() {
     };
  
     int k;
-    for (k = 0; k < 3; k++) {
+    for (k = 0; k < interacts_len; k++) {
         canInteract[k][0] = -1;
         canInteract[k][1] = -1;
         canInteract[k][2] = FALSE;
@@ -559,7 +682,15 @@ void buildMap() {
             }
             
             if (((r == 4) || (r == 10)) && ((c == 2) || (c == 12)))  w1[r][c] = 'D';
-            if (((r == 2) || (r == 12)) && ((c == 2) || (c == 12)) || ( (r==1) && (c==7) ))  w1[r][c] = '@';
+            if (((r == 2) || (r == 12)) && ((c == 2) || (c == 12)) )  w1[r][c] = '@';
+            
+            if ( (r==13) && (c==7) ) w1[r][c] = 'k';
+            
+            // if ( (r==2) && (c==12) ) w1[r][c] = 'O';
+            
+            if ( (r==7) && (c==1) ) w1[r][c] = 'S';
+            if ( (r==7) && (c==13) ) w1[r][c] = 'A';
+            if ( (r==1) && (c==7) ) w1[r][c] = 'C';
         }
     }
 }
@@ -571,11 +702,11 @@ void drawFullMap() {
     for (i = 0; i < 15; i++) {
     	int j;
         for (j = 0; j < 15; j++) {
-            if (i == y && j == x) {
-                printf("&");
-            } else {
-                printf("%c", w1[i][j]);
-            }
+            if (i == y && j == x) printf("&");
+            else if (w1[i][j] == 'S') printf(SWORD); 
+            else if (w1[i][j] == 'A') printf(ARROW); 
+            else if (w1[i][j] == 'C') printf(MAGIC); 
+			else printf("%c", w1[i][j]);
         }
         printf("\n");
     }
@@ -607,21 +738,42 @@ void movePlayer(char key) {
 	if (!toggleInventory){
 		
 	    if (key == 'w' || key == 'W') {
-	        if (w1[y-1][x] == '*' || w1[y-1][x] == 'D' || w1[y-1][x] == '@' || y-1 < 0) return;
+	        if (w1[y-1][x] == '*' || w1[y-1][x] == 'D' || w1[y-1][x] == '@' || w1[y-1][x] == 'k' || w1[y-1][x] == 'A' || w1[y-1][x] == 'S' || w1[y-1][x] == 'C' || w1[y-1][x] == 'O' || y-1 < 0) return;
 	        y--;
 	    }
 	    if (key == 's' || key == 'S') {
-	        if (w1[y+1][x] == '*' || w1[y+1][x] == 'D' || w1[y+1][x] == '@' || y+1 > 14) return;
+	        if (w1[y+1][x] == '*' || w1[y+1][x] == 'D' || w1[y+1][x] == '@' || w1[y+1][x] == 'k' || w1[y+1][x] == 'A' || w1[y+1][x] == 'S' || w1[y+1][x] == 'C' || w1[y+1][x] == 'O' || y+1 > (mapLimitY-1)) return;
 	        y++;
 	    }
 	    if (key == 'a' || key == 'A') {
-	        if (w1[y][x-1] == '*' || w1[y][x-1] == 'D' || w1[y][x-1] == '@' || x-1 < 0) return;
+	        if (w1[y][x-1] == '*' || w1[y][x-1] == 'D' || w1[y][x-1] == '@' || w1[y][x-1] == 'k' || w1[y][x-1] == 'A' || w1[y][x-1] == 'S' || w1[y][x-1] == 'C' || w1[y][x-1] == 'O' || x-1 < 0) return;
 	        x--;
 	    }
 	    if (key == 'd' || key == 'D') {
-	        if (w1[y][x+1] == '*' || w1[y][x+1] == 'D' || w1[y][x+1] == '@' || x+1 > 14) return;
+	        if (w1[y][x+1] == '*' || w1[y][x+1] == 'D' || w1[y][x+1] == '@' || w1[y][x+1] == 'k' || w1[y][x+1] == 'A' || w1[y][x+1] == 'S' || w1[y][x+1] == 'C' || w1[y][x+1] == 'O' || x+1 > (mapLimitX-1)) return;
 	        x++;
 	    }
+	    gotoxy(0, 26);
+		printf("                                                                ");
+		
+        gotoxy(0, 19);
+        printf("          ");
+        
+	    int i;
+	    for (i = 0; i < 5; i++) {
+   			gotoxy(3, 20 + i);
+	        printf("                    ");
+	    }
+	    
+	    gotoxy(0, oInvY);
+	    printf("  ");
+	    gotoxy(0, invY);
+	    printf("  ");
+	    
+		gotoxy(20, invY);
+		printf("                                                                ");
+		gotoxy(27, invY+1);
+		printf("                                                                ");
     
 	} else {
 		
@@ -642,7 +794,10 @@ void movePlayer(char key) {
 	    int i;
 	    for (i = 0; i < 5; i++) {
    			gotoxy(3, 20 + i);
-	        printf("Item: %c | Qtd: %d\n", inventoryItem[i][0], inventoryQnt[i][0]);
+   			if (inventoryItem[i][0] == 'S') printf("Item: %s | Qtd: %d\n", SWORD, inventoryQnt[i][0]);
+   			else if (inventoryItem[i][0] == 'A') printf("Item: %s | Qtd: %d\n", ARROW, inventoryQnt[i][0]);
+   			else if (inventoryItem[i][0] == 'C') printf("Item: %s | Qtd: %d\n", MAGIC, inventoryQnt[i][0]);
+	        else printf("Item: %c | Qtd: %d\n", inventoryItem[i][0], inventoryQnt[i][0]);
 	    }
 	    
 	    gotoxy(0, oInvY);
@@ -652,23 +807,42 @@ void movePlayer(char key) {
 	    
 	    if (key == 13){
 			if (inventoryQnt[invY-20][0] <= 0) return;
-			gotoxy(20, invY);
+			gotoxy(25, invY);
 	    	switch(invY-20) {
 				case 0:
 					// printf("Item 1 eba eba");
+					stringBonitakkkj("'Posso usar isso para abrir as portas trancadas...'", 50, 0);
 					break;
 				case 1:
 					selectedWeapon = 0;
 					// printf("Item 2 eba eba");
+					if (wpDialogue == FALSE) {
+						stringBonitakkkj("'Que Espada Brilhante'", 50, 0);
+						gotoxy(30, invY+1);
+						wpDialogue = TRUE;
+					}
+					printf("Você Selecionou -- Espada do Herói --");
 					
 					break;
 				case 2:
 					selectedWeapon = 1;
 					// printf("Item 3 eba eba");
+					if (wpDialogue == FALSE) {
+						stringBonitakkkj("'Com isso, Posso Acertar de Olhos Fechados'", 50, 0);
+						gotoxy(30, invY+1);
+						wpDialogue = TRUE;
+					}
+					printf("Você Selecionou -- Arco Poderoso --");
 					break;
 				case 3:
 					selectedWeapon = 2;
 					// printf("Item 4 eba eba");
+					if (wpDialogue == FALSE) {
+						stringBonitakkkj("'Posso Sentir a Magia Fluindo'", 50, 0);
+						gotoxy(30, invY+1);
+						wpDialogue = TRUE;
+					}
+					printf("Você Selecionou -- Cajado Arcano --");
 					break;
 				case 4:
 					// printf("Item 5 eba eba");
@@ -677,7 +851,7 @@ void movePlayer(char key) {
 					break;
 			}
 			
-			printf("Selected: %d", selectedWeapon);
+			// printf("Selected: %d", selectedWeapon);
 		}
 	}
     
@@ -699,7 +873,13 @@ void movePlayer(char key) {
         }
         
         
-		if ( (canInteract[1][2] == TRUE) && (inventoryQnt[0][0] > 0) ) {
+		if ( (canInteract[1][2] == TRUE) ) {
+			
+			if (inventoryQnt[0][0] <= 0){
+				gotoxy(0, 26);
+				stringBonitakkkj("'Parace que Essa Porta Está Trancada!'", 50, 0);
+				return;
+			}
             
 			inventoryQnt[0][0]--;
             
@@ -711,6 +891,123 @@ void movePlayer(char key) {
             gotoxy(targetX, targetY);
             printf("=");
         }
+        
+        
+		if ( (canInteract[2][2] == TRUE) && (inventoryQnt[0][0] > 0) ) { // Botão Botão
+            
+			// inventoryQnt[0][0]--;
+   //          
+   //          int targetY = canInteract[1][0];
+   //          int targetX = canInteract[1][1];
+   //          
+   //          w1[targetY][targetX] = '=';
+   //          
+   //          gotoxy(targetX, targetY);
+   //          printf("=");
+        }
+        
+        
+		if ( (canInteract[3][2] == TRUE) ) {
+            
+            inventoryItem[1][0] = 'S';
+			inventoryQnt[1][0]++;
+            
+            int targetY = canInteract[3][0];
+            int targetX = canInteract[3][1];
+            
+            w1[targetY][targetX] = ' ';
+            
+            gotoxy(targetX, targetY);
+            printf(" ");
+        }
+        
+		if ( (canInteract[4][2] == TRUE) ) {
+            
+            inventoryItem[2][0] = 'A';
+			inventoryQnt[2][0]++;
+            
+            int targetY = canInteract[4][0];
+            int targetX = canInteract[4][1];
+            
+            w1[targetY][targetX] = ' ';
+            
+            gotoxy(targetX, targetY);
+            printf(" ");
+        }
+        
+		if ( (canInteract[5][2] == TRUE) ) {
+            
+            inventoryItem[3][0] = 'C';
+			inventoryQnt[3][0]++;
+            
+            int targetY = canInteract[5][0];
+            int targetX = canInteract[5][1];
+            
+            w1[targetY][targetX] = ' ';
+            
+            gotoxy(targetX, targetY);
+            printf(" ");
+        }
+        
+        
+		if ( (canInteract[6][2] == TRUE) ) {
+            gotoxy(0, 26);
+            stringBonitakkkj("'Parece ser uma Caixa", 80, 0);
+            stringBonitakkkj("...", 200, 0);
+            printf("'");
+            int s;
+            for (s = 25; s > 0; s--){
+				gotoxy(s, 26);
+				printf(" ");
+				Sleep(70);
+			}
+            gotoxy(0, 26);
+            int w, hasWeapon;
+            for (w = 1; w <= 3; w++){
+				if (inventoryQnt[w][0] > 0){
+					hasWeapon = TRUE;
+					break;
+				}
+				hasWeapon = FALSE;
+			}
+			if (hasWeapon){
+				stringBonitakkkj("'Posso Usar Minha Arma!'", 60, 0);
+	            for (s = 25; s > 0; s--){
+					gotoxy(s, 26);
+					printf(" ");
+					Sleep(70);
+				}
+				if (boxDialogue == TRUE) return;
+	            gotoxy(0, 26);
+				stringBonitakkkj("Pressione (i) para abrir o Inventário'", 60, 0);
+	            for (s = 38; s > 0; s--){
+					gotoxy(s, 26);
+					printf(" ");
+					Sleep(70);
+				}
+	            gotoxy(0, 26);
+				stringBonitakkkj("Depois, selecione a arma e use ENTER", 60, 0);
+	            for (s = 36; s > 0; s--){
+					gotoxy(s, 26);
+					printf(" ");
+					Sleep(70);
+				}
+	            gotoxy(0, 26);
+				stringBonitakkkj("Pressione (i) novamente para fechar o Iventário", 60, 0);
+	            for (s = 47; s > 0; s--){
+					gotoxy(s, 26);
+					printf(" ");
+					Sleep(70);
+				}
+	            gotoxy(0, 26);
+				stringBonitakkkj("Pressione (o) para Usar sua Arma", 60, 0);
+				boxDialogue = TRUE;
+	            
+			}
+            else stringBonitakkkj("'Preciso de Uma Arma!'", 60, 0);
+        }
+        
+        
     }
     
     
@@ -721,8 +1018,6 @@ void movePlayer(char key) {
     if ( (key == 'o') || (key == 'O')){
 		switch (selectedWeapon) {
 			case 0:
-				gotoxy(0, 30);
-				printf("SPARTAAAA!");
 				swordAttack();
 				break;
 			
@@ -742,13 +1037,15 @@ void movePlayer(char key) {
 
 int main(void) {
 	SetConsoleOutputCP(CP_UTF8);
+	srand(time(NULL));
 	
     init();
     
     
     while(resp != -1) {
     	system("cls");
-		switch(menu(20, 3)) {
+    	gaming = menu(20, 3);
+		switch(gaming) {
 		
 		case 0: break;
 		
@@ -764,7 +1061,7 @@ int main(void) {
 		            updateScreen();
 		            
 		            gotoxy(0, 26);
-		            printf("You pressed: %c  ", key);
+		            // printf("You pressed: %c  ", key);
 		        }
 		    }
 		    break;
@@ -779,4 +1076,4 @@ int main(void) {
 	}
     
     return 0;
-}
+}       
