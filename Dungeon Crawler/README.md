@@ -119,6 +119,8 @@ Esta versão apresenta apenas um mapa genérico com algumas interações limitad
 * [x] Tutorial com Funcionalidades Básicas 
 * [x] Inventário do Player funcional 
 * [x] Menu Inicial com Todas as Opções Funcionando
+* [x] Ataque Individual de Cada Arma
+* [x] Diálogos de Tutorial
 * [ ] Tela de Game Over
 * [ ] Vila com NPC(s) e Casas
 * [ ] Niveis da Masmorra
