@@ -39,15 +39,15 @@ O jogador possui 3 vidas. Ao tocar em espinhos ou monstros, perde uma vida e ret
 
 ### ⚔️ Espada
 Ataque em Área na frente do Jogador. 6 Células (2x6); </br>
-<img src="./Assets/player-SwordAttack.png" width="500px">
+<img src="./Assets/player-SwordAttack.png" width="200px">
 
 ### 🏹 Arco e Flecha
 Ataque Reto na frente do Jogador. 6 Células (1x4); </br>
-<img src="./Assets/player-ArrowAttack.png" width="500px">
+<img src="./Assets/player-ArrowAttack.png" width="300px">
 
 ### 🪄 Cajado
 Ataque em Área em volta do Jogador. 8 Células; </br>
-<img src="./Assets/player-MagicAttack.png" width="500px">
+<img src="./Assets/player-MagicAttack.png" width="200px">
 
 ## Símbolos do Jogo
 
