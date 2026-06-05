@@ -1,8 +1,10 @@
-# <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Skull%20and%20Crossbones.png" alt="Skull and Crossbones" width="40px" height="40px" /> DUNGEON CRAWLER <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png" alt="Robot" width="40" height="40" />
+# <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Skull%20and%20Crossbones.png" alt="Skull and Crossbones" width="40px" height="40px" /> GROOMSPIRE <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png" alt="Robot" width="40" height="40" />
 
 <img src="https://user-images.githubusercontent.com/74038190/225813708-98b745f2-7d22-48cf-9150-083f1b00d6c9.gif" width="500">
 
-Breve descrição do jogo em 2 ou 3 linhas. (irei fazer ainda)
+O GroomSpire é um projeto que tem como objetivo integrar os conceitos de programação estudados em Linguagem C.
+O Projeto utiliza o Console como único meio de interação com o usuário, mostrando tudo com tabela ASCCI.
+No fim, tudo se resume a uma aplicação prática, criativa e funcional. Incentivando a criatividade.
 
 ## História
 
@@ -36,13 +38,16 @@ O jogador possui 3 vidas. Ao tocar em espinhos ou monstros, perde uma vida e ret
 ## Armas
 
 ### ⚔️ Espada
-Descrição do ataque.
+Ataque em Área na frente do Jogador. 6 Células (2x6); </br>
+<img src="./Assets/player-SwordAttack.png" width="500px">
 
 ### 🏹 Arco e Flecha
-Descrição do ataque.
+Ataque Reto na frente do Jogador. 6 Células (1x4); </br>
+<img src="./Assets/player-ArrowAttack.png" width="500px">
 
 ### 🪄 Cajado
-Descrição do ataque.
+Ataque em Área em volta do Jogador. 8 Células; </br>
+<img src="./Assets/player-MagicAttack.png" width="500px">
 
 ## Símbolos do Jogo
 
@@ -53,18 +58,20 @@ Descrição do ataque.
 | # | Espinho |
 | k | Caixa |
 | O | Botão |
+| o | Botão Pressionado |
 | D | Porta Fechada |
 | = | Porta Aberta |
 | @ | Chave |
 | L | Escada |
-| X | Monstro Tipo 1 |
+|🧌 | Monstro Tipo 1 |
 | Y | Monstro Tipo 2 |
 | Z | Boss Final |
 
 ## Estrutura das Fases
 
 ### Vila
-Descrição da vila.
+Local onde o Jogador inicia sua jornada. Ele encontra um NPC que será seu guia e o ajudará a entender os perigos desse mundo.
+Também é um local que ele sente que deve proteger, por isso ele segue subindo os andares da Torre.
 
 ### Andar 1
 Descrição dos desafios.
@@ -81,12 +88,12 @@ Descrição dos desafios e do boss.
 - Console ASCII
 - Git
 - GitHub
-
+  
 ## Como Executar
 
 ```bash
-gcc main.c -o dgCrawler
-./dgCrawler
+gcc main.c -o GroomSpire
+./GroomSpire
 ```
 
 ## Capturas de Tela
@@ -103,10 +110,10 @@ gcc main.c -o dgCrawler
 O projeto está atualmente em versão:
 
 ```txt
-Beta 1.0
+Beta 1.3
 ```
 
-Esta versão apresenta apenas um mapa genérico com algumas interações limitadas e movimentação do Player.
+Esta versão apresenta um mapa genérico de Tutorial com algumas interações limitadas, movimentação do Player, funcionalidade das Armas e Monstro tipo 1.
 
 ---
 
@@ -121,11 +128,12 @@ Esta versão apresenta apenas um mapa genérico com algumas interações limitad
 * [x] Menu Inicial com Todas as Opções Funcionando
 * [x] Ataque Individual de Cada Arma
 * [x] Diálogos de Tutorial
+* [x] Inimigos nivel 1 
+* [x] Vida do Player
 * [ ] Tela de Game Over
 * [ ] Vila com NPC(s) e Casas
 * [ ] Niveis da Masmorra
 * [ ] Regeneração de Vida do Player
-* [ ] Inimigos nivel 1 
 * [ ] Inimigos nivel 2 (Nivel de Perseguição médio)
 * [ ] Algoritmo de Perseguição do Boss Final
 
@@ -143,7 +151,7 @@ Esta versão apresenta apenas um mapa genérico com algumas interações limitad
 
 ## Objetivo
 
-O **Dungeon Crawler** é mais do que uma atividade de Universidade.
+O **GroomSpire** é mais do que uma atividade de Universidade.
 
 Ele foi criado para ajudar estudantes a treinarem racicínio lógico, resolver problemas, lidar com desafios e desenvolver autonomia.
 
@@ -157,7 +165,7 @@ Projeto criado com o objetivo de praticar e fixar conteúdos de programação em
 
 <div align="center">
   <p>
-    <strong>Dungeon Crawler</strong>
+    <strong>GroomSpire</strong>
   </p>
 
   <p>
