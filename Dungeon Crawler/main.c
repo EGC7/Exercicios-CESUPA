@@ -6,11 +6,26 @@
 #include <stdbool.h>
 #include <string.h>
 
-char SWORD[] = "\U0001F5E1";
-char ARROW[] = "\U0001F3F9";
-char MAGIC[] = "\U0001FA84";
+#define RED     "\033[31m"
+#define GREEN   "\033[32m"
+#define YELLOW  "\033[33m"
+#define BLUE    "\033[34m"
+#define RESET   "\033[0m"
+
+char SWORD[] 	= "\U0001F5E1";
+char ARROW[] 	= "\U0001F3F9";
+char MAGIC[] 	= "\U0001FA84";
+char MONSTER1[] = "\U0001f9cc";
+
+int monster1X, monster1Y, monster2X, monster2Y, bossX, bossY;
+int m1Spawn, m2Spawn, bossSpawn;
+
+const int TUTORIAL_DELAY = 10, DIALOGUE_DELAY = 30;
 
 int resp, gaming, x = 7, y = 7, oldX = 7, oldY = 7, inventoryOp = FALSE, toggleInventory = FALSE, invY = 20, oInvY = 20, selectedWeapon = -1;
+
+int tutorialKeys = 0;
+
 char playerState = '&';
 
 int wpDialogue = FALSE, boxDialogue = FALSE;
@@ -36,21 +51,28 @@ void gotoxy(int x, int y) {
 }
 
 int menu(int mX, int mY){
-	int oX = mX+10, oY = mY+7;
+	int oX = mX+25, oY = mY+7;
 	resp = 0;
 	
-	gotoxy(mX, mY);    printf("+----------------------------+");
-	gotoxy(mX, mY+1);  printf("¦                            ¦");
-	gotoxy(mX, mY+2);  printf("¦      DUNGEON CRAWLER       ¦");
-	gotoxy(mX, mY+3);  printf("¦                            ¦");
-	gotoxy(mX, mY+4);  printf("+----------------------------+");
+	// gotoxy(mX, mY);    printf("+----------------------------+");
+	// gotoxy(mX, mY+1);  printf("¦                            ¦");
+	// gotoxy(mX, mY+2);  printf("¦         GLOOMSPIRE         ¦");
+	// gotoxy(mX, mY+3);  printf("¦                            ¦");
+	// gotoxy(mX, mY+4);  printf("+----------------------------+");
+	
+	gotoxy(mX, mY); 	printf(RED " _____ ______ _____  ________  ___ ___________ ___________ _____ \n");
+	gotoxy(mX, mY+1); 	printf("|  __ \\| ___ \\  _  ||  _  |  \\/  |/  ___| ___ \\_   _| ___ \\  ___|\n");
+	gotoxy(mX, mY+2);	printf("| |  \\/| |_/ / | | || | | | .  . |\\ `--.| |_/ / | | | |_/ / |__  \n");
+	gotoxy(mX, mY+3);	printf("| | __ |    /| | | || | | | |\\/| | `--. \\  __/  | | |    /|  __| \n");
+	gotoxy(mX, mY+4);	printf("| |_\\ \\| |\\ \\\\ \\_/ /\\ \\_/ / |  | |/\\__/ / |    _| |_| |\\ \\| |___ \n");
+	gotoxy(mX, mY+5);	printf(" \\____/\\_| \\_|\\___/  \\___/\\_|  |_/\\____/\\_|    \\___/\\_| \\_\\____/ \n" RESET);
+	
+	gotoxy(mX+25, mY+7); printf(RED "> " RESET "Jogar");
+	gotoxy(mX+27, mY+9); printf("Tutorial");
+	gotoxy(mX+27, mY+11); printf("Sair");
 		
-	gotoxy(mX+10, mY+7); printf("> Jogar");
-	gotoxy(mX+12, mY+9); printf("Tutorial");
-	gotoxy(mX+12, mY+11); printf("Sair");
-		
-	gotoxy(mX+5, mY+15); printf("Use W/S para navegar");
-	gotoxy(mX+4, mY+16); printf("ENTER para selecionar");
+	gotoxy(mX+20, mY+15); printf("Use " YELLOW "W/S" RESET " para navegar");
+	gotoxy(mX+19, mY+16); printf(YELLOW "ENTER " RESET "para selecionar");
 	
 	while (1){
         if (_kbhit()) {
@@ -60,9 +82,9 @@ int menu(int mX, int mY){
 				case 'S':
 					if (oY + 2 > mY+11) break;
 					gotoxy(oX, oY);
-					printf(" ");
+					printf(RESET " ");
 					gotoxy(oX, oY+2);
-					printf("> ");
+					printf(RED "> ");
 					oY+=2;
 					resp++;
 					break;
@@ -71,18 +93,20 @@ int menu(int mX, int mY){
 				case 'W':
 					if (oY - 2 < mY+7) break;
 					gotoxy(oX, oY);
-					printf(" ");
+					printf(RESET " ");
 					gotoxy(oX, oY-2);
-					printf("> ");
+					printf(RED "> ");
 					oY-=2;
 					resp--;
 					break;
 				case 13:
+					printf(RESET);
 					return resp;
 					
 				default:
 					break;
 			}
+			
 			gotoxy(15, 22);
 			// printf(">> %d", resp);
 		}
@@ -178,6 +202,8 @@ void swordAttack(){
 	switch(playerState) {
 		
 		case '<':
+			if ( w1[y][x-1] == '*' || w1[y][x-1] == 'D' ) break;
+				
 			for (f = 1; f <= 2; f++){
 				for (l = 0; l < 3; l++){
 					
@@ -185,6 +211,7 @@ void swordAttack(){
 					int targetY = y+1 - l;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
+					
 					if ( w1[targetY][targetX] == 'k') {
 						char dropItem = randomBoxItem();
 						
@@ -232,6 +259,7 @@ void swordAttack(){
 			break;
 		
 		case '>':
+			if ( w1[y][x+1] == '*' || w1[y][x+1] == 'D' ) break;
 			
 			for (f = 1; f <= 2; f++){
 				for (l = 0; l < 3; l++){
@@ -286,6 +314,7 @@ void swordAttack(){
 			break;
 		
 		case 'v':
+			if ( w1[y+1][x] == '*' || w1[y+1][x] == 'D' ) break;
 			
 			for (f = 1; f <= 2; f++){
 				for (l = 0; l < 3; l++){
@@ -340,6 +369,7 @@ void swordAttack(){
 			break;
 		
 		case '^':
+			if ( w1[y-1][x] == '*' || w1[y-1][x] == 'D' ) break;
 			
 			for (f = 1; f <= 2; f++){
 				for (l = 0; l < 3; l++){
@@ -405,6 +435,8 @@ void arrowAttack(){
 	switch(playerState) {
 		
 		case '<':
+			if ( w1[y][x-1] == '*' || w1[y][x-1] == 'D' ) break;
+			
 			for (f = 1; f <= 4; f++){
 				
 				int targetX = x-f;
@@ -445,6 +477,8 @@ void arrowAttack(){
 		break;
 		
 		case '>':
+			if ( w1[y][x+1] == '*' || w1[y][x+1] == 'D' ) break;
+			
 			for (f = 1; f <= 4; f++){
 				
 				int targetX = x+f;
@@ -485,6 +519,9 @@ void arrowAttack(){
 			break;
 		
 		case 'v':
+			if ( w1[y+1][x] == '*' || w1[y+1][x] == 'D' ) break;
+			
+			
 			for (f = 1; f <= 4; f++){
 				
 				int targetX = x;
@@ -525,6 +562,8 @@ void arrowAttack(){
 			break;
 		
 		case '^':
+			if ( w1[y-1][x] == '*' || w1[y-1][x] == 'D' ) break;
+			
 			
 			for (f = 1; f <= 4; f++){
 				
@@ -573,7 +612,8 @@ void arrowAttack(){
 }
 
 void magicAttack(){
-	int f, l;
+	int f, l;		
+			
 	for (f = 0; f < 3; f++){
 		for (l = 0; l < 3; l++){
 			int targetX = x - 1 + l;
@@ -706,13 +746,54 @@ void drawFullMap() {
             else if (w1[i][j] == 'S') printf(SWORD); 
             else if (w1[i][j] == 'A') printf(ARROW); 
             else if (w1[i][j] == 'C') printf(MAGIC); 
+            else if (w1[i][j] == '*' || w1[i][j] == '=') printf(GREEN "%c" RESET, w1[i][j]);
+            else if (w1[i][j] == 'D') printf(BLUE "%c" RESET, w1[i][j]);
+            else if (w1[i][j] == 'k') printf(YELLOW "%c" RESET, w1[i][j]);
 			else printf("%c", w1[i][j]);
         }
         printf("\n");
     }
     itemListener();
 }
+void monster1Spawn(int m1X, int m1Y){			
+	monster1X = m1X;
+	monster1Y = m1Y;
+	w1[monster1X][monster1Y] = 'l';
+	gotoxy(monster1X, monster1Y); printf(MONSTER1);
+	
+	m1Spawn = TRUE;
+}
 
+void monster1Move(){
+	int oX1 = monster1X, oY1 = monster1Y;
+	
+	w1[monster1Y][monster1X] = ' ';
+	gotoxy(monster1X, monster1Y); printf(" ");
+	while (1){
+		int move = ( rand() % 4 );
+		monster1X = oX1; monster1Y = oY1;
+		
+		switch(move) {
+			case 0: monster1X++; break;
+			case 1: monster1Y++; break;
+			case 2: monster1X--; break;
+			case 3: monster1Y--; break;
+			default: break;
+		}
+		
+		if (monster1X >= mapLimitX) continue;
+		if (monster1Y >= mapLimitY) continue;
+		if (w1[monster1Y][monster1Y] == '*' || w1[monster1Y][monster1Y] == 'D' || w1[monster1Y][monster1Y] == 'k' || w1[monster1Y][monster1Y] == 'O' || w1[monster1Y][monster1Y] == 'o') continue;
+		break;
+	}
+	
+	w1[monster1Y][monster1X] = 'l';
+	gotoxy(monster1X, monster1Y); printf(MONSTER1);
+	
+	if (monster1X == x && monster1Y == y) {
+		gotoxy(0, 26); printf("MONSTRO LHE PEGOU");
+	}
+}
 
 void updateScreen() {
 
@@ -729,6 +810,7 @@ void updateScreen() {
 
 
     itemListener();
+    if (m1Spawn == TRUE) monster1Move();
 }
 
 void movePlayer(char key) {
@@ -862,6 +944,8 @@ void movePlayer(char key) {
         if (canInteract[0][2] == TRUE) {
             inventoryItem[0][0] = '@';
             inventoryQnt[0][0]++;
+			tutorialKeys++;
+        
             
             int targetY = canInteract[0][0];
             int targetX = canInteract[0][1];
@@ -893,18 +977,29 @@ void movePlayer(char key) {
         }
         
         
-		if ( (canInteract[2][2] == TRUE) && (inventoryQnt[0][0] > 0) ) { // Botão Botão
+		if (canInteract[2][2] == TRUE) { // Botão Botão
+			if (gaming == 1){
+				
+				monster1Spawn(7, 7);
+				
+				gotoxy(0, 26); stringBonitakkkj("Um Inimigo Apareceu!", TUTORIAL_DELAY, 0);
+				Sleep(750);
+				int s;
+	            for (s = 21; s > 0; s--){
+					gotoxy(s, 26);
+					printf(" ");
+					Sleep(TUTORIAL_DELAY);
+				}
+				gotoxy(0, 26); stringBonitakkkj("Use Sua Arma Para Derrota-lo", TUTORIAL_DELAY, 0);
+				
             
-			// inventoryQnt[0][0]--;
-   //          
-   //          int targetY = canInteract[1][0];
-   //          int targetX = canInteract[1][1];
-   //          
-   //          w1[targetY][targetX] = '=';
-   //          
-   //          gotoxy(targetX, targetY);
-   //          printf("=");
-        }
+	            int targetY = canInteract[2][0];
+	            int targetX = canInteract[2][1];
+	            gotoxy(targetX, targetY);
+	            printf("o");
+				
+			}
+		}
         
         
 		if ( (canInteract[3][2] == TRUE) ) {
@@ -919,6 +1014,10 @@ void movePlayer(char key) {
             
             gotoxy(targetX, targetY);
             printf(" ");
+            
+            w1[7][13] = ' ';
+			w1[1][7]  = ' ';
+			drawFullMap();
         }
         
 		if ( (canInteract[4][2] == TRUE) ) {
@@ -933,6 +1032,10 @@ void movePlayer(char key) {
             
             gotoxy(targetX, targetY);
             printf(" ");
+            
+            w1[7][1] = ' ';
+			w1[1][7]  = ' ';
+			drawFullMap();
         }
         
 		if ( (canInteract[5][2] == TRUE) ) {
@@ -947,19 +1050,24 @@ void movePlayer(char key) {
             
             gotoxy(targetX, targetY);
             printf(" ");
+            
+            w1[7][13] = ' ';
+			w1[7][1]  = ' ';
+			drawFullMap();
+			
         }
         
         
 		if ( (canInteract[6][2] == TRUE) ) {
             gotoxy(0, 26);
-            stringBonitakkkj("'Parece ser uma Caixa", 80, 0);
+            stringBonitakkkj("'Parece ser uma Caixa", DIALOGUE_DELAY, 0);
             stringBonitakkkj("...", 200, 0);
             printf("'");
             int s;
             for (s = 25; s > 0; s--){
 				gotoxy(s, 26);
 				printf(" ");
-				Sleep(70);
+				Sleep(DIALOGUE_DELAY);
 			}
             gotoxy(0, 26);
             int w, hasWeapon;
@@ -971,40 +1079,40 @@ void movePlayer(char key) {
 				hasWeapon = FALSE;
 			}
 			if (hasWeapon){
-				stringBonitakkkj("'Posso Usar Minha Arma!'", 60, 0);
+				stringBonitakkkj("'Posso Usar Minha Arma!'", TUTORIAL_DELAY, 0);
 	            for (s = 25; s > 0; s--){
 					gotoxy(s, 26);
 					printf(" ");
-					Sleep(70);
+					Sleep(DIALOGUE_DELAY);
 				}
 				if (boxDialogue == TRUE) return;
 	            gotoxy(0, 26);
-				stringBonitakkkj("Pressione (i) para abrir o Inventário'", 60, 0);
+				stringBonitakkkj("Pressione (i) para abrir o Inventário'", TUTORIAL_DELAY, 0);
 	            for (s = 38; s > 0; s--){
 					gotoxy(s, 26);
 					printf(" ");
-					Sleep(70);
+					Sleep(TUTORIAL_DELAY);
 				}
 	            gotoxy(0, 26);
-				stringBonitakkkj("Depois, selecione a arma e use ENTER", 60, 0);
+				stringBonitakkkj("Depois, selecione a arma e use ENTER", TUTORIAL_DELAY, 0);
 	            for (s = 36; s > 0; s--){
 					gotoxy(s, 26);
 					printf(" ");
-					Sleep(70);
+					Sleep(TUTORIAL_DELAY);
 				}
 	            gotoxy(0, 26);
-				stringBonitakkkj("Pressione (i) novamente para fechar o Iventário", 60, 0);
+				stringBonitakkkj("Pressione (i) novamente para fechar o Iventário", TUTORIAL_DELAY, 0);
 	            for (s = 47; s > 0; s--){
 					gotoxy(s, 26);
 					printf(" ");
-					Sleep(70);
+					Sleep(TUTORIAL_DELAY);
 				}
 	            gotoxy(0, 26);
-				stringBonitakkkj("Pressione (o) para Usar sua Arma", 60, 0);
+				stringBonitakkkj("Pressione (o) para Usar sua Arma", TUTORIAL_DELAY, 0);
 				boxDialogue = TRUE;
 	            
 			}
-            else stringBonitakkkj("'Preciso de Uma Arma!'", 60, 0);
+            else stringBonitakkkj("'Preciso de Uma Arma!'", TUTORIAL_DELAY, 0);
         }
         
         
@@ -1052,6 +1160,8 @@ int main(void) {
 		case 1:
 		    buildMap();
 		    drawFullMap();
+		    tutorialKeys = 0;
+		    init();
 		    while (1) {
 		        if (_kbhit()) {
 		            char key = _getch();
@@ -1060,7 +1170,21 @@ int main(void) {
 		            movePlayer(key);
 		            updateScreen();
 		            
+		            if (tutorialKeys == 4){
+						int sei, la;
+						
+						for (sei = 0; sei < mapLimitY; sei++){
+							for (la = 0; la < mapLimitX; la++){
+								if (w1[sei][la] != '@') continue;
+								w1[sei][la] = 'O';
+								gotoxy(la, sei); printf("O");
+								break;
+							}
+						}
+					}
+		            
 		            gotoxy(0, 26);
+		            
 		            // printf("You pressed: %c  ", key);
 		        }
 		    }
@@ -1076,4 +1200,4 @@ int main(void) {
 	}
     
     return 0;
-}       
+}   
