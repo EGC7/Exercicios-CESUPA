@@ -1,6 +1,9 @@
-# <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Skull%20and%20Crossbones.png" alt="Skull and Crossbones" width="40px" height="40px" /> GROOMSPIRE <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Robot.png" alt="Robot" width="40" height="40" />
+<img src="./Assets/Groomspire-poster.png" algin="center" width="100%">
 
-<img src="https://user-images.githubusercontent.com/74038190/225813708-98b745f2-7d22-48cf-9150-083f1b00d6c9.gif" width="500">
+<h1 align="center">Groomspire</h1>
+
+<!-- <img src="https://user-images.githubusercontent.com/74038190/225813708-98b745f2-7d22-48cf-9150-083f1b00d6c9.gif" width="500"> -->
+
 
 O GroomSpire é um projeto que tem como objetivo integrar os conceitos de programação estudados em Linguagem C.
 O Projeto utiliza o Console como único meio de interação com o usuário, mostrando tudo com tabela ASCCI.
@@ -117,6 +120,13 @@ Esta versão apresenta um mapa genérico de Tutorial com algumas interações li
 
 ---
 
+⚙️ Requisitos
+
+- Compilador C (ex: GCC, MinGW)
+- Sistema Operacional: Windows (utiliza `<windows.h>` para `Sleep()` e `system("cls")`)
+
+⚠️ O código **não é compatível com Linux/macOS** por depender de `windows.h`.
+
 ## Roadmap
 
 ### Versão 1.0
@@ -130,15 +140,15 @@ Esta versão apresenta um mapa genérico de Tutorial com algumas interações li
 * [x] Diálogos de Tutorial
 * [x] Inimigos nivel 1 
 * [x] Vida do Player
-* [ ] Tela de Game Over
+* [x] Tela de Game Over
 * [ ] Vila com NPC(s) e Casas
 * [ ] Niveis da Masmorra
-* [ ] Regeneração de Vida do Player
 * [ ] Inimigos nivel 2 (Nivel de Perseguição médio)
 * [ ] Algoritmo de Perseguição do Boss Final
 
 ### Versão 2.0
 
+* [ ] Regeneração de Vida do Player
 * [ ] Itens Deixados por Inimigos
 * [ ] Trilhas Sonoras entre Mapas
 * [ ] Equipamentos
