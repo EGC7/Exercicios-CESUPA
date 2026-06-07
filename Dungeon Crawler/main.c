@@ -6,17 +6,65 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define RED     "\033[31m"
-#define GREEN   "\033[32m"
-#define YELLOW  "\033[33m"
-#define BLUE    "\033[34m"
+#define BLACK       "\033[30m"
+#define RED         "\033[31m"
+#define GREEN       "\033[32m"
+#define YELLOW      "\033[33m"
+#define BLUE        "\033[34m"
+#define MAGENTA     "\033[35m"
+#define CYAN        "\033[36m"
+#define WHITE       "\033[37m"
+
+#define BRIGHT_BLACK    "\033[90m"
+#define BRIGHT_RED      "\033[91m"
+#define BRIGHT_GREEN    "\033[92m"
+#define BRIGHT_YELLOW   "\033[93m"
+#define BRIGHT_BLUE     "\033[94m"
+#define BRIGHT_MAGENTA  "\033[95m"
+#define BRIGHT_CYAN     "\033[96m"
+#define BRIGHT_WHITE    "\033[97m"
+
+#define BG_BLACK    "\033[40m"
+#define BG_RED      "\033[41m"
+#define BG_GREEN    "\033[42m"
+#define BG_YELLOW   "\033[43m"
+#define BG_BLUE     "\033[44m"
+#define BG_MAGENTA  "\033[45m"
+#define BG_CYAN     "\033[46m"
+#define BG_WHITE    "\033[47m"
+
+#define BG_BRIGHT_BLACK    "\033[100m"
+#define BG_BRIGHT_RED      "\033[101m"
+#define BG_BRIGHT_GREEN    "\033[102m"
+#define BG_BRIGHT_YELLOW   "\033[103m"
+#define BG_BRIGHT_BLUE     "\033[104m"
+#define BG_BRIGHT_MAGENTA  "\033[105m"
+#define BG_BRIGHT_CYAN     "\033[106m"
+#define BG_BRIGHT_WHITE    "\033[107m"
+
+#define BOLD        "\033[1m"
+#define DIM         "\033[2m"
+#define ITALIC      "\033[3m"
+#define UNDERLINE   "\033[4m"
+#define BLINK       "\033[5m"
+#define REVERSE     "\033[7m"
+#define HIDDEN      "\033[8m"
+
 #define RESET   "\033[0m"
 
 char SWORD[] 	= "\U0001F5E1";
 char ARROW[] 	= "\U0001F3F9";
 char MAGIC[] 	= "\U0001FA84";
+
 char MONSTER1[] = "\U0001f9cc";
+// char MONSTER1[] = "\u263A";
+
 char LIFEICON[] = "\u2764";
+
+char SQUARE[] 	= "\u25A0";
+char CIRCLE[] 	= "\u25CF";
+char DOTS[] 	= "\u2591";
+char IDKN[]		= "\u2592";
 
 int monster1X, monster1Y, monster2X, monster2Y, bossX, bossY;
 int m1Spawn, m2Spawn, bossSpawn;
@@ -138,28 +186,34 @@ void stringBonitakkkj(char txt[], int tm, int nextLine){
 void showCredits(){
 	
 	gotoxy(35, 1);
+	printf(YELLOW);
 	stringBonitakkkj(">> Desenvolvido Por: ", 100, 0);
+	printf(RESET);
 	stringBonitakkkj("Eduardo Cajueiro", 100, -1);
 	
 	gotoxy(40, 2);
+	printf(YELLOW);
 	stringBonitakkkj(">> Pensado Por: ", 100, 0);
+	printf(RESET);
 	stringBonitakkkj("Eduardo Cajueiro", 100, -1);
 	
 	gotoxy(38, 3);
+	printf(YELLOW);
 	stringBonitakkkj(">> Desenhado Por: ", 100, 0);
-	stringBonitakkkj("Vini", 350, 0);
+	printf(RED);
+	stringBonitakkkj("Chat", 150, 0);
 	Sleep(250);
-	stringBonitakkkj("cius", 350, 0);
+	stringBonitakkkj(" GPT", 150, 0);
 	Sleep(250);
+	printf(RESET);
 	
 	int s;
 	for (s=66; s>54; s--){
 		gotoxy(s, 3);
 		printf(" ");
-		Sleep(100);
+		Sleep(60);
 	}
-	
-	Sleep(1000);
+	Sleep(200);
 	
 	stringBonitakkkj("Eduardo Cajueiro", 250, 0);
 }
@@ -281,7 +335,10 @@ void swordAttack(){
 		            w1[targetY][targetX] = ' ';
 		            
 					gotoxy(targetX, targetY);
-					printf(" ");
+					// printf(" ");
+					
+					printf(GREEN "%s" RESET, DOTS);
+					
 					Sleep(100);
 				}
 			}
@@ -341,7 +398,10 @@ void swordAttack(){
 		            w1[targetY][targetX] = ' ';
 		            
 					gotoxy(targetX, targetY);
-					printf(" ");
+					// printf(" ");
+					
+					printf(GREEN "%s" RESET, DOTS);
+					
 					Sleep(100);
 				}
 			}
@@ -400,7 +460,10 @@ void swordAttack(){
 		            w1[targetY][targetX] = ' ';
 		            
 					gotoxy(targetX, targetY);
-					printf(" ");
+					// printf(" ");
+					
+					printf(GREEN "%s" RESET, DOTS);
+					
 					Sleep(100);
 				}
 			}
@@ -459,7 +522,10 @@ void swordAttack(){
 		            w1[targetY][targetX] = ' ';
 		            
 					gotoxy(targetX, targetY);
-					printf(" ");
+					// printf(" ");
+					
+					printf(GREEN "%s" RESET, DOTS);
+					
 					Sleep(100);
 				}
 			}
@@ -477,7 +543,6 @@ void arrowAttack(){
 	switch(playerState) {
 		
 		case '<':
-			if ( w1[y][x-1] == '*' || w1[y][x-1] == 'D' ) break;
 			
 			for (f = 1; f <= 4; f++){
 				
@@ -485,15 +550,18 @@ void arrowAttack(){
 				int targetY = y;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-				if ( w1[targetY][targetX] == 'k') {
-					char dropItem = randomBoxItem();
-					w1[targetY][targetX] = dropItem;
-					
-					gotoxy(targetX, targetY);
-					printf("%c", dropItem);
-					continue;
-				}
+				
 				if ( w1[targetY][targetX] != ' ') {
+					if ( w1[targetY][targetX] == 'k') {
+						char dropItem = randomBoxItem();
+						w1[targetY][targetX] = dropItem;
+						
+						gotoxy(targetX, targetY);
+						printf("%c", dropItem);
+						continue;
+					}
+					
+					if ( w1[targetY][targetX] == '*') break;
 					if ( w1[targetY][targetX] != 'l') continue;
 					
 					killThatMonster(targetX, targetY);
@@ -516,14 +584,16 @@ void arrowAttack(){
 				w1[targetY][targetX] = ' ';
 		            
 				gotoxy(targetX, targetY);
-				printf(" ");
+				// printf(" ");
+				
+				printf(GREEN "%s" RESET, DOTS);
+					
 				Sleep(100);
 			}
 			
 		break;
 		
 		case '>':
-			if ( w1[y][x+1] == '*' || w1[y][x+1] == 'D' ) break;
 			
 			for (f = 1; f <= 4; f++){
 				
@@ -531,15 +601,18 @@ void arrowAttack(){
 				int targetY = y;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-				if ( w1[targetY][targetX] == 'k') {
-					char dropItem = randomBoxItem();
-					w1[targetY][targetX] = dropItem;
-					
-					gotoxy(targetX, targetY);
-					printf("%c", dropItem);
-					continue;
-				}
+				
 				if ( w1[targetY][targetX] != ' ') {
+					if ( w1[targetY][targetX] == 'k') {
+						char dropItem = randomBoxItem();
+						w1[targetY][targetX] = dropItem;
+						
+						gotoxy(targetX, targetY);
+						printf("%c", dropItem);
+						continue;
+					}
+					
+					if ( w1[targetY][targetX] == '*') break;
 					if ( w1[targetY][targetX] != 'l') continue;
 					
 					killThatMonster(targetX, targetY);
@@ -562,15 +635,15 @@ void arrowAttack(){
 				w1[targetY][targetX] = ' ';
 		            
 				gotoxy(targetX, targetY);
-				printf(" ");
+				// printf(" ");
+				
+				printf(GREEN "%s" RESET, DOTS);
 				Sleep(100);
 			}
 			
 			break;
 		
 		case 'v':
-			if ( w1[y+1][x] == '*' || w1[y+1][x] == 'D' ) break;
-			
 			
 			for (f = 1; f <= 4; f++){
 				
@@ -578,15 +651,18 @@ void arrowAttack(){
 				int targetY = y+f;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-				if ( w1[targetY][targetX] == 'k') {
-					char dropItem = randomBoxItem();
-					w1[targetY][targetX] = dropItem;
-					
-					gotoxy(targetX, targetY);
-					printf("%c", dropItem);
-					continue;
-				}
+				
 				if ( w1[targetY][targetX] != ' ') {
+					if ( w1[targetY][targetX] == 'k') {
+						char dropItem = randomBoxItem();
+						w1[targetY][targetX] = dropItem;
+						
+						gotoxy(targetX, targetY);
+						printf("%c", dropItem);
+						continue;
+					}
+					
+					if ( w1[targetY][targetX] == '*') break;
 					if ( w1[targetY][targetX] != 'l') continue;
 					
 					killThatMonster(targetX, targetY);
@@ -609,15 +685,15 @@ void arrowAttack(){
 				w1[targetY][targetX] = ' ';
 		            
 				gotoxy(targetX, targetY);
-				printf(" ");
+				// printf(" ");
+				
+				printf(GREEN "%s" RESET, DOTS);
 				Sleep(100);
 			}
 			
 			break;
 		
-		case '^':
-			if ( w1[y-1][x] == '*' || w1[y-1][x] == 'D' ) break;
-			
+		case '^':	
 			
 			for (f = 1; f <= 4; f++){
 				
@@ -625,15 +701,18 @@ void arrowAttack(){
 				int targetY = y-f;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-				if ( w1[targetY][targetX] == 'k') {
-					char dropItem = randomBoxItem();
-					w1[targetY][targetX] = dropItem;
-					
-					gotoxy(targetX, targetY);
-					printf("%c", dropItem);
-					continue;
-				}
+				
 				if ( w1[targetY][targetX] != ' ') {
+					if ( w1[targetY][targetX] == 'k') {
+						char dropItem = randomBoxItem();
+						w1[targetY][targetX] = dropItem;
+						
+						gotoxy(targetX, targetY);
+						printf("%c", dropItem);
+						continue;
+					}
+					
+					if ( w1[targetY][targetX] == '*') break;
 					if ( w1[targetY][targetX] != 'l') continue;
 					
 					killThatMonster(targetX, targetY);
@@ -656,7 +735,9 @@ void arrowAttack(){
 				w1[targetY][targetX] = ' ';
 		            
 				gotoxy(targetX, targetY);
-				printf(" ");
+				// printf(" ");
+				
+				printf(GREEN "%s" RESET, DOTS);
 				Sleep(100);
 			}
 			
@@ -724,7 +805,10 @@ void magicAttack(){
 			w1[targetY][targetX] = ' ';
 	
 			gotoxy(targetX, targetY);
-			printf(" ");
+			// printf(" ");
+			
+			printf(GREEN "%s" RESET, DOTS);
+			
 			Sleep(100);		
 		}
 	}
@@ -771,14 +855,14 @@ void itemListener() {
         }
     }
 }
-
+	
 
 void buildMap() {
     int c, r;
-    for (r = 0; r < 15; r++) {
-        for (c = 0; c < 15; c++) {
-            if (((((r == 0) || (r == 14)) || ((r == 4) || (r == 10))) && ((c < 5) || (c > 9))) || 
-                (((r < 5) && (r > 0) || (r > 10) && (r < 15)) && ((c == 4) || (c == 10)))) {
+    for (r = 0; r < mapLimitY; r++) {
+        for (c = 0; c < mapLimitX; c++) {
+            if (((((r == 0) || (r == (mapLimitY-1))) || ((r == 4) || (r == 10))) && ((c < 5) || (c > 9))) || 
+                (((r < 5) && (r > 0) || (r > 10) && (r < mapLimitY)) && ((c == 4) || (c == 10)))) {
                 w1[r][c] = '*';
             } else {
                 w1[r][c] = ' ';
@@ -809,10 +893,11 @@ void drawFullMap() {
             else if (w1[i][j] == 'S') printf(SWORD); 
             else if (w1[i][j] == 'A') printf(ARROW); 
             else if (w1[i][j] == 'C') printf(MAGIC); 
-            else if (w1[i][j] == '*' || w1[i][j] == '=') printf(GREEN "%c" RESET, w1[i][j]);
-            else if (w1[i][j] == 'D') printf(BLUE "%c" RESET, w1[i][j]);
-            else if (w1[i][j] == 'k') printf(YELLOW "%c" RESET, w1[i][j]);
-			else printf("%c", w1[i][j]);
+            else if (w1[i][j] == '*') printf(YELLOW  "%s" RESET, SQUARE);
+            else if (w1[i][j] == 'D') printf(BRIGHT_BLUE "%c" RESET, w1[i][j]);
+            else if (w1[i][j] == 'k') printf(MAGENTA "%c" RESET, w1[i][j]);
+            else if (w1[i][j] == ' ') printf(GREEN "%s" RESET, DOTS);
+            else printf("%c", w1[i][j]);
         }
         printf("\n");
     }
@@ -827,7 +912,7 @@ void drawFullMap() {
 void monster1Spawn(int m1X, int m1Y){			
 	monster1X = m1X;
 	monster1Y = m1Y;
-	w1[monster1X][monster1Y] = 'l';
+	w1[monster1Y][monster1X] = 'l';
 	gotoxy(monster1X, monster1Y); printf(MONSTER1);
 	
 	m1Spawn = TRUE;
@@ -874,7 +959,8 @@ void monster1Move(){
 	int oX1 = monster1X, oY1 = monster1Y;
 	
 	w1[monster1Y][monster1X] = ' ';
-	gotoxy(monster1X, monster1Y); printf(" ");
+	gotoxy(monster1X, monster1Y); printf(GREEN "%s" RESET, DOTS);;
+	
 	while (1){
 		int move = ( rand() % 4 );
 		monster1X = oX1; monster1Y = oY1;
@@ -889,7 +975,15 @@ void monster1Move(){
 		
 		if (monster1X >= mapLimitX) continue;
 		if (monster1Y >= mapLimitY) continue;
-		if (w1[monster1Y][monster1Y] == '*' || w1[monster1Y][monster1Y] == 'D' || w1[monster1Y][monster1Y] == 'k' || w1[monster1Y][monster1Y] == 'O' || w1[monster1Y][monster1Y] == 'o') continue;
+		if (monster1X < 0) continue;
+		if (monster1Y < 0) continue;
+		
+		if (w1[monster1Y][monster1X] == '*' || 
+			w1[monster1Y][monster1X] == 'D' || 
+			w1[monster1Y][monster1X] == 'k' || 
+			w1[monster1Y][monster1X] == 'O' || 
+			w1[monster1Y][monster1X] == 'o') continue;
+		
 		break;
 	}
 	
@@ -905,15 +999,16 @@ void monster1Move(){
 void updateScreen() {
 
     gotoxy(oldX, oldY);
-    printf("%c", w1[oldY][oldX]);
-
-    gotoxy(x, y);
+	if (w1[oldY][oldX] == ' ') printf(GREEN "%s" RESET, DOTS);
+    else printf("%c", w1[oldY][oldX]);
+	
+	gotoxy(x, y);
     if (oldY > y) playerState = '^';
     if (oldY < y) playerState = 'v';
     if (oldX > x) playerState = '<';
     if (oldX < x) playerState = '>';
     
-    printf("%c", playerState);
+    printf(BRIGHT_WHITE "%c" RESET, playerState);
 
 
     itemListener();
@@ -1092,7 +1187,9 @@ void movePlayer(char key) {
             w1[targetY][targetX] = ' ';
             
             gotoxy(targetX, targetY);
-            printf(" ");
+			// printf(" ");
+			
+			printf(GREEN "%s" RESET, DOTS);
         }
         
         
