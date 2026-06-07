@@ -52,12 +52,14 @@
 
 #define RESET   "\033[0m"
 
+#define MAP_Y 20
+#define MAP_X 40
+
 char SWORD[] 	= "\U0001F5E1";
 char ARROW[] 	= "\U0001F3F9";
 char MAGIC[] 	= "\U0001FA84";
 
 char MONSTER1[] = "\U0001f9cc";
-// char MONSTER1[] = "\u263A";
 
 char LIFEICON[] = "\u2764";
 
@@ -71,10 +73,10 @@ int m1Spawn, m2Spawn, bossSpawn;
 
 const int TUTORIAL_DELAY = 10, DIALOGUE_DELAY = 30;
 
-int resp, gaming, x = 7, y = 7, oldX = 7, oldY = 7, inventoryOp = FALSE, toggleInventory = FALSE, invY = 20, oInvY = 20, selectedWeapon = -1, playerLifes = 3;;
+int resp, gaming, x, y, oldX, oldY, inventoryOp = FALSE, toggleInventory = FALSE, invY = 20, oInvY = 20, selectedWeapon = -1, playerLifes = 3;
 int playerLevel = 0;
 
-int tutorialKeys = 0, tutorialLadder; // Variaveis só pro tutorial
+int tutorialKeys = 0, tutorialLadder = 0; // Variaveis só pro tutorial
 
 char playerState = '&';
 
@@ -83,15 +85,14 @@ int wpDialogue = FALSE, boxDialogue = FALSE;
 char inventoryItem[5][1];
 int inventoryQnt[5][1];
 
-
 char interacts[] = {'@', 'D', 'O', 'S', 'A', 'C', 'k', 'L'};
 const int interacts_len = sizeof(interacts) / sizeof(interacts[0]);
 
-int canInteract[7][3], nexItem[2];
+int canInteract[8][3], nexItem[2];
 
-int mapLimitX = 15, mapLimitY = 15;
+int mapLimitX = MAP_X, mapLimitY = MAP_Y;
 
-char w1[15][15];
+char world[MAP_Y][MAP_X];
 
 void gotoxy(int x, int y) {
     COORD coord;
@@ -100,10 +101,40 @@ void gotoxy(int x, int y) {
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
+#define UI_ROW (mapLimitY)
+
+void clearUI() {
+    int i;
+    for (i = 0; i < 9; i++) {
+        gotoxy(0, UI_ROW + i);
+        printf("                                                                        ");
+    }
+}
+
+void redrawMapRows(int fromRow, int toRow) {
+    int r, c;
+    for (r = fromRow; r <= toRow && r < mapLimitY; r++) {
+        gotoxy(0, r);
+        for (c = 0; c < mapLimitX; c++) {
+            int isPlayer = (r == y && c == x);
+            if (isPlayer) { printf(BRIGHT_WHITE "%c" RESET, playerState); continue; }
+            switch (world[r][c]) {
+                case 'S': printf(SWORD);  break;
+                case 'A': printf(ARROW);  break;
+                case 'C': printf(MAGIC);  break;
+                case '*': printf(YELLOW "%s" RESET, SQUARE); break;
+                case 'D': printf(BRIGHT_BLUE "%c" RESET, world[r][c]); break;
+                case 'k': printf(MAGENTA "%c" RESET, world[r][c]); break;
+                case ' ': printf(GREEN "%s" RESET, DOTS); break;
+                default:  printf("%c", world[r][c]); break;
+            }
+        }
+    }
+}
+
 int menu(int mX, int mY){
 	int oX = mX+25, oY = mY+7;
 	resp = 0;
-	
 	
 	gotoxy(mX, mY); 	printf(RED " _____ ______ _____  ________  ___ ___________ ___________ _____ \n");
 	gotoxy(mX, mY+1); 	printf("|  __ \\| ___ \\  _  ||  _  |  \\/  |/  ___| ___ \\_   _| ___ \\  ___|\n");
@@ -121,7 +152,6 @@ int menu(int mX, int mY){
 	
 	while (1){
         if (_kbhit()) {
-        	
             switch(_getch()) {
 				case 's':
 				case 'S':
@@ -151,9 +181,6 @@ int menu(int mX, int mY){
 				default:
 					break;
 			}
-			
-			gotoxy(15, 22);
-			// printf(">> %d", resp);
 		}
 	}
 }
@@ -180,7 +207,6 @@ void stringBonitakkkj(char txt[], int tm, int nextLine){
 	if (nextLine != -1) return;
 	
 	printf("\n");
-	
 }
 
 void showCredits(){
@@ -228,12 +254,22 @@ void exitGame() {
 	stringBonitakkkj(">> Obrigado Por Jogar <<", 150, -1);
 	gotoxy(35, 7);
 	stringBonitakkkj(">> Espero Que Tenha se Divertido <<\n\n", 150, -1);
-	
 }
 
 void init() {
 	playerLifes = 3;
 	selectedWeapon = -1;
+	x = 7; y = 7;
+	oldX = 7; oldY = 7;
+	playerState = 'v';
+	toggleInventory = FALSE;
+	invY = 0; oInvY = 0;
+	wpDialogue = FALSE;
+	boxDialogue = FALSE;
+	tutorialKeys = 0;
+	tutorialLadder = 0;
+	m1Spawn = FALSE;
+
     int i, j;
     for (i = 0; i < 5; i++) {
         for (j = 0; j < 1; j++) {
@@ -253,17 +289,17 @@ char randomBoxItem(){
 void killThatMonster(int monsterX, int monsterY){
 	
 	if (gaming == 1){
-		w1[monsterY][monsterX] = ' ';
+		world[monsterY][monsterX] = ' ';
 		gotoxy(monsterX, monsterY); printf(" ");
 		m1Spawn = FALSE;
 		
-		w1[0][7] = 'L';
+		world[0][7] = 'L';
 		gotoxy(7, 0); printf("L");
 		return;
 	}
 	
 	switch(playerLevel)
-	{ // Definir a matriz de Cada Mapa, meio que a lógica é a mesma.
+	{
 		case 1:
 			break;
 		case 2:
@@ -273,7 +309,6 @@ void killThatMonster(int monsterX, int monsterY){
 		default:
 			break;
 	}
-	
 }
 
 void swordAttack(){
@@ -281,7 +316,7 @@ void swordAttack(){
 	switch(playerState) {
 		
 		case '<':
-			if ( w1[y][x-1] == '*' || w1[y][x-1] == 'D' ) break;
+			if ( world[y][x-1] == '*' || world[y][x-1] == 'D' ) break;
 				
 			for (f = 1; f <= 2; f++){
 				for (l = 0; l < 3; l++){
@@ -291,24 +326,19 @@ void swordAttack(){
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
 					
-					if ( w1[targetY][targetX] == 'k') {
+					if ( world[targetY][targetX] == 'k') {
 						char dropItem = randomBoxItem();
-						
-						w1[targetY][targetX] = dropItem;
-		            		            	
+						world[targetY][targetX] = dropItem;
 						gotoxy(targetX, targetY);
 						printf("%c", dropItem);
 						continue;
 					}
-					if ( w1[targetY][targetX] != ' ') {
-						if ( w1[targetY][targetX] != 'l') continue;
-						
+					if ( world[targetY][targetX] != ' ') {
+						if ( world[targetY][targetX] != 'l') continue;
 						killThatMonster(targetX, targetY);
 					}
 					
-					
-		            w1[targetY][targetX] = 'x';
-		            
+		            world[targetY][targetX] = 'x';
 					gotoxy(targetX, targetY);
 					printf("x");
 				}
@@ -321,32 +351,25 @@ void swordAttack(){
 					int targetY = y+1 - l;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-					if ( w1[targetY][targetX] == 'k') {
+					if ( world[targetY][targetX] == 'k') {
 						char dropItem = randomBoxItem();
-						
-						w1[targetY][targetX] = dropItem;
-		            		            	
+						world[targetY][targetX] = dropItem;
 						gotoxy(targetX, targetY);
 						printf("%c", dropItem);
 						continue;
 					}
-					if ( w1[targetY][targetX] != 'x') continue;
+					if ( world[targetY][targetX] != 'x') continue;
 					
-		            w1[targetY][targetX] = ' ';
-		            
+		            world[targetY][targetX] = ' ';
 					gotoxy(targetX, targetY);
-					// printf(" ");
-					
 					printf(GREEN "%s" RESET, DOTS);
-					
 					Sleep(100);
 				}
 			}
-			
 			break;
 		
 		case '>':
-			if ( w1[y][x+1] == '*' || w1[y][x+1] == 'D' ) break;
+			if ( world[y][x+1] == '*' || world[y][x+1] == 'D' ) break;
 			
 			for (f = 1; f <= 2; f++){
 				for (l = 0; l < 3; l++){
@@ -355,23 +378,19 @@ void swordAttack(){
 					int targetY = y+1 - l;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-					if ( w1[targetY][targetX] == 'k') {
+					if ( world[targetY][targetX] == 'k') {
 						char dropItem = randomBoxItem();
-						
-						w1[targetY][targetX] = dropItem;
-		            		            	
+						world[targetY][targetX] = dropItem;
 						gotoxy(targetX, targetY);
 						printf("%c", dropItem);
 						continue;
 					}
-					if ( w1[targetY][targetX] != ' ') {
-						if ( w1[targetY][targetX] != 'l') continue;
-						
+					if ( world[targetY][targetX] != ' ') {
+						if ( world[targetY][targetX] != 'l') continue;
 						killThatMonster(targetX, targetY);
 					}
 					
-		            w1[targetY][targetX] = 'x';
-		            
+		            world[targetY][targetX] = 'x';
 					gotoxy(targetX, targetY);
 					printf("x");
 				}
@@ -384,31 +403,25 @@ void swordAttack(){
 					int targetY = y+1 - l;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-					if ( w1[targetY][targetX] == 'k') {
+					if ( world[targetY][targetX] == 'k') {
 						char dropItem = randomBoxItem();
-						
-						w1[targetY][targetX] = dropItem;
-		            		            	
+						world[targetY][targetX] = dropItem;
 						gotoxy(targetX, targetY);
 						printf("%c", dropItem);
 						continue;
 					}
-					if (w1[targetY][targetX] != 'x') continue;
+					if (world[targetY][targetX] != 'x') continue;
 					
-		            w1[targetY][targetX] = ' ';
-		            
+		            world[targetY][targetX] = ' ';
 					gotoxy(targetX, targetY);
-					// printf(" ");
-					
 					printf(GREEN "%s" RESET, DOTS);
-					
 					Sleep(100);
 				}
 			}
 			break;
 		
 		case 'v':
-			if ( w1[y+1][x] == '*' || w1[y+1][x] == 'D' ) break;
+			if ( world[y+1][x] == '*' || world[y+1][x] == 'D' ) break;
 			
 			for (f = 1; f <= 2; f++){
 				for (l = 0; l < 3; l++){
@@ -417,23 +430,19 @@ void swordAttack(){
 					int targetY = y + f;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-					if ( w1[targetY][targetX] == 'k') {
+					if ( world[targetY][targetX] == 'k') {
 						char dropItem = randomBoxItem();
-						
-						w1[targetY][targetX] = dropItem;
-		            		            	
+						world[targetY][targetX] = dropItem;
 						gotoxy(targetX, targetY);
 						printf("%c", dropItem);
 						continue;
 					}
-					if ( w1[targetY][targetX] != ' ') {
-						if ( w1[targetY][targetX] != 'l') continue;
-						
+					if ( world[targetY][targetX] != ' ') {
+						if ( world[targetY][targetX] != 'l') continue;
 						killThatMonster(targetX, targetY);
 					}
 					
-		            w1[targetY][targetX] = 'x';
-		            
+		            world[targetY][targetX] = 'x';
 					gotoxy(targetX, targetY);
 					printf("x");
 				}
@@ -446,31 +455,25 @@ void swordAttack(){
 					int targetY = y + f;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-					if ( w1[targetY][targetX] == 'k') {
+					if ( world[targetY][targetX] == 'k') {
 						char dropItem = randomBoxItem();
-						
-						w1[targetY][targetX] = dropItem;
-		            		            	
+						world[targetY][targetX] = dropItem;
 						gotoxy(targetX, targetY);
 						printf("%c", dropItem);
 						continue;
 					}
-					if (w1[targetY][targetX] != 'x') continue;
+					if (world[targetY][targetX] != 'x') continue;
 					
-		            w1[targetY][targetX] = ' ';
-		            
+		            world[targetY][targetX] = ' ';
 					gotoxy(targetX, targetY);
-					// printf(" ");
-					
 					printf(GREEN "%s" RESET, DOTS);
-					
 					Sleep(100);
 				}
 			}
 			break;
 		
 		case '^':
-			if ( w1[y-1][x] == '*' || w1[y-1][x] == 'D' ) break;
+			if ( world[y-1][x] == '*' || world[y-1][x] == 'D' ) break;
 			
 			for (f = 1; f <= 2; f++){
 				for (l = 0; l < 3; l++){
@@ -479,23 +482,19 @@ void swordAttack(){
 					int targetY = y - f;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-					if ( w1[targetY][targetX] == 'k') {
+					if ( world[targetY][targetX] == 'k') {
 						char dropItem = randomBoxItem();
-						
-						w1[targetY][targetX] = dropItem;
-		            		            	
+						world[targetY][targetX] = dropItem;
 						gotoxy(targetX, targetY);
 						printf("%c", dropItem);
 						continue;
 					}
-					if ( w1[targetY][targetX] != ' ') {
-						if ( w1[targetY][targetX] != 'l') continue;
-						
+					if ( world[targetY][targetX] != ' ') {
+						if ( world[targetY][targetX] != 'l') continue;
 						killThatMonster(targetX, targetY);
 					}
 					
-		            w1[targetY][targetX] = 'x';
-		            
+		            world[targetY][targetX] = 'x';
 					gotoxy(targetX, targetY);
 					printf("x");
 				}
@@ -508,34 +507,26 @@ void swordAttack(){
 					int targetY = y - f;
 					
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-					if ( w1[targetY][targetX] == 'k') {
+					if ( world[targetY][targetX] == 'k') {
 						char dropItem = randomBoxItem();
-						
-						w1[targetY][targetX] = dropItem;
-		            		            	
+						world[targetY][targetX] = dropItem;
 						gotoxy(targetX, targetY);
 						printf("%c", dropItem);
 						continue;
 					}
-					if (w1[targetY][targetX] != 'x') continue;
+					if (world[targetY][targetX] != 'x') continue;
 					
-		            w1[targetY][targetX] = ' ';
-		            
+		            world[targetY][targetX] = ' ';
 					gotoxy(targetX, targetY);
-					// printf(" ");
-					
 					printf(GREEN "%s" RESET, DOTS);
-					
 					Sleep(100);
 				}
 			}
 			break;
 		
-	
 		default:
 			break;
 	}
-	
 }
 
 void arrowAttack(){
@@ -543,211 +534,164 @@ void arrowAttack(){
 	switch(playerState) {
 		
 		case '<':
-			
 			for (f = 1; f <= 4; f++){
-				
 				int targetX = x-f;
 				int targetY = y;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
 				
-				if ( w1[targetY][targetX] != ' ') {
-					if ( w1[targetY][targetX] == 'k') {
+				if ( world[targetY][targetX] != ' ') {
+					if ( world[targetY][targetX] == 'k') {
 						char dropItem = randomBoxItem();
-						w1[targetY][targetX] = dropItem;
-						
+						world[targetY][targetX] = dropItem;
 						gotoxy(targetX, targetY);
 						printf("%c", dropItem);
 						continue;
 					}
-					
-					if ( w1[targetY][targetX] == '*') break;
-					if ( w1[targetY][targetX] != 'l') continue;
-					
+					if ( world[targetY][targetX] == '*') break;
+					if ( world[targetY][targetX] != 'l') continue;
 					killThatMonster(targetX, targetY);
 				}
 						
-				w1[targetY][targetX] = 'x';
-				
+				world[targetY][targetX] = 'x';
 				gotoxy(targetX, targetY);
 				printf("x");
 			}
 			
 			for (f = 1; f <= 4; f++){
-				
 				int targetX = x-f;
 				int targetY = y;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-				if (w1[targetY][targetX] != 'x') continue;
+				if (world[targetY][targetX] != 'x') continue;
 					
-				w1[targetY][targetX] = ' ';
-		            
+				world[targetY][targetX] = ' ';
 				gotoxy(targetX, targetY);
-				// printf(" ");
-				
 				printf(GREEN "%s" RESET, DOTS);
-					
 				Sleep(100);
 			}
-			
-		break;
+			break;
 		
 		case '>':
-			
 			for (f = 1; f <= 4; f++){
-				
 				int targetX = x+f;
 				int targetY = y;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
 				
-				if ( w1[targetY][targetX] != ' ') {
-					if ( w1[targetY][targetX] == 'k') {
+				if ( world[targetY][targetX] != ' ') {
+					if ( world[targetY][targetX] == 'k') {
 						char dropItem = randomBoxItem();
-						w1[targetY][targetX] = dropItem;
-						
+						world[targetY][targetX] = dropItem;
 						gotoxy(targetX, targetY);
 						printf("%c", dropItem);
 						continue;
 					}
-					
-					if ( w1[targetY][targetX] == '*') break;
-					if ( w1[targetY][targetX] != 'l') continue;
-					
+					if ( world[targetY][targetX] == '*') break;
+					if ( world[targetY][targetX] != 'l') continue;
 					killThatMonster(targetX, targetY);
 				}
 						
-				w1[targetY][targetX] = 'x';
-				
+				world[targetY][targetX] = 'x';
 				gotoxy(targetX, targetY);
 				printf("x");
 			}
 			
 			for (f = 1; f <= 4; f++){
-				
 				int targetX = x+f;
 				int targetY = y;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-				if (w1[targetY][targetX] != 'x') continue;
+				if (world[targetY][targetX] != 'x') continue;
 					
-				w1[targetY][targetX] = ' ';
-		            
+				world[targetY][targetX] = ' ';
 				gotoxy(targetX, targetY);
-				// printf(" ");
-				
 				printf(GREEN "%s" RESET, DOTS);
 				Sleep(100);
 			}
-			
 			break;
 		
 		case 'v':
-			
 			for (f = 1; f <= 4; f++){
-				
 				int targetX = x;
 				int targetY = y+f;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
 				
-				if ( w1[targetY][targetX] != ' ') {
-					if ( w1[targetY][targetX] == 'k') {
+				if ( world[targetY][targetX] != ' ') {
+					if ( world[targetY][targetX] == 'k') {
 						char dropItem = randomBoxItem();
-						w1[targetY][targetX] = dropItem;
-						
+						world[targetY][targetX] = dropItem;
 						gotoxy(targetX, targetY);
 						printf("%c", dropItem);
 						continue;
 					}
-					
-					if ( w1[targetY][targetX] == '*') break;
-					if ( w1[targetY][targetX] != 'l') continue;
-					
+					if ( world[targetY][targetX] == '*') break;
+					if ( world[targetY][targetX] != 'l') continue;
 					killThatMonster(targetX, targetY);
 				}
 						
-				w1[targetY][targetX] = 'x';
-				
+				world[targetY][targetX] = 'x';
 				gotoxy(targetX, targetY);
 				printf("x");
 			}
 			
 			for (f = 1; f <= 4; f++){
-				
 				int targetX = x;
 				int targetY = y+f;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-				if (w1[targetY][targetX] != 'x') continue;
+				if (world[targetY][targetX] != 'x') continue;
 					
-				w1[targetY][targetX] = ' ';
-		            
+				world[targetY][targetX] = ' ';
 				gotoxy(targetX, targetY);
-				// printf(" ");
-				
 				printf(GREEN "%s" RESET, DOTS);
 				Sleep(100);
 			}
-			
 			break;
 		
-		case '^':	
-			
+		case '^':
 			for (f = 1; f <= 4; f++){
-				
 				int targetX = x;
 				int targetY = y-f;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
 				
-				if ( w1[targetY][targetX] != ' ') {
-					if ( w1[targetY][targetX] == 'k') {
+				if ( world[targetY][targetX] != ' ') {
+					if ( world[targetY][targetX] == 'k') {
 						char dropItem = randomBoxItem();
-						w1[targetY][targetX] = dropItem;
-						
+						world[targetY][targetX] = dropItem;
 						gotoxy(targetX, targetY);
 						printf("%c", dropItem);
 						continue;
 					}
-					
-					if ( w1[targetY][targetX] == '*') break;
-					if ( w1[targetY][targetX] != 'l') continue;
-					
+					if ( world[targetY][targetX] == '*') break;
+					if ( world[targetY][targetX] != 'l') continue;
 					killThatMonster(targetX, targetY);
 				}
 						
-				w1[targetY][targetX] = 'x';
-				
+				world[targetY][targetX] = 'x';
 				gotoxy(targetX, targetY);
 				printf("x");
 			}
 			
 			for (f = 1; f <= 4; f++){
-				
 				int targetX = x;
 				int targetY = y-f;
 				
 				if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-				if (w1[targetY][targetX] != 'x') continue;
+				if (world[targetY][targetX] != 'x') continue;
 					
-				w1[targetY][targetX] = ' ';
-		            
+				world[targetY][targetX] = ' ';
 				gotoxy(targetX, targetY);
-				// printf(" ");
-				
 				printf(GREEN "%s" RESET, DOTS);
 				Sleep(100);
 			}
-			
 			break;
 		
-	
 		default:
 			break;
 	}
-		
 }
 
 void magicAttack(){
@@ -759,28 +703,23 @@ void magicAttack(){
 			int targetY = y - 1 + f;
 			
 			if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-			if ( w1[targetY][targetX] == 'k') {
+			if ( world[targetY][targetX] == 'k') {
 				char dropItem = randomBoxItem();
-				
-				w1[targetY][targetX] = dropItem;
-				
+				world[targetY][targetX] = dropItem;
 				gotoxy(targetX, targetY);
 				printf("%c", dropItem);
 				continue;
 			}
-			if ( w1[targetY][targetX] != ' ') {
-				if ( w1[targetY][targetX] != 'l') continue;
-				
+			if ( world[targetY][targetX] != ' ') {
+				if ( world[targetY][targetX] != 'l') continue;
 				killThatMonster(targetX, targetY);
 			}
 			
 			if ( (targetX == x) && (targetY == y) ) continue;
 			 
-			w1[targetY][targetX] = 'x';
-	
+			world[targetY][targetX] = 'x';
 			gotoxy(targetX, targetY);
 			printf("x");
-			
 		}
 	}
 	
@@ -790,29 +729,22 @@ void magicAttack(){
 			int targetY = y - 1 + f;
 			
 			if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
-			if ( w1[targetY][targetX] == 'k') {
+			if ( world[targetY][targetX] == 'k') {
 				char dropItem = randomBoxItem();
-				
-				w1[targetY][targetX] = dropItem;
-				
+				world[targetY][targetX] = dropItem;
 				gotoxy(targetX, targetY);
 				printf("%c", dropItem);
 				continue;
 			}
-			if (w1[targetY][targetX] != 'x') continue;
+			if (world[targetY][targetX] != 'x') continue;
 			if ( (targetX == x) && (targetY == y) ) continue;
 			 
-			w1[targetY][targetX] = ' ';
-	
+			world[targetY][targetX] = ' ';
 			gotoxy(targetX, targetY);
-			// printf(" ");
-			
 			printf(GREEN "%s" RESET, DOTS);
-			
 			Sleep(100);		
 		}
 	}
-	
 }
 
 void itemListener() {
@@ -832,16 +764,19 @@ void itemListener() {
         canInteract[k][2] = FALSE;
     }
     
-    gotoxy(0, 16);
+    gotoxy(0, UI_ROW+1);
     printf("                                                 \n");
     printf("                                                 \n");
-    gotoxy(0, 16);
-	int j;
+    gotoxy(0, UI_ROW+1);
+
+    int j;
     for (j = 0; j < 4; j++) {
         int ny = y + coord[j].r;
         int nx = x + coord[j].c;
         
-        char act = w1[ny][nx];
+        if (ny < 0 || ny >= mapLimitY || nx < 0 || nx >= mapLimitX) continue;
+        
+        char act = world[ny][nx];
         int _;
         for (_ = 0; _ < interacts_len; _++) {
             if (act == interacts[_]) {
@@ -849,60 +784,68 @@ void itemListener() {
                 canInteract[_][0] = ny;
                 canInteract[_][1] = nx;
                 canInteract[_][2] = TRUE;
-                // printf("%d, %c -> %d, %d\t%d\n", _, interacts[_], nx, ny, canInteract[_][2]);
                 return;
             }
         }
     }
 }
-	
 
-void buildMap() {
-    int c, r;
-    for (r = 0; r < mapLimitY; r++) {
-        for (c = 0; c < mapLimitX; c++) {
-            if (((((r == 0) || (r == (mapLimitY-1))) || ((r == 4) || (r == 10))) && ((c < 5) || (c > 9))) || 
-                (((r < 5) && (r > 0) || (r > 10) && (r < mapLimitY)) && ((c == 4) || (c == 10)))) {
-                w1[r][c] = '*';
-            } else {
-                w1[r][c] = ' ';
-            }
-            
-            if (((r == 4) || (r == 10)) && ((c == 2) || (c == 12)))  w1[r][c] = 'D';
-            if (((r == 2) || (r == 12)) && ((c == 2) || (c == 12)) )  w1[r][c] = '@';
-            
-            if ( (r==13) && (c==7) ) w1[r][c] = 'k';
-            
-            // if ( (r==2) && (c==12) ) w1[r][c] = 'O';
-            
-            if ( (r==7) && (c==1) ) w1[r][c] = 'S';
-            if ( (r==7) && (c==13) ) w1[r][c] = 'A';
-            if ( (r==1) && (c==7) ) w1[r][c] = 'C';
-        }
-    }
+void buildMap1() {
+	int c, r;
+	for (r = 0; r < 15; r++) {
+		for (c = 0; c < 15; c++) {
+			if (((((r == 0) || (r == 14)) || ((r == 4) || (r == 10))) && ((c < 5) || (c > 9))) || 
+				(((r < 5) && (r > 0) || (r > 10) && (r < 15)) && ((c == 4) || (c == 10)))) {
+					world[r][c] = '*';
+			} else {
+				world[r][c] = ' ';
+			}
+			
+			if (((r == 4) || (r == 10)) && ((c == 2) || (c == 12)))  world[r][c] = 'D';
+			if (((r == 2) || (r == 12)) && ((c == 2) || (c == 12)) )  world[r][c] = '@';
+			
+			if ( (r==13) && (c==7) ) world[r][c] = 'k';
+			
+			if ( (r==7) && (c==1) ) world[r][c] = 'S';
+			if ( (r==7) && (c==13) ) world[r][c] = 'A';
+			if ( (r==1) && (c==7) ) world[r][c] = 'C';
+		}
+	}	
 }
 
+void buildMap2() {
+	int c, r;
+	for (r = 0; r < mapLimitY; r++) {
+		for (c = 0; c < mapLimitX; c++) {
+			if (r == 0 || r == 19 || c == 0 || c == 39) {
+				world[r][c] = '*';
+			} else {
+				world[r][c] = ' ';
+			}
+		}
+	}
+}
 
 void drawFullMap() {
     system("cls");
     int i;
-    for (i = 0; i < 15; i++) {
+    for (i = 0; i < mapLimitY; i++) {
     	int j;
-        for (j = 0; j < 15; j++) {
+        for (j = 0; j < mapLimitX; j++) {
             if (i == y && j == x) printf("&");
-            else if (w1[i][j] == 'S') printf(SWORD); 
-            else if (w1[i][j] == 'A') printf(ARROW); 
-            else if (w1[i][j] == 'C') printf(MAGIC); 
-            else if (w1[i][j] == '*') printf(YELLOW  "%s" RESET, SQUARE);
-            else if (w1[i][j] == 'D') printf(BRIGHT_BLUE "%c" RESET, w1[i][j]);
-            else if (w1[i][j] == 'k') printf(MAGENTA "%c" RESET, w1[i][j]);
-            else if (w1[i][j] == ' ') printf(GREEN "%s" RESET, DOTS);
-            else printf("%c", w1[i][j]);
+            else if (world[i][j] == 'S') printf(SWORD); 
+            else if (world[i][j] == 'A') printf(ARROW); 
+            else if (world[i][j] == 'C') printf(MAGIC); 
+            else if (world[i][j] == '*') printf(YELLOW  "%s" RESET, SQUARE);
+            else if (world[i][j] == 'D') printf(BRIGHT_BLUE "%c" RESET, world[i][j]);
+            else if (world[i][j] == 'k') printf(MAGENTA "%c" RESET, world[i][j]);
+            else if (world[i][j] == ' ') printf(GREEN "%s" RESET, DOTS);
+            else printf("%c", world[i][j]);
         }
         printf("\n");
     }
     
-    gotoxy(0, 15);
+    gotoxy(0, UI_ROW);
     for (i = 0; i < playerLifes; i++) printf("%s ", LIFEICON);
     printf("\n");
     
@@ -912,7 +855,7 @@ void drawFullMap() {
 void monster1Spawn(int m1X, int m1Y){			
 	monster1X = m1X;
 	monster1Y = m1Y;
-	w1[monster1Y][monster1X] = 'l';
+	world[monster1Y][monster1X] = 'l';
 	gotoxy(monster1X, monster1Y); printf(MONSTER1);
 	
 	m1Spawn = TRUE;
@@ -922,15 +865,20 @@ void killPlayer(){
 	playerLifes--;
 	
 	switch(playerLevel) {
-		case -1: x = 7; y = 7;
+		case -1:
+			x = 7; y = 7;
 			break;
 		case 1:
+			x = 7; y = 7;
 			break;
 		case 2:
+			x = 7; y = 7;
 			break;
 		case 3:
+			x = 7; y = 7;
 			break;
 		default:
+			x = 7; y = 7;
 			break;
 	}
 	
@@ -952,14 +900,15 @@ void gameOver(){
     gotoxy(gX, gY+7); printf("(_______)|/     \\||/     \\|(_______/  (_______)   \\_/   (_______/|/   \\__/\n" RESET);
 	
 	gotoxy(gX+17, gY+9); printf(YELLOW "Pressione A Tecla " RESET "SPACE" YELLOW " Para Continuar..." RESET);
-
 }
 
 void monster1Move(){
+	if (m1Spawn == FALSE) return;
+	
 	int oX1 = monster1X, oY1 = monster1Y;
 	
-	w1[monster1Y][monster1X] = ' ';
-	gotoxy(monster1X, monster1Y); printf(GREEN "%s" RESET, DOTS);;
+	world[monster1Y][monster1X] = ' ';
+	gotoxy(monster1X, monster1Y); printf(GREEN "%s" RESET, DOTS);
 	
 	while (1){
 		int move = ( rand() % 4 );
@@ -978,29 +927,29 @@ void monster1Move(){
 		if (monster1X < 0) continue;
 		if (monster1Y < 0) continue;
 		
-		if (w1[monster1Y][monster1X] == '*' || 
-			w1[monster1Y][monster1X] == 'D' || 
-			w1[monster1Y][monster1X] == 'k' || 
-			w1[monster1Y][monster1X] == 'O' || 
-			w1[monster1Y][monster1X] == 'o') continue;
+		if (world[monster1Y][monster1X] == '*' || 
+			world[monster1Y][monster1X] == 'D' || 
+			world[monster1Y][monster1X] == 'k' || 
+			world[monster1Y][monster1X] == 'O' || 
+			world[monster1Y][monster1X] == 'o') continue;
 		
 		break;
 	}
 	
-	w1[monster1Y][monster1X] = 'l';
+	world[monster1Y][monster1X] = 'l';
 	gotoxy(monster1X, monster1Y); printf(MONSTER1);
 	
 	if (monster1X == x && monster1Y == y) {
 		killPlayer();
-		gotoxy(0, 26); printf("MONSTRO LHE PEGOU");
+		gotoxy(0, UI_ROW+8); printf("MONSTRO LHE PEGOU");
 	}
 }
 
 void updateScreen() {
 
     gotoxy(oldX, oldY);
-	if (w1[oldY][oldX] == ' ') printf(GREEN "%s" RESET, DOTS);
-    else printf("%c", w1[oldY][oldX]);
+	if (world[oldY][oldX] == ' ') printf(GREEN "%s" RESET, DOTS);
+    else printf("%c", world[oldY][oldX]);
 	
 	gotoxy(x, y);
     if (oldY > y) playerState = '^';
@@ -1010,12 +959,12 @@ void updateScreen() {
     
     printf(BRIGHT_WHITE "%c" RESET, playerState);
 
-
     itemListener();
-    if (m1Spawn == TRUE) monster1Move();
+    
+    monster1Move();
 }
 
-void exitTutorial(){ // Juro que vou deixar isso bonito.
+void exitTutorial(){
 	int tX = 16, tY = 3;
 	
 	system("cls");
@@ -1037,11 +986,10 @@ void exitTutorial(){ // Juro que vou deixar isso bonito.
 	gotoxy(tX+7, tY+13); printf("| (         | |   | | \\   || (   ) || |         | |     /   /  | (   ) || |   ) || |   | |\n");
 	gotoxy(tX+7, tY+14); printf(RESET"| )      ___) (___| )  \\  || )   ( || (____/\\___) (___ /   (_/\\| )   ( || (__/  )| (___) |\n");
 	gotoxy(tX+7, tY+15); printf("|/       \\_______/|/    )_)|/     \\|(_______/\\_______/(_______/|/     \\|(______/ (_______)\n");
-	
 
 	gotoxy(tX+17, tY+17); printf(YELLOW "Pressione A Tecla " RESET "SPACE" YELLOW " Para Continuar..." RESET);
 	
-	gaming = -1;
+	gaming = -2;
 	while (1){
 		int k = _getch();
 		if (k == 32) break;
@@ -1049,35 +997,49 @@ void exitTutorial(){ // Juro que vou deixar isso bonito.
 }
 
 void movePlayer(char key) {
-    oldX = x;
+
+	oldX = x;
     oldY = y;
 	if (!toggleInventory){
-		
+
 	    if (key == 'w' || key == 'W') {
-	        if (w1[y-1][x] == '*' || w1[y-1][x] == 'D' || w1[y-1][x] == '@' || w1[y-1][x] == 'k' || w1[y-1][x] == 'A' || w1[y-1][x] == 'S' || w1[y-1][x] == 'C' || w1[y-1][x] == 'O' || w1[y-1][x] == 'L' || y-1 < 0) return;
+	        if (y-1 < 0) return;
+	        if (world[y-1][x] == '*' || world[y-1][x] == 'D' || world[y-1][x] == '@' || 
+	        	world[y-1][x] == 'k' || world[y-1][x] == 'A' || world[y-1][x] == 'S' || 
+	        	world[y-1][x] == 'C' || world[y-1][x] == 'O' || world[y-1][x] == 'L') return;
 	        y--;
 	    }
 	    if (key == 's' || key == 'S') {
-	        if (w1[y+1][x] == '*' || w1[y+1][x] == 'D' || w1[y+1][x] == '@' || w1[y+1][x] == 'k' || w1[y+1][x] == 'A' || w1[y+1][x] == 'S' || w1[y+1][x] == 'C' || w1[y+1][x] == 'O' || w1[y+1][x] == 'L' || y+1 > (mapLimitY-1)) return;
+	        if (y+1 >= mapLimitY) return;
+	        if (world[y+1][x] == '*' || world[y+1][x] == 'D' || world[y+1][x] == '@' || 
+	        	world[y+1][x] == 'k' || world[y+1][x] == 'A' || world[y+1][x] == 'S' || 
+	        	world[y+1][x] == 'C' || world[y+1][x] == 'O' || world[y+1][x] == 'L') return;
 	        y++;
 	    }
 	    if (key == 'a' || key == 'A') {
-	        if (w1[y][x-1] == '*' || w1[y][x-1] == 'D' || w1[y][x-1] == '@' || w1[y][x-1] == 'k' || w1[y][x-1] == 'A' || w1[y][x-1] == 'S' || w1[y][x-1] == 'C' || w1[y][x-1] == 'O' || w1[y][x-1] == 'L' || x-1 < 0) return;
+	        if (x-1 < 0) return;
+	        if (world[y][x-1] == '*' || world[y][x-1] == 'D' || world[y][x-1] == '@' || 
+	        	world[y][x-1] == 'k' || world[y][x-1] == 'A' || world[y][x-1] == 'S' || 
+	        	world[y][x-1] == 'C' || world[y][x-1] == 'O' || world[y][x-1] == 'L') return;
 	        x--;
 	    }
 	    if (key == 'd' || key == 'D') {
-	        if (w1[y][x+1] == '*' || w1[y][x+1] == 'D' || w1[y][x+1] == '@' || w1[y][x+1] == 'k' || w1[y][x+1] == 'A' || w1[y][x+1] == 'S' || w1[y][x+1] == 'C' || w1[y][x+1] == 'O' || w1[y][x+1] == 'L' || x+1 > (mapLimitX-1)) return;
+	        if (x+1 >= mapLimitX) return;
+	        if (world[y][x+1] == '*' || world[y][x+1] == 'D' || world[y][x+1] == '@' || 
+	        	world[y][x+1] == 'k' || world[y][x+1] == 'A' || world[y][x+1] == 'S' || 
+	        	world[y][x+1] == 'C' || world[y][x+1] == 'O' || world[y][x+1] == 'L') return;
 	        x++;
 	    }
-	    gotoxy(0, 26);
+	    
+	    gotoxy(0, UI_ROW+8);
 		printf("                                                                ");
 		
-        gotoxy(0, 19);
+        gotoxy(0, UI_ROW+2);
         printf("          ");
         
 	    int i;
 	    for (i = 0; i < 5; i++) {
-   			gotoxy(3, 20 + i);
+   			gotoxy(3, UI_ROW+3 + i);
 	        printf("                    ");
 	    }
 	    
@@ -1093,23 +1055,23 @@ void movePlayer(char key) {
     
 	} else {
 		
-        gotoxy(0, 19);
+        gotoxy(0, UI_ROW+2);
         printf("Inventory:");
         
 	    if ( (key == 'w') || (key == 'W' ) ) {
-	    	if ( (invY - 1) < 20) return;
+	    	if ( (invY - 1) < UI_ROW+3) return;
 	    	oInvY = invY;
 			invY--;
 	    }
 	    if ( (key == 's') || (key == 'S') ) {
-	    	if ( (invY + 1) > 24) return;
+	    	if ( (invY + 1) > UI_ROW+7) return;
 	    	oInvY = invY;
 			invY++;
 	    }
 	    
 	    int i;
 	    for (i = 0; i < 5; i++) {
-   			gotoxy(3, 20 + i);
+   			gotoxy(3, UI_ROW+3 + i);
    			if (inventoryItem[i][0] == 'S') printf("Item: %s | Qtd: %d\n", SWORD, inventoryQnt[i][0]);
    			else if (inventoryItem[i][0] == 'A') printf("Item: %s | Qtd: %d\n", ARROW, inventoryQnt[i][0]);
    			else if (inventoryItem[i][0] == 'C') printf("Item: %s | Qtd: %d\n", MAGIC, inventoryQnt[i][0]);
@@ -1122,27 +1084,25 @@ void movePlayer(char key) {
 	    printf(">>");
 	    
 	    if (key == 13){
-			if (inventoryQnt[invY-20][0] <= 0) return;
+			int invSlot = invY - (UI_ROW+3);
+			if (invSlot < 0 || invSlot > 4) return;
+			if (inventoryQnt[invSlot][0] <= 0) return;
 			gotoxy(25, invY);
-	    	switch(invY-20) {
+	    	switch(invSlot) {
 				case 0:
-					// printf("Item 1 eba eba");
 					stringBonitakkkj("'Posso usar isso para abrir as portas trancadas...'", 50, 0);
 					break;
 				case 1:
 					selectedWeapon = 0;
-					// printf("Item 2 eba eba");
 					if (wpDialogue == FALSE) {
 						stringBonitakkkj("'Que Espada Brilhante'", 50, 0);
 						gotoxy(30, invY+1);
 						wpDialogue = TRUE;
 					}
 					printf("Você Selecionou -- Espada do Herói --");
-					
 					break;
 				case 2:
 					selectedWeapon = 1;
-					// printf("Item 3 eba eba");
 					if (wpDialogue == FALSE) {
 						stringBonitakkkj("'Com isso, Posso Acertar de Olhos Fechados'", 50, 0);
 						gotoxy(30, invY+1);
@@ -1152,7 +1112,6 @@ void movePlayer(char key) {
 					break;
 				case 3:
 					selectedWeapon = 2;
-					// printf("Item 4 eba eba");
 					if (wpDialogue == FALSE) {
 						stringBonitakkkj("'Posso Sentir a Magia Fluindo'", 50, 0);
 						gotoxy(30, invY+1);
@@ -1161,42 +1120,34 @@ void movePlayer(char key) {
 					printf("Você Selecionou -- Cajado Arcano --");
 					break;
 				case 4:
-					// printf("Item 5 eba eba");
 					break;
 				default:
 					break;
 			}
-			
-			// printf("Selected: %d", selectedWeapon);
 		}
 	}
     
 
     if (key == 'e' || key == 'E') {
     	
-        
         if (canInteract[0][2] == TRUE) {
             inventoryItem[0][0] = '@';
             inventoryQnt[0][0]++;
 			tutorialKeys++;
-        
             
             int targetY = canInteract[0][0];
             int targetX = canInteract[0][1];
             
-            w1[targetY][targetX] = ' ';
+            world[targetY][targetX] = ' ';
             
             gotoxy(targetX, targetY);
-			// printf(" ");
-			
 			printf(GREEN "%s" RESET, DOTS);
         }
-        
         
 		if ( (canInteract[1][2] == TRUE) ) {
 			
 			if (inventoryQnt[0][0] <= 0){
-				gotoxy(0, 26);
+				gotoxy(0, UI_ROW+8);
 				stringBonitakkkj("'Parace que Essa Porta Está Trancada!'", 50, 0);
 				return;
 			}
@@ -1206,37 +1157,33 @@ void movePlayer(char key) {
             int targetY = canInteract[1][0];
             int targetX = canInteract[1][1];
             
-            w1[targetY][targetX] = '=';
+            world[targetY][targetX] = '=';
             
             gotoxy(targetX, targetY);
             printf("=");
         }
         
-        
-		if (canInteract[2][2] == TRUE) { // Botão Botão
+		if (canInteract[2][2] == TRUE) {
 			if (gaming == 1){
 				
 				monster1Spawn(7, 7);
 				
-				gotoxy(0, 26); stringBonitakkkj("Um Inimigo Apareceu!", TUTORIAL_DELAY, 0);
+				gotoxy(0, UI_ROW+8); stringBonitakkkj("Um Inimigo Apareceu!", TUTORIAL_DELAY, 0);
 				Sleep(750);
 				int s;
 	            for (s = 21; s > 0; s--){
-					gotoxy(s, 26);
+					gotoxy(s, UI_ROW+8);
 					printf(" ");
 					Sleep(TUTORIAL_DELAY);
 				}
-				gotoxy(0, 26); stringBonitakkkj("Use Sua Arma Para Derrota-lo", TUTORIAL_DELAY, 0);
-				
-            
+				gotoxy(0, UI_ROW+8); stringBonitakkkj("Use Sua Arma Para Derrota-lo", TUTORIAL_DELAY, 0);
+			
 	            int targetY = canInteract[2][0];
 	            int targetX = canInteract[2][1];
 	            gotoxy(targetX, targetY);
 	            printf("o");
-				
 			}
 		}
-        
         
 		if ( (canInteract[3][2] == TRUE) ) {
             
@@ -1246,13 +1193,13 @@ void movePlayer(char key) {
             int targetY = canInteract[3][0];
             int targetX = canInteract[3][1];
             
-            w1[targetY][targetX] = ' ';
+            world[targetY][targetX] = ' ';
             
             gotoxy(targetX, targetY);
             printf(" ");
             
-            w1[7][13] = ' ';
-			w1[1][7]  = ' ';
+            world[7][13] = ' ';
+			world[1][7]  = ' ';
 			drawFullMap();
         }
         
@@ -1264,13 +1211,13 @@ void movePlayer(char key) {
             int targetY = canInteract[4][0];
             int targetX = canInteract[4][1];
             
-            w1[targetY][targetX] = ' ';
+            world[targetY][targetX] = ' ';
             
             gotoxy(targetX, targetY);
             printf(" ");
             
-            w1[7][1] = ' ';
-			w1[1][7]  = ' ';
+            world[7][1] = ' ';
+			world[1][7]  = ' ';
 			drawFullMap();
         }
         
@@ -1282,30 +1229,28 @@ void movePlayer(char key) {
             int targetY = canInteract[5][0];
             int targetX = canInteract[5][1];
             
-            w1[targetY][targetX] = ' ';
+            world[targetY][targetX] = ' ';
             
             gotoxy(targetX, targetY);
             printf(" ");
             
-            w1[7][13] = ' ';
-			w1[7][1]  = ' ';
+            world[7][13] = ' ';
+			world[7][1]  = ' ';
 			drawFullMap();
-			
         }
         
-        
 		if ( (canInteract[6][2] == TRUE) ) {
-            gotoxy(0, 26);
+            gotoxy(0, UI_ROW+8);
             stringBonitakkkj("'Parece ser uma Caixa", DIALOGUE_DELAY, 0);
             stringBonitakkkj("...", 200, 0);
             printf("'");
             int s;
             for (s = 25; s > 0; s--){
-				gotoxy(s, 26);
+				gotoxy(s, UI_ROW+8);
 				printf(" ");
 				Sleep(DIALOGUE_DELAY);
 			}
-            gotoxy(0, 26);
+            gotoxy(0, UI_ROW+8);
             int w, hasWeapon;
             for (w = 1; w <= 3; w++){
 				if (inventoryQnt[w][0] > 0){
@@ -1317,33 +1262,33 @@ void movePlayer(char key) {
 			if (hasWeapon){
 				stringBonitakkkj("'Posso Usar Minha Arma!'", TUTORIAL_DELAY, 0);
 	            for (s = 25; s > 0; s--){
-					gotoxy(s, 26);
+					gotoxy(s, UI_ROW+8);
 					printf(" ");
 					Sleep(DIALOGUE_DELAY);
 				}
 				if (boxDialogue == TRUE) return;
-	            gotoxy(0, 26);
+	            gotoxy(0, UI_ROW+8);
 				stringBonitakkkj("Pressione (i) para abrir o Inventário'", TUTORIAL_DELAY, 0);
 	            for (s = 38; s > 0; s--){
-					gotoxy(s, 26);
+					gotoxy(s, UI_ROW+8);
 					printf(" ");
 					Sleep(TUTORIAL_DELAY);
 				}
-	            gotoxy(0, 26);
+	            gotoxy(0, UI_ROW+8);
 				stringBonitakkkj("Depois, selecione a arma e use ENTER", TUTORIAL_DELAY, 0);
 	            for (s = 36; s > 0; s--){
-					gotoxy(s, 26);
+					gotoxy(s, UI_ROW+8);
 					printf(" ");
 					Sleep(TUTORIAL_DELAY);
 				}
-	            gotoxy(0, 26);
+	            gotoxy(0, UI_ROW+8);
 				stringBonitakkkj("Pressione (i) novamente para fechar o Iventário", TUTORIAL_DELAY, 0);
 	            for (s = 47; s > 0; s--){
-					gotoxy(s, 26);
+					gotoxy(s, UI_ROW+8);
 					printf(" ");
 					Sleep(TUTORIAL_DELAY);
 				}
-	            gotoxy(0, 26);
+	            gotoxy(0, UI_ROW+8);
 				stringBonitakkkj("Pressione (o) para Usar sua Arma", TUTORIAL_DELAY, 0);
 				boxDialogue = TRUE;
 	            
@@ -1357,20 +1302,24 @@ void movePlayer(char key) {
 					exitTutorial();
 					return;
 				}
-	            gotoxy(0, 26);
+	            gotoxy(0, UI_ROW+8);
 	            stringBonitakkkj("'Uma Escada", DIALOGUE_DELAY, 0);
 	            stringBonitakkkj("...", 200, 0);
 	            printf("'");
-	            gotoxy(0, 26); tutorialLadder++;
+	            gotoxy(0, UI_ROW+8); tutorialLadder++;
 			}
         }
-        
-        
     }
-    
     
 	if (key == 'i' || key == 'I') {
 		toggleInventory = (toggleInventory == TRUE ? FALSE : TRUE);
+		if (toggleInventory == FALSE) {
+			clearUI();
+			int li;
+			gotoxy(0, UI_ROW);
+			for (li = 0; li < playerLifes; li++) printf("%s ", LIFEICON);
+			itemListener();
+		}
     }
     
     if ( (key == 'o') || (key == 'O')){
@@ -1399,37 +1348,67 @@ int main(void) {
 	
     init();
     
-    
     while(resp != -1) {
     	system("cls");
     	gaming = menu(20, 3);
     	
 		switch(gaming) {
 		
-		case 0: break;
-		
-		case 1:
-		    buildMap();
-		    drawFullMap();
-		    tutorialKeys = 0;
-		    playerLevel = -1;
-		    m1Spawn = FALSE;
+		case 0:
+			playerLevel = 1;
 		    init();
-		    while (gaming == 1) {
+		    
+		    mapLimitX = MAP_X;
+		    mapLimitY = MAP_Y;
+		    invY = UI_ROW+3; oInvY = UI_ROW+3;
+		    
+			buildMap2();
+		    drawFullMap();
+		    
+			while (gaming == 0) {
 		        if (_kbhit()) {
 		            char key = _getch();
-		            if (key == 27) break;
+		            if (key == 27) { gaming = -2; break; }
+     
+		            movePlayer(key);
+		            updateScreen();
 		            
+					if (playerLifes == 0){
+						gameOver();
+						gaming = -2;
+						int k = _getch();
+						break;
+					}
+		        }
+		    }
+			
+			break;
+		
+		case 1:
+		    playerLevel = -1;
+		    init();
+		    
+		    mapLimitX = 15;
+		    mapLimitY = 15;
+		    invY = UI_ROW+3; oInvY = UI_ROW+3;
+		    
+			buildMap1();
+		    drawFullMap();
+		    
+			while (gaming == 1) {
+		        if (_kbhit()) {
+		            char key = _getch();
+		            if (key == 27) { gaming = -2; break; }
+     
 		            movePlayer(key);
 		            updateScreen();
 		            
 		            if (tutorialKeys == 4){
 						int sei, la;
-						
 						for (sei = 0; sei < mapLimitY; sei++){
 							for (la = 0; la < mapLimitX; la++){
-								if (w1[sei][la] != '@') continue;
-								w1[sei][la] = 'O';
+								if (world[sei][la] != '@') continue;
+								world[sei][la] = 'O';
 								gotoxy(la, sei); printf("O");
 								break;
 							}
@@ -1438,14 +1417,10 @@ int main(void) {
 		            
 					if (playerLifes == 0){
 						gameOver();
-						gaming = -1;
+						gaming = -2;
 						int k = _getch();
-						if (k == 32) break;
+						break;
 					}
-				
-		            gotoxy(0, 26);
-		            
-		            // printf("You pressed: %c  ", key);
 		        }
 		    }
 		    break;
@@ -1455,7 +1430,6 @@ int main(void) {
 		
 		default:
 			break;
-		
 		}
 	}
     
