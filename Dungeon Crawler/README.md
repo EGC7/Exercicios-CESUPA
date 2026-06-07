@@ -11,7 +11,7 @@ No fim, tudo se resume a uma aplicação prática, criativa e funcional. Incenti
 
 ## História
 
-Contexto do jogo.
+A vila no Reino de ELDORIA precisa da sua ajuda para enfrentar o Cavaleiro Maligno e seu Exército de Trolls e Esqueletos que está atormentando a vida dos moradores.  
 
 ## Objetivo
 
@@ -105,6 +105,10 @@ gcc main.c -o GroomSpire
 
 <img src="./Assets/gameMenu.png" width="500px">
 
+### TUTORIAL
+
+<img src="./Assets/gameTutorial.png" width="300px">
+
 (Imagens do menu, vila e masmorra)
 
 
@@ -113,10 +117,10 @@ gcc main.c -o GroomSpire
 O projeto está atualmente em versão:
 
 ```txt
-Beta 1.3
+Beta 1.5
 ```
 
-Esta versão apresenta um mapa genérico de Tutorial com algumas interações limitadas, movimentação do Player, funcionalidade das Armas e Monstro tipo 1.
+Esta versão apresenta um mapa genérico de Tutorial com algumas interações limitadas, movimentação do Player, funcionalidade das Armas e Monstro tipo 1, com o objetivo de ajudar no aprendizado das funções basicas de Jogo. Além de uma mapa genérico de Vila, com a presença de um Personagem Não Jogável (NPC), que ajudará o jogador em sua jornada pelo mundo de ELDORIA.  
 
 ---
 
@@ -141,8 +145,11 @@ Esta versão apresenta um mapa genérico de Tutorial com algumas interações li
 * [x] Inimigos nivel 1 
 * [x] Vida do Player
 * [x] Tela de Game Over
-* [ ] Vila com NPC(s) e Casas
-* [ ] Niveis da Masmorra
+* [x] Vila com NPC(s) e Casas
+* [ ] Espinhos de Masmorra
+* [ ] Masmorra Nível 1
+* [ ] Masmorra Nível 2
+* [ ] Masmorra Nível 3
 * [ ] Inimigos nivel 2 (Nivel de Perseguição médio)
 * [ ] Algoritmo de Perseguição do Boss Final
 
