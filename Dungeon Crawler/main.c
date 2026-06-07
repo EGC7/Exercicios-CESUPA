@@ -52,8 +52,13 @@
 
 #define RESET   "\033[0m"
 
+#define UI_ROW (mapLimitY)
+
 #define MAP_Y 20
 #define MAP_X 40
+
+#define ITEM_BEEP 1000
+#define DAMAGE_BEEP 300
 
 char SWORD[] 	= "\U0001F5E1";
 char ARROW[] 	= "\U0001F3F9";
@@ -101,7 +106,13 @@ void gotoxy(int x, int y) {
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-#define UI_ROW (mapLimitY)
+void fanfareSoundkk(){ // Amo Zelda
+    Beep(523, 250);
+    Beep(659, 250);
+    Beep(784, 250);
+
+    Beep(1047, 300);
+}
 
 void clearUI() {
     int i;
@@ -199,6 +210,8 @@ void stringBonitakkkj(char txt[], int tm, int nextLine){
 	int i;
 	size_t strLen = strlen(txt);
 	for (i=0; i<strLen; i++){
+	
+        	
 		printf("%c", txt[i]);
 		fflush(stdout);
 		Sleep(tm);
@@ -287,7 +300,7 @@ char randomBoxItem(){
 }
 
 void killThatMonster(int monsterX, int monsterY){
-	
+    
 	if (gaming == 1){
 		world[monsterY][monsterX] = ' ';
 		gotoxy(monsterX, monsterY); printf(" ");
@@ -312,6 +325,7 @@ void killThatMonster(int monsterX, int monsterY){
 }
 
 void swordAttack(){
+    
 	int f, l;
 	switch(playerState) {
 		
@@ -327,6 +341,7 @@ void swordAttack(){
 					if (targetX < 0 || targetX >= mapLimitX || targetY < 0 || targetY >= mapLimitY) continue;
 					
 					if ( world[targetY][targetX] == 'k') {
+					    
 						char dropItem = randomBoxItem();
 						world[targetY][targetX] = dropItem;
 						gotoxy(targetX, targetY);
@@ -530,6 +545,7 @@ void swordAttack(){
 }
 
 void arrowAttack(){
+    
 	int f;
 	switch(playerState) {
 		
@@ -695,6 +711,7 @@ void arrowAttack(){
 }
 
 void magicAttack(){
+    
 	int f, l;		
 			
 	for (f = 0; f < 3; f++){
@@ -862,6 +879,9 @@ void monster1Spawn(int m1X, int m1Y){
 }
 
 void killPlayer(){
+	
+	Beep(DAMAGE_BEEP, 500);
+	
 	playerLifes--;
 	
 	switch(playerLevel) {
@@ -887,6 +907,7 @@ void killPlayer(){
 }
 
 void gameOver(){
+    
 	int gX = 21, gY = 3;
 	system("cls");
 	
@@ -900,6 +921,21 @@ void gameOver(){
     gotoxy(gX, gY+7); printf("(_______)|/     \\||/     \\|(_______/  (_______)   \\_/   (_______/|/   \\__/\n" RESET);
 	
 	gotoxy(gX+17, gY+9); printf(YELLOW "Pressione A Tecla " RESET "SPACE" YELLOW " Para Continuar..." RESET);
+	
+	
+    Beep(880, 250);
+    Beep(784, 250);
+    Beep(698, 250);
+    Beep(587, 250);
+    Beep(523, 250);
+    Beep(440, 400);
+    Beep(349, 800);
+    
+	gaming = -2;
+	while (1){
+		int k = _getch();
+		if (k == 32) break;
+	}
 }
 
 void monster1Move(){
@@ -988,7 +1024,18 @@ void exitTutorial(){
 	gotoxy(tX+7, tY+15); printf("|/       \\_______/|/    )_)|/     \\|(_______/\\_______/(_______/|/     \\|(______/ (_______)\n");
 
 	gotoxy(tX+17, tY+17); printf(YELLOW "Pressione A Tecla " RESET "SPACE" YELLOW " Para Continuar..." RESET);
+
 	
+    Beep(523, 250);
+    Beep(659, 250);
+    Beep(784, 250);
+    Beep(1047, 450);
+
+    Sleep(50);
+
+    Beep(784, 250);
+    Beep(1047, 500);
+		
 	gaming = -2;
 	while (1){
 		int k = _getch();
@@ -1131,6 +1178,9 @@ void movePlayer(char key) {
     if (key == 'e' || key == 'E') {
     	
         if (canInteract[0][2] == TRUE) {
+        	
+			Beep(ITEM_BEEP, 200);
+        	
             inventoryItem[0][0] = '@';
             inventoryQnt[0][0]++;
 			tutorialKeys++;
@@ -1177,16 +1227,21 @@ void movePlayer(char key) {
 					Sleep(TUTORIAL_DELAY);
 				}
 				gotoxy(0, UI_ROW+8); stringBonitakkkj("Use Sua Arma Para Derrota-lo", TUTORIAL_DELAY, 0);
-			
-	            int targetY = canInteract[2][0];
-	            int targetX = canInteract[2][1];
-	            gotoxy(targetX, targetY);
-	            printf("o");
 			}
+			
+			int targetY = canInteract[2][0];
+			int targetX = canInteract[2][1];
+			
+			world[targetY][targetX] = 'o';
+			
+			gotoxy(targetX, targetY);
+			printf("o");
 		}
         
 		if ( (canInteract[3][2] == TRUE) ) {
-            
+        	
+			Beep(ITEM_BEEP, 200);
+        	
             inventoryItem[1][0] = 'S';
 			inventoryQnt[1][0]++;
             
@@ -1204,7 +1259,9 @@ void movePlayer(char key) {
         }
         
 		if ( (canInteract[4][2] == TRUE) ) {
-            
+        	
+			Beep(ITEM_BEEP, 200);
+        	
             inventoryItem[2][0] = 'A';
 			inventoryQnt[2][0]++;
             
@@ -1222,7 +1279,9 @@ void movePlayer(char key) {
         }
         
 		if ( (canInteract[5][2] == TRUE) ) {
-            
+        	
+			Beep(ITEM_BEEP, 200);
+        	
             inventoryItem[3][0] = 'C';
 			inventoryQnt[3][0]++;
             
@@ -1395,6 +1454,8 @@ int main(void) {
 			buildMap1();
 		    drawFullMap();
 		    
+		    int soundVerify = FALSE;
+		    
 			while (gaming == 1) {
 		        if (_kbhit()) {
 		            char key = _getch();
@@ -1413,6 +1474,12 @@ int main(void) {
 								break;
 							}
 						}
+					}
+					if (m1Spawn == TRUE) soundVerify = TRUE;
+					
+					if (m1Spawn == FALSE && soundVerify == TRUE){
+						fanfareSoundkk();
+						soundVerify = FALSE;
 					}
 		            
 					if (playerLifes == 0){
