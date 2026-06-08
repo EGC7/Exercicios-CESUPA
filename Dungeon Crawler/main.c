@@ -2291,7 +2291,6 @@ int main(void) {
 	
 	init();
 	
-	
 	while(resp != -1) {
 		system("cls");
 		if (gaming == -1) gaming = menu(20, 3);
@@ -2494,6 +2493,8 @@ int main(void) {
 
 			buildMap3();
 			drawFullMap();
+			
+			soundVerify = FALSE;
 
 			while (gaming == 3) {
 				if (monsterKilled == 2){
@@ -2509,6 +2510,8 @@ int main(void) {
 					gotoxy(2, 2);
 					printf(BRIGHT_BLACK "%s" RESET, DOTS);
 					monsterKilled++;
+					
+					soundVerify = TRUE;
 				}
 				
 				gotoxy(0, UI_ROW + 2);
@@ -2535,6 +2538,11 @@ int main(void) {
 						gaming = 0;
 						int k = _getch();
 						break;
+					}
+
+					if (monsterKilled == 3 && soundVerify == TRUE) {
+						fanfareSoundkk();
+						soundVerify = FALSE;
 					}
 				}
 			}
