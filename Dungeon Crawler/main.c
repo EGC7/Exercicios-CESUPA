@@ -274,7 +274,9 @@ int menu(int mX, int mY) {
 				break;
 			}
 		}
+		gotoxy(0, UI_ROW+8);
 	}
+	
 }
 
 void stringBonitakkkj(char txt[], int tm, int nextLine) {
@@ -731,6 +733,7 @@ void arrowAttack() {
 
 			if (isOnBounds(targetX, targetY) == FALSE) continue;
 
+			if ( isAnWall(targetX, targetY) ) break;
 			if ( isAnFloor(targetX, targetY) == FALSE ) {
 				if ( world[targetY][targetX] == 'k') {
 					char dropItem = randomBoxItem();
@@ -744,7 +747,6 @@ void arrowAttack() {
 					}
 					continue;
 				}
-				if ( isAnWall(targetX, targetY) ) break;
 				if ( world[targetY][targetX] != 'l' ) continue;
 				killThatMonster(targetX, targetY);
 			}
@@ -782,6 +784,7 @@ void arrowAttack() {
 
 			if (isOnBounds(targetX, targetY) == FALSE) continue;
 
+			if ( isAnWall(targetX, targetY) ) break;
 			if ( isAnFloor(targetX, targetY) == FALSE ) {
 				if ( world[targetY][targetX] == 'k') {
 					char dropItem = randomBoxItem();
@@ -795,7 +798,6 @@ void arrowAttack() {
 					}
 					continue;
 				}
-				if ( isAnWall(targetX, targetY) ) break;
 				if ( world[targetY][targetX] != 'l' ) continue;
 				killThatMonster(targetX, targetY);
 			}
@@ -833,6 +835,7 @@ void arrowAttack() {
 
 			if (isOnBounds(targetX, targetY) == FALSE) continue;
 
+			if ( isAnWall(targetX, targetY) ) break;
 			if ( isAnFloor(targetX, targetY) == FALSE ) {
 				if ( world[targetY][targetX] == 'k') {
 					char dropItem = randomBoxItem();
@@ -846,7 +849,6 @@ void arrowAttack() {
 					}
 					continue;
 				}
-				if ( isAnWall(targetX, targetY) ) break;
 				if ( world[targetY][targetX] != 'l' ) continue;
 				killThatMonster(targetX, targetY);
 			}
@@ -885,6 +887,7 @@ void arrowAttack() {
 
 			if (isOnBounds(targetX, targetY) == FALSE) continue;
 
+			if ( isAnWall(targetX, targetY) ) break;
 			if ( isAnFloor(targetX, targetY) == FALSE ) {
 				if ( world[targetY][targetX] == 'k') {
 					char dropItem = randomBoxItem();
@@ -898,7 +901,6 @@ void arrowAttack() {
 					}
 					continue;
 				}
-				if ( isAnWall(targetX, targetY) ) break;
 				if ( world[targetY][targetX] != 'l' ) continue;
 				killThatMonster(targetX, targetY);
 			}
@@ -1171,6 +1173,58 @@ void buildMap3() {
 	monster1Spawn(2, 8, 2);
 }
 
+
+void buildMap4() {
+	int c, r;
+	for (r = 0; r < mapLimitY; r++) {
+		for (c = 0; c < mapLimitX; c++) {
+
+			if (r == 0 || r == 19 || c == 0 || c == 39)	world[r][c] = '*';
+			
+			else if ( (r >= 5 && r <= 10 ) && (c == 38) && (r % 2 == 0) ) world[r][c] = 'k';
+			
+			else if ( ( ( r == 4 && (c >= 15 && c <= 21))   || // Limit: 10 a 25
+					    (r == 5  && (c >= 13 && c <= 23))   ||
+					    (r == 6  && (c >= 11 && c <= 24))   ||
+					    (r == 7  && (c >= 10 && c <= 25))   ||
+					    (r == 8  && (c >= 10 && c <= 25))   ||
+					    (r == 9  && (c >= 11 && c <= 24))   ||
+	 	 	 	 	    (r == 10  && (c >= 13 && c <= 23))  ||
+					    (r == 11  && (c >= 15 && c <= 21))  ||
+					    (r == 12  && (c >= 16 && c <= 20))) )
+					  
+					  world[r][c] = '$';
+					  
+			else world[r][c] = 'G'; 
+			
+			if ( (r == 7 && ( (c >= 13 && c <= 15) || (c >= 20 && c <= 22) ) ) ||
+				 ((r == 6 || r == 8) && (c == 14 || c == 21) ) ||
+				 ((r == 10 || r == 10) && (c == 15 || c == 17 || c == 19 || c == 21) ) ) world[r][c] = '*';
+				 
+			if ( c == 7 || (r == 4 && c < 7) ) world[r][c] = '*';
+
+		}
+	}
+
+	world[1][36] = 'M';
+	
+	world[7][18] = '@';
+	world[10][18] = '@';
+	world[5][18] = 'O';
+	
+	world[17][7] = 'D';
+	world[4][4] = 'D';
+	world[1][1] = 'L';
+	
+	world[1][2] = '#';
+	world[2][1] = '#';
+	world[2][2] = '#';
+	
+	prevMonster1Floor[0] = 'G';
+	monster1Spawn(4, 17, 1);
+	monster1Spawn(2, 8, 2);
+}
+
 void drawFullMap() {
 	system("cls");
 	int i;
@@ -1332,6 +1386,8 @@ void monster1Move() {
 			default: break;
 		}
 		world[monster1Y][monster1X] = 'l';
+		
+		gotoxy(0, UI_ROW+8);
 	}
 	
 	if (m1Spawn2 == FALSE) return;
@@ -1770,7 +1826,9 @@ void playerInteracts() {
 				gotoxy(0, UI_ROW + 8);
 				
 				system("cls");
+				monsterKilled = 0;
 				gaming = 4; // Fazer prox nivel;
+				
 				break;
 		default:
 			break;
@@ -2172,6 +2230,7 @@ void movePlayer(char key) {
 			if (invSlot < 0 || invSlot > 4) return;
 			if (inventoryQnt[invSlot] <= 0) return;
 			gotoxy(25, invY);
+		
 			switch(invSlot) {
 			case 0:
 				stringBonitakkkj("'Posso usar isso para abrir as portas trancadas...'", 50, 0);
@@ -2204,12 +2263,12 @@ void movePlayer(char key) {
 				printf("Voce Selecionou -- Cajado Arcano --");
 				break;
 			case 4:
-				if (playerLifes < 3 && inventoryQnt[10] > 0) {
+				if (playerLifes < 3 && inventoryQnt[4] > 0) {
 					stringBonitakkkj("Usou -- Pocao de Vida --", 50, 0);
 					gotoxy(30, invY + 1);
 					wpDialogue = TRUE;
 					playerLifes++;
-					inventoryQnt[10]--;
+					inventoryQnt[4]--;
 					break;
 				}
 				
@@ -2229,8 +2288,9 @@ int main(void) {
 	SetConsoleCP(CP_UTF8);
 
 	srand(time(NULL));
-
+	
 	init();
+	
 	
 	while(resp != -1) {
 		system("cls");
@@ -2437,6 +2497,71 @@ int main(void) {
 
 			while (gaming == 3) {
 				if (monsterKilled == 2){
+					world[1][2] = 'G';
+					gotoxy(2, 1);
+					printf(BRIGHT_BLACK "%s" RESET, DOTS);
+					
+					world[2][1] = 'G';
+					gotoxy(1, 2);
+					printf(BRIGHT_BLACK "%s" RESET, DOTS);
+					
+					world[2][2] = 'G';
+					gotoxy(2, 2);
+					printf(BRIGHT_BLACK "%s" RESET, DOTS);
+					monsterKilled++;
+				}
+				
+				gotoxy(0, UI_ROW + 2);
+				// printf("(%d, %d)", y, x);
+				if (_kbhit()) {
+					char key = _getch();
+					
+					if (key < 0){
+						_getch();
+						continue;
+					}
+					
+					if (key == 27) {
+						enteredESCinGame = TRUE;
+						gaming = -1;
+						break;
+					}
+
+					movePlayer(key);
+					updateScreen();
+
+					if (playerLifes == 0) {
+						gameOver();
+						gaming = 0;
+						int k = _getch();
+						break;
+					}
+				}
+			}
+
+			break;
+		
+		case 4:
+			playerLevel = 3;
+			
+			x = 2;
+			y = 1;
+			oldX = 2;
+			oldY = 1;
+			playerState = '<';
+
+			mapLimitX = MAP_X;
+			mapLimitY = MAP_Y;
+			
+			invY = UI_ROW + 3;
+			oInvY = UI_ROW + 3;
+
+			buildMap4();
+			
+			drawFullMap();
+
+			while (gaming == 4) {
+				if (monsterKilled == 3){
 					world[1][2] = 'G';
 					gotoxy(2, 1);
 					printf(BRIGHT_BLACK "%s" RESET, DOTS);
