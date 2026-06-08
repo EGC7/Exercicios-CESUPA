@@ -2081,7 +2081,6 @@ void playerInteracts() {
 }
 
 void movePlayer(char key) {
-
 	
 	if (key == 'e' || key == 'E') playerInteracts();
 
@@ -2292,6 +2291,12 @@ int main(void) {
 				// printf("(%d, %d)", y, x);
 				if (_kbhit()) {
 					char key = _getch();
+					
+					if (key < 0){
+						_getch();
+						continue;
+					}
+					
 					if (key == 27) {
 						enteredESCinGame = TRUE;
 						gaming = -1;
@@ -2337,6 +2342,12 @@ int main(void) {
 			while (gaming == 1) {
 				if (_kbhit()) {
 					char key = _getch();
+					
+					if (key < 0){
+						_getch();
+						continue;
+					}
+					
 					if (key == 27) {
 						gaming = -1;
 						break;
@@ -2444,6 +2455,12 @@ int main(void) {
 				// printf("(%d, %d)", y, x);
 				if (_kbhit()) {
 					char key = _getch();
+					
+					if (key < 0){
+						_getch();
+						continue;
+					}
+					
 					if (key == 27) {
 						enteredESCinGame = TRUE;
 						gaming = -1;
