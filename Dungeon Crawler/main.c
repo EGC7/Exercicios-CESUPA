@@ -443,6 +443,18 @@ int isOnBounds(int tX, int tY){
 	return (tX >= 0 && tX < mapLimitX && tY >= 0 && tY < mapLimitY);
 }
 
+int isAnWall(int tX, int tY){
+	char walls[] = {'*', 'D', 'E', '#'};
+	int walls_len = sizeof(walls) / sizeof(walls[0]);
+	int wl;
+	for (wl = 0; wl < walls_len; wl++){
+		if (world[tY][tX] == walls[wl]){
+			return TRUE;
+		};
+	}
+	return FALSE;
+}
+
 int isAnFloor(int tX, int tY){
 	char floors[] = {' ', 'G', 'T', '$', '=', '#'};
 	int floors_len = sizeof(floors) / sizeof(floors[0]);
@@ -463,7 +475,6 @@ void swordAttack() {
 	switch(playerState) {
 
 	case '<':
-		if ( world[y][x - 1] == '*' || world[y][x - 1] == 'D' || world[y][x - 1] == 'E' ) break;
 		
 		for (f = 1; f <= 2; f++) {
 			for (l = 0; l < 3; l++) {
@@ -483,6 +494,8 @@ void swordAttack() {
 					
 					continue;
 				}
+				
+				if ( isAnWall(targetX, targetY) ) break;
 				if (isAnFloor(targetX, targetY) == FALSE) {
 					if ( world[targetY][targetX] != 'l' ) continue;
 					killThatMonster(targetX, targetY);
@@ -520,7 +533,6 @@ void swordAttack() {
 		break;
 
 	case '>':
-		if ( world[y][x + 1] == '*' || world[y][x + 1] == 'D' || world[y][x + 1] == 'E' ) break;
 
 		for (f = 1; f <= 2; f++) {
 			for (l = 0; l < 3; l++) {
@@ -537,6 +549,8 @@ void swordAttack() {
 					else printf(RESET "%c" RESET, dropItem);
 					continue;
 				}
+				
+				if ( isAnWall(targetX, targetY) ) break;
 				if (isAnFloor(targetX, targetY) == FALSE) {
 					if ( world[targetY][targetX] != 'l' ) continue;
 					killThatMonster(targetX, targetY);
@@ -574,7 +588,6 @@ void swordAttack() {
 		break;
 
 	case 'v':
-		if ( world[y + 1][x] == '*' || world[y + 1][x] == 'D' || world[y + 1][x] == 'E' ) break;
 
 		for (f = 1; f <= 2; f++) {
 			for (l = 0; l < 3; l++) {
@@ -591,6 +604,8 @@ void swordAttack() {
 					else printf(RESET "%c" RESET, dropItem);
 					continue;
 				}
+				
+				if ( isAnWall(targetX, targetY) ) break;
 				if (isAnFloor(targetX, targetY) == FALSE) {
 					if ( world[targetY][targetX] != 'l' ) continue;
 					killThatMonster(targetX, targetY);
@@ -627,7 +642,6 @@ void swordAttack() {
 		break;
 
 	case '^':
-		if ( world[y - 1][x] == '*' || world[y - 1][x] == 'D' || world[y - 1][x] == 'E' ) break;
 
 		for (f = 1; f <= 2; f++) {
 			for (l = 0; l < 3; l++) {
@@ -644,6 +658,8 @@ void swordAttack() {
 					else printf(RESET "%c" RESET, dropItem);
 					continue;
 				}
+				
+				if ( isAnWall(targetX, targetY) ) break;
 				if (isAnFloor(targetX, targetY) == FALSE) {
 					if ( world[targetY][targetX] != 'l' ) continue;
 					killThatMonster(targetX, targetY);
@@ -708,7 +724,7 @@ void arrowAttack() {
 					else printf(RESET "%c" RESET, dropItem);
 					continue;
 				}
-				if ( world[targetY][targetX] == '*' || world[targetY][targetX] == 'D'  || world[targetY][targetX] == 'E' ) break;
+				if ( isAnWall(targetX, targetY) ) break;
 				if ( world[targetY][targetX] != 'l' ) continue;
 				killThatMonster(targetX, targetY);
 			}
@@ -755,7 +771,7 @@ void arrowAttack() {
 					else printf(RESET "%c" RESET, dropItem);
 					continue;
 				}
-				if ( world[targetY][targetX] == '*' || world[targetY][targetX] == 'D'  || world[targetY][targetX] == 'E' ) break;
+				if ( isAnWall(targetX, targetY) ) break;
 				if ( world[targetY][targetX] != 'l' ) continue;
 				killThatMonster(targetX, targetY);
 			}
@@ -802,7 +818,7 @@ void arrowAttack() {
 					else printf(RESET "%c" RESET, dropItem);
 					continue;
 				}
-				if ( world[targetY][targetX] == '*' || world[targetY][targetX] == 'D'  || world[targetY][targetX] == 'E' ) break;
+				if ( isAnWall(targetX, targetY) ) break;
 				if ( world[targetY][targetX] != 'l' ) continue;
 				killThatMonster(targetX, targetY);
 			}
@@ -850,7 +866,7 @@ void arrowAttack() {
 					else printf(RESET "%c" RESET, dropItem);
 					continue;
 				}
-				if ( world[targetY][targetX] == '*' || world[targetY][targetX] == 'D'  || world[targetY][targetX] == 'E' ) break;
+				if ( isAnWall(targetX, targetY) ) break;
 				if ( world[targetY][targetX] != 'l' ) continue;
 				killThatMonster(targetX, targetY);
 			}
@@ -907,7 +923,7 @@ void magicAttack() {
 				continue;
 			}
 
-			if ( isAnFloor(targetX, targetY) == FALSE ) {
+			if ( isAnFloor(targetX, targetY) == FALSE || world[targetY][targetX] == '#') {
 				if ( world[targetY][targetX] != 'l' ) continue;
 				killThatMonster(targetX, targetY);
 			}
@@ -1262,7 +1278,7 @@ void monster1Move() {
 			if (monster1X < 0) continue;
 			if (monster1Y < 0) continue;
 	
-			if ( isAnFloor(monster1X, monster1Y) == FALSE ) continue;
+			if ( isAnFloor(monster1X, monster1Y) == FALSE || world[monster1Y][monster1X] == '#') continue;
 			
 			break;
 		}
@@ -1319,7 +1335,7 @@ void monster1Move() {
 		if (monster1X2 < 0) continue;
 		if (monster1Y2 < 0) continue;
 
-		if ( isAnFloor(monster1X2, monster1Y2) == FALSE ) continue;
+		if ( isAnFloor(monster1X2, monster1Y2) == FALSE || world[monster1Y2][monster1X2] == '#' ) continue;
 		
 		break;
 	}
