@@ -41,23 +41,38 @@ O jogador possui 3 vidas. Ao tocar em espinhos ou monstros, perde uma vida e ret
 ## Armas
 
 ### ⚔️ Espada
-Ataque em Área na frente do Jogador. 6 Células (2x6); </br>
-<img src="./Assets/player-SwordAttack.png" width="200px">
+Ataque em Área na frente do Jogador. 6 Células (2x3); </br>
+
+### VERTICAL
+<img src="./Assets/player-SwordAttack.png" width="300px">
+
+### HORIZONTAL
+<img src="./Assets/player-SwordAttack2.png" width="300px">
 
 ### 🏹 Arco e Flecha
-Ataque Reto na frente do Jogador. 6 Células (1x4); </br>
+Ataque Reto na frente do Jogador. 4 Células (1x4); </br>
+
+### VERTICAL
 <img src="./Assets/player-ArrowAttack.png" width="300px">
+
+### HORIZONTAL
+<img src="./Assets/player-ArrowAttack2.png" width="300px">
 
 ### 🪄 Cajado
 Ataque em Área em volta do Jogador. 8 Células; </br>
-<img src="./Assets/player-MagicAttack.png" width="200px">
+
+### VERTICAL
+<img src="./Assets/player-MagicAttack.png" width="300px">
+
+### HORIZONTAL
+<img src="./Assets/player-MagicAttack2.png" width="300px">
 
 ## Símbolos do Jogo
 
 | Símbolo | Significado |
 |----------|-------------|
-| ^ < > v | Jogador |
-| * | Parede |
+| ^ < > v &| Jogador |
+| ■ | Parede |
 | # | Espinho |
 | k | Caixa |
 | O | Botão |
@@ -66,9 +81,11 @@ Ataque em Área em volta do Jogador. 8 Células; </br>
 | = | Porta Aberta |
 | @ | Chave |
 | L | Escada |
-|🧌 | Monstro Tipo 1 |
-| Y | Monstro Tipo 2 |
-| Z | Boss Final |
+| ☻ | NPC (Edward) |
+| ⍙ | Poção de Vida |
+| ⚇ | Monstro Tipo 1 |
+| ⍾ | Monstro Tipo 2 |
+| ⌹ | Boss Final |
 
 ## Estrutura das Fases
 
@@ -109,6 +126,14 @@ gcc main.c -o GroomSpire
 
 <img src="./Assets/gameTutorial.png" width="300px">
 
+### FINISH TUTORIAL
+
+<img src="./Assets/gameFinTutorial.png" width="500px">
+
+### TELA DE GAMEOVER
+
+<img src="./Assets/gameOver.png" width="500px">
+
 (Imagens do menu, vila e masmorra)
 
 
@@ -117,7 +142,7 @@ gcc main.c -o GroomSpire
 O projeto está atualmente em versão:
 
 ```txt
-Beta 1.5
+Beta 1.7
 ```
 
 Esta versão apresenta um mapa genérico de Tutorial com algumas interações limitadas, movimentação do Player, funcionalidade das Armas e Monstro tipo 1, com o objetivo de ajudar no aprendizado das funções basicas de Jogo. Além de uma mapa genérico de Vila, com a presença de um Personagem Não Jogável (NPC), que ajudará o jogador em sua jornada pelo mundo de ELDORIA.  
@@ -146,21 +171,21 @@ Esta versão apresenta um mapa genérico de Tutorial com algumas interações li
 * [x] Vida do Player
 * [x] Tela de Game Over
 * [x] Vila com NPC(s) e Casas
-* [ ] Espinhos de Masmorra
-* [ ] Masmorra Nível 1
-* [ ] Masmorra Nível 2
+* [x] Espinhos de Masmorra
+* [x] Regeneração de Vida do Player
+* [x] Masmorra Nível 1
+* [x] Masmorra Nível 2
 * [ ] Masmorra Nível 3
 * [ ] Inimigos nivel 2 (Nivel de Perseguição médio)
 * [ ] Algoritmo de Perseguição do Boss Final
 
 ### Versão 2.0
 
-* [ ] Regeneração de Vida do Player
 * [ ] Itens Deixados por Inimigos
 * [ ] Trilhas Sonoras entre Mapas
 * [ ] Equipamentos
   * [ ] Armaduras
-  * [ ] Poções 
+  * [x] Poções 
 * [ ] Habilidades de Dash e Corrida
 * [ ] Ataques Especiais com Armas
 * [ ] Pets (Player se sente Sozinho)
