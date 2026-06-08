@@ -92,7 +92,7 @@ int m1Spawn, m1Spawn2, m2Spawn, m2Spawn2, bossSpawn;
 const int TUTORIAL_DELAY = 10, DIALOGUE_DELAY = 30;
 
 int resp, gaming = -1, x, y, oldX, oldY, inventoryOp = FALSE, toggleInventory = FALSE, invY = 20, oInvY = 20, selectedWeapon = -1, playerLifes = 3, firstWeapon = -1;
-int playerLevel = 0, monsterKilled = 0;
+int playerLevel = 0, monsterKilled = 0, enteredESCinGame = FALSE;
 
 int tutorialKeys = 0, tutorialLadder = 0, hasTutorial = FALSE; // Variaveis só pro tutorial
 
@@ -394,7 +394,7 @@ void killThatMonster(int monsterX, int monsterY) {
 			int c;
 			for (c = 5; c <= 9; c++) {
 				world[4][c] = ' ';
-				gotoxy(c, 4); printf(" ");
+				gotoxy(c, 4); printf(GREEN "%s" RESET, DOTS);
 			}
 			
 			break;
@@ -489,8 +489,12 @@ void swordAttack() {
 					char dropItem = randomBoxItem();
 					world[targetY][targetX] = dropItem;
 					gotoxy(targetX, targetY);
-					if (dropItem == 'P') printf(BRIGHT_RED "%s" RESET, POTION);
-					else printf(RESET "%c" RESET, dropItem);
+					switch (dropItem){
+						case 'P': printf(BRIGHT_RED "%s" RESET, POTION); break;
+						case 'G': printf(BRIGHT_BLACK "%s" RESET, DOTS); break;
+						case ' ': printf(GREEN "%s" RESET, DOTS); break;
+						default: printf(RESET "%c" RESET, dropItem); break;
+					}
 					
 					continue;
 				}
@@ -545,8 +549,12 @@ void swordAttack() {
 					char dropItem = randomBoxItem();
 					world[targetY][targetX] = dropItem;
 					gotoxy(targetX, targetY);
-					if (dropItem == 'P') printf(BRIGHT_RED "%s" RESET, POTION);
-					else printf(RESET "%c" RESET, dropItem);
+					switch (dropItem){
+						case 'P': printf(BRIGHT_RED "%s" RESET, POTION); break;
+						case 'G': printf(BRIGHT_BLACK "%s" RESET, DOTS); break;
+						case ' ': printf(GREEN "%s" RESET, DOTS); break;
+						default: printf(RESET "%c" RESET, dropItem); break;
+					}
 					continue;
 				}
 				
@@ -600,8 +608,12 @@ void swordAttack() {
 					char dropItem = randomBoxItem();
 					world[targetY][targetX] = dropItem;
 					gotoxy(targetX, targetY);
-					if (dropItem == 'P') printf(BRIGHT_RED "%s" RESET, POTION);
-					else printf(RESET "%c" RESET, dropItem);
+					switch (dropItem){
+						case 'P': printf(BRIGHT_RED "%s" RESET, POTION); break;
+						case 'G': printf(BRIGHT_BLACK "%s" RESET, DOTS); break;
+						case ' ': printf(GREEN "%s" RESET, DOTS); break;
+						default: printf(RESET "%c" RESET, dropItem); break;
+					}
 					continue;
 				}
 				
@@ -654,8 +666,12 @@ void swordAttack() {
 					char dropItem = randomBoxItem();
 					world[targetY][targetX] = dropItem;
 					gotoxy(targetX, targetY);
-					if (dropItem == 'P') printf(BRIGHT_RED "%s" RESET, POTION);
-					else printf(RESET "%c" RESET, dropItem);
+					switch (dropItem){
+						case 'P': printf(BRIGHT_RED "%s" RESET, POTION); break;
+						case 'G': printf(BRIGHT_BLACK "%s" RESET, DOTS); break;
+						case ' ': printf(GREEN "%s" RESET, DOTS); break;
+						default: printf(RESET "%c" RESET, dropItem); break;
+					}
 					continue;
 				}
 				
@@ -720,8 +736,12 @@ void arrowAttack() {
 					char dropItem = randomBoxItem();
 					world[targetY][targetX] = dropItem;
 					gotoxy(targetX, targetY);
-					if (dropItem == 'P') printf(BRIGHT_RED "%s" RESET, POTION);
-					else printf(RESET "%c" RESET, dropItem);
+					switch (dropItem){
+						case 'P': printf(BRIGHT_RED "%s" RESET, POTION); break;
+						case 'G': printf(BRIGHT_BLACK "%s" RESET, DOTS); break;
+						case ' ': printf(GREEN "%s" RESET, DOTS); break;
+						default: printf(RESET "%c" RESET, dropItem); break;
+					}
 					continue;
 				}
 				if ( isAnWall(targetX, targetY) ) break;
@@ -767,8 +787,12 @@ void arrowAttack() {
 					char dropItem = randomBoxItem();
 					world[targetY][targetX] = dropItem;
 					gotoxy(targetX, targetY);
-					if (dropItem == 'P') printf(BRIGHT_RED "%s" RESET, POTION);
-					else printf(RESET "%c" RESET, dropItem);
+					switch (dropItem){
+						case 'P': printf(BRIGHT_RED "%s" RESET, POTION); break;
+						case 'G': printf(BRIGHT_BLACK "%s" RESET, DOTS); break;
+						case ' ': printf(GREEN "%s" RESET, DOTS); break;
+						default: printf(RESET "%c" RESET, dropItem); break;
+					}
 					continue;
 				}
 				if ( isAnWall(targetX, targetY) ) break;
@@ -814,8 +838,12 @@ void arrowAttack() {
 					char dropItem = randomBoxItem();
 					world[targetY][targetX] = dropItem;
 					gotoxy(targetX, targetY);
-					if (dropItem == 'P') printf(BRIGHT_RED "%s" RESET, POTION);
-					else printf(RESET "%c" RESET, dropItem);
+					switch (dropItem){
+						case 'P': printf(BRIGHT_RED "%s" RESET, POTION); break;
+						case 'G': printf(BRIGHT_BLACK "%s" RESET, DOTS); break;
+						case ' ': printf(GREEN "%s" RESET, DOTS); break;
+						default: printf(RESET "%c" RESET, dropItem); break;
+					}
 					continue;
 				}
 				if ( isAnWall(targetX, targetY) ) break;
@@ -862,8 +890,12 @@ void arrowAttack() {
 					char dropItem = randomBoxItem();
 					world[targetY][targetX] = dropItem;
 					gotoxy(targetX, targetY);
-					if (dropItem == 'P') printf(BRIGHT_RED "%s" RESET, POTION);
-					else printf(RESET "%c" RESET, dropItem);
+					switch (dropItem){
+						case 'P': printf(BRIGHT_RED "%s" RESET, POTION); break;
+						case 'G': printf(BRIGHT_BLACK "%s" RESET, DOTS); break;
+						case ' ': printf(GREEN "%s" RESET, DOTS); break;
+						default: printf(RESET "%c" RESET, dropItem); break;
+					}
 					continue;
 				}
 				if ( isAnWall(targetX, targetY) ) break;
@@ -918,8 +950,12 @@ void magicAttack() {
 				char dropItem = randomBoxItem();
 				world[targetY][targetX] = dropItem;
 				gotoxy(targetX, targetY);
-				if (dropItem == 'P') printf(BRIGHT_RED "%s" RESET, POTION);
-				else printf(RESET "%c" RESET, dropItem);
+				switch (dropItem){
+					case 'P': printf(BRIGHT_RED "%s" RESET, POTION); break;
+					case 'G': printf(BRIGHT_BLACK "%s" RESET, DOTS); break;
+					case ' ': printf(GREEN "%s" RESET, DOTS); break;
+					default: printf(RESET "%c" RESET, dropItem); break;
+				}
 				continue;
 			}
 
@@ -948,13 +984,7 @@ void magicAttack() {
 			int targetY = y - 1 + f;
 
 			if (isOnBounds(targetX, targetY) == FALSE) continue;
-			if ( world[targetY][targetX] == 'k') {
-				char dropItem = randomBoxItem();
-				world[targetY][targetX] = dropItem;
-				gotoxy(targetX, targetY);
-				printf("%c", dropItem);
-				continue;
-			}
+			
 			if (world[targetY][targetX] != 'x') continue;
 			if ( (targetX == x) && (targetY == y) ) continue;
 			
@@ -1085,7 +1115,7 @@ void buildMap2() {
 	}
 
 	world[1][36] = 'M';
-	world[18][38] = '@';
+	if (dungeonDialogueCount == 0) world[18][38] = '@';
 	world[3][36] = 'D';
 	world[3][6] = 'N';
 }
@@ -1694,9 +1724,9 @@ void playerInteracts() {
 				Sleep(TUTORIAL_DELAY);
 			}
 			gotoxy(0, UI_ROW + 8);
-			stringBonitakkkj("Use W/S para mudar sua escolha e selecione a arma pressionando ENTER", TUTORIAL_DELAY, 0);
+			stringBonitakkkj("Use W/S para mudar sua escolha, selecione a arma pressionando ENTER", TUTORIAL_DELAY, 0);
 			_getch(); // Pausa Pra Ler
-			for (s = 68; s > 0; s--) {
+			for (s = 67; s > 0; s--) {
 				gotoxy(s, UI_ROW + 8);
 				printf(" ");
 				Sleep(TUTORIAL_DELAY);
@@ -1971,6 +2001,20 @@ void playerInteracts() {
 		int s;
 		clearUI();
 		gotoxy(0, UI_ROW + 8);
+		
+		if (npcDialogue == FALSE){
+			stringBonitakkkj("'Talvez seja melhor falar com aquele morador antes de entrar nesse lugar'", DIALOGUE_DELAY, 0);
+			_getch(); // Pausa Pra Ler
+			
+			for (s = 73; s >= 0; s--) {
+				gotoxy(s, UI_ROW + 8);
+				printf(" ");
+				Sleep(DIALOGUE_DELAY);
+			}
+			Sleep(DIALOGUE_DELAY + 10);
+			return;
+		}
+		
 		if (hasTutorial == FALSE){
 			dungeonDialogueCount++;
 			
@@ -2038,8 +2082,16 @@ void playerInteracts() {
 
 void movePlayer(char key) {
 
+	
+	if (key == 'e' || key == 'E') playerInteracts();
+
+	if (key == 'i' || key == 'I') playerInventory();
+
+	if (key == 'o' || key == 'O') playerCombat();
+	
 	oldX = x;
 	oldY = y;
+	
 	if (!toggleInventory) {
 
 		if (key == 'w' || key == 'W') {
@@ -2171,13 +2223,6 @@ void movePlayer(char key) {
 			}
 		}
 	}
-
-
-	if (key == 'e' || key == 'E') playerInteracts();
-
-	if (key == 'i' || key == 'I') playerInventory();
-
-	if (key == 'o' || key == 'O') playerCombat();
 }
 
 int main(void) {
@@ -2195,7 +2240,11 @@ int main(void) {
 		switch(gaming) {
 
 		case 0:
-			if (playerLevel < 2 && hasTutorial == FALSE && playerLifes > 0) init();
+			if (playerLevel < 2 && enteredESCinGame == FALSE && (hasTutorial == FALSE || dungeonDialogueCount == 0) && playerLifes > 0) init();
+			if (playerLevel == 2){
+				m1Spawn = FALSE;
+				m1Spawn2 = FALSE;
+			}
 		
 			playerLevel = 1;
 			
@@ -2206,6 +2255,10 @@ int main(void) {
 			playerState = '>';
 			
 			if (firstWeapon != -1){
+				if (selectedWeapon != firstWeapon){
+					inventoryItem[selectedWeapon+1][0] = ' ';
+					inventoryQnt[selectedWeapon+1] = 0;
+				}
 				selectedWeapon = firstWeapon;
 				char wChar;
 				
@@ -2226,11 +2279,13 @@ int main(void) {
 			oInvY = UI_ROW + 3;
 
 			buildMap2();
-			drawFullMap();
 			
 			if (dungeonDialogueCount > 1){
 				world[3][36] = '=';
 			}
+			
+			drawFullMap();
+			
 
 			while (gaming == 0) {
 				gotoxy(0, UI_ROW + 2);
@@ -2238,6 +2293,7 @@ int main(void) {
 				if (_kbhit()) {
 					char key = _getch();
 					if (key == 27) {
+						enteredESCinGame = TRUE;
 						gaming = -1;
 						break;
 					}
@@ -2276,6 +2332,7 @@ int main(void) {
 			drawFullMap();
 
 			int soundVerify = FALSE;
+			int tutoKeyDialogue = FALSE;
 
 			while (gaming == 1) {
 				if (_kbhit()) {
@@ -2288,6 +2345,34 @@ int main(void) {
 					movePlayer(key);
 					updateScreen();
 
+					if (tutorialKeys == 1 && tutoKeyDialogue == FALSE) {
+						int s;
+						gotoxy(0, UI_ROW + 8);
+						stringBonitakkkj("Voce pegou uma chave! Use ela para abrir portas trancadas ('D')", TUTORIAL_DELAY, 0);
+						_getch(); // Pausa Pra Ler
+						for (s = 63; s > 0; s--) {
+							gotoxy(s, UI_ROW + 8);
+							printf(" ");
+							Sleep(TUTORIAL_DELAY);
+						}
+						tutoKeyDialogue = TRUE;
+					}
+					
+					if (tutorialKeys == 2) tutoKeyDialogue = FALSE;
+					
+					if (tutorialKeys == 3 && tutoKeyDialogue == FALSE) {
+						int s;
+						gotoxy(0, UI_ROW + 8);
+						stringBonitakkkj("Voce pode ver a quantidade de chaves armazenadas abrindo o inventario (i)", TUTORIAL_DELAY, 0);
+						_getch(); // Pausa Pra Ler
+						for (s = 73; s > 0; s--) {
+							gotoxy(s, UI_ROW + 8);
+							printf(" ");
+							Sleep(TUTORIAL_DELAY);
+						}
+						tutoKeyDialogue = TRUE;
+					}
+						
 					if (tutorialKeys == 4) {
 						int sei, la;
 						for (sei = 0; sei < mapLimitY; sei++) {
@@ -2360,6 +2445,7 @@ int main(void) {
 				if (_kbhit()) {
 					char key = _getch();
 					if (key == 27) {
+						enteredESCinGame = TRUE;
 						gaming = -1;
 						break;
 					}
