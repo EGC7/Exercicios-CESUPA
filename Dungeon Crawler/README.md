@@ -10,14 +10,13 @@ O Projeto utiliza o Console como único meio de interação com o usuário, most
 No fim, tudo se resume a uma aplicação prática, criativa e funcional. Incentivando a criatividade.
 
 ## História
-
-A vila no Reino de ELDORIA precisa da sua ajuda para enfrentar o Cavaleiro Maligno e seu Exército de Trolls e Esqueletos que está atormentando a vida dos moradores.  
+Uma vila, no reino de Eldoria, foi tomada por criaturas que surgiram das profundezas de uma antiga masmorra, juntamente do seu líder, O Cavaleiro Maligno. O jogador assume o papel de um aventureiro que deve atravessar três andares repletos de desafios para derrotar o grande chefe e restaurar a paz. Em sua aventura, ele recebe os ensinamentos de Edward, um sábio morador da vila que tem breves conhecimentos de combate e conseguiu capturar uma criatura em seu campo de treinamento.
 
 ## Objetivo
 
 - Explorar a vila.
 - Escolher uma arma.
-- Sobreviver aos três andares da masmorra.
+- Sobreviver aos andares da masmorra.
 - Derrotar o boss final.
 
 ## Como Jogar
@@ -94,13 +93,10 @@ Local onde o Jogador inicia sua jornada. Ele encontra um NPC que será seu guia 
 Também é um local que ele sente que deve proteger, por isso ele segue subindo os andares da Torre.
 
 ### Andar 1
-Descrição dos desafios.
+O Primeiro andar conta com algums monstros que se movimentam sem considerar a presença do jogador. Mas ainda sim são perigosos e causam dano ao encostarem no Jogador.
 
 ### Andar 2
-Descrição dos desafios.
-
-### Andar 3
-Descrição dos desafios e do boss.
+O Segundo andar conta com algums monstros mais inteligente, que peseguem o jogador a medida que ele se aproxima. São bem perigosos e bem espertos. Além do Cavaleiro Maligno, que tenta advinhar quando o jogador vai atacá-lo e tenta desviar de possíveis golpes.
 
 ## Tecnologias Utilizadas
 
@@ -134,18 +130,34 @@ gcc main.c -o GroomSpire
 
 <img src="./Assets/gameOver.png" width="500px">
 
+### MAPA DA VILA
+
+<img src="./Assets/gameVillage.png" width="300px">
+
+### 1º ANDAR DUNGEON
+
+<img src="./Assets/gameDungeon(2).png" width="300px">
+
+### 2º ANDAR DUNGEON
+
+<img src="./Assets/gameDungeon(3).png" width="300px">
 (Imagens do menu, vila e masmorra)
 
+### TELA DE FINALIZAÇÃO DO JOGO 
+
+<img src="./Assets/gameFinish.png" width="500px">
 
 ## Status
 
 O projeto está atualmente em versão:
 
 ```txt
-Beta 1.7
+Beta 2.0
 ```
 
-Esta versão apresenta um mapa genérico de Tutorial com algumas interações limitadas, movimentação do Player, funcionalidade das Armas e Monstro tipo 1, com o objetivo de ajudar no aprendizado das funções basicas de Jogo. Além de uma mapa genérico de Vila, com a presença de um Personagem Não Jogável (NPC), que ajudará o jogador em sua jornada pelo mundo de ELDORIA.  
+Esta versão apresenta um mapa genérico de Tutorial com algumas interações limitadas, movimentação do Player, funcionalidade das Armas e Monstro tipo 1, com o objetivo de ajudar no aprendizado das funções basicas de Jogo. Além de uma mapa genérico de Vila, com a presença de um Personagem Não Jogável (NPC), que ajudará o jogador em sua jornada pelo mundo de ELDORIA.
+
+Esta versão também apresenta dois andares da Masmorra, com criaturas perigosas, puzzles, desafios com espinhos e botões para desafiar o jogador.  
 
 ---
 
@@ -175,14 +187,14 @@ Esta versão apresenta um mapa genérico de Tutorial com algumas interações li
 * [x] Regeneração de Vida do Player
 * [x] Masmorra Nível 1
 * [x] Masmorra Nível 2
-* [ ] Masmorra Nível 3
-* [ ] Inimigos nivel 2 (Nivel de Perseguição médio)
-* [ ] Algoritmo de Perseguição do Boss Final
+* [x] Masmorra Nível 3
+* [x] Inimigos nivel 2 (Nivel de Perseguição médio)
+* [x] Algoritmo de Perseguição do Boss Final
 
 ### Versão 2.0
 
 * [ ] Itens Deixados por Inimigos
-* [ ] Trilhas Sonoras entre Mapas
+* [x] Trilhas Sonoras entre Mapas
 * [ ] Equipamentos
   * [ ] Armaduras
   * [x] Poções 
@@ -202,6 +214,10 @@ Ele foi criado para ajudar estudantes a treinarem racicínio lógico, resolver p
 Desenvolvido por **Eduardo Cajueiro**. <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Face%20with%20Spiral%20Eyes.png" alt="Face with Spiral Eyes" width="25" height="25" />
 
 Projeto criado com o objetivo de praticar e fixar conteúdos de programação em C. Além de construir um algoritmo divertido para compartilhar com amigos.
+
+## Declaração de IA Generativa
+
+O Uso e IA Generativa no projeto foi empregado apenas para criação da Imagem de Banner incluída no README do repositório e para reformatação de Strings de ASCIIs utilizados no código em Menus e Telas Personalizadas. O Código oficial do projeto, presente no repositório, não conta com uso de IA Generativa em sua elaboração lógica.
 
 ---
 
