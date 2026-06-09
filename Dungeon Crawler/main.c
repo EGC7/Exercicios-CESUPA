@@ -2701,17 +2701,10 @@ void movePlayer(char key) {
 int main(void) {
 	SetConsoleOutputCP(CP_UTF8);
 	SetConsoleCP(CP_UTF8);
-	
-	FINISH_GAME();
-	exitTutorial();
-	gameOver();
-	
+		
 	srand(time(NULL));
 	
 	init();
-	
-	gaming = 4;
-	selectedWeapon = 1;
 	
 	while(resp != -1) {
 		system("cls");
